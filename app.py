@@ -26,6 +26,11 @@ def callback():
     app.logger.info("Request body: "+body)
     try:
         handler.handle(body, signature)
+    except LineBotApiError as e:
+        print("Got exception from LINE Messaging API: %s\n" % e.message)
+        for m in e.error.details:
+            print("  %s: %s" % (m.property, m.message))
+        print("\n")
     except InvalidSignatureError:
         abort(400)
     return 'OK'
@@ -78,40 +83,41 @@ def handle_follow(event):
 def handle_message(event):
     sender = event.source.user_id
     text = event.message.text
-    try:
-        if text.lower() in ["dori","doribot"]:
+    
+    if text.lower() in ["dori","doribot"]:
+        line_bot_api.reply_message(event.reply_token,
+            TextSendMessage(
+                text="Ada yang bisa dibantu?"
+            )
+        )
+
+    elif text.lower() == ".help":
+        line_bot_api.reply_message(event.reply_token,
+            TextSendMessage(
+                text='Berikut adalah command yang dapat kakak pakai:'
+            )
+        )
+
+    elif ": " in text:
+        data = text.split(": ",1)
+        if len(data) > 1:
+            cmd, args = data[0].lower(), data[1]
+        else:
+            cmd, args = data[0].lower(), ""
+
+        if cmd == "say":
             line_bot_api.reply_message(event.reply_token,
                 TextSendMessage(
-                    text="Ada yang bisa dibantu?"
+                    text=args
                 )
             )
-
-        elif text.lower() == ".help":
-            line_bot_api.reply_message(event.reply_token,
-                TextSendMessage(
-                    text='Berikut adalah command yang dapat kakak pakai:'
-                )
-            )
-
-        elif ": " in text:
-            data = text.split(": ",1)
-            if len(data) > 1:
-                cmd, args = data[0].lower(), data[1]
-            else:
-                cmd, args = data[0].lower(), ""
-
-            if cmd == "say":
-                line_bot_api.reply_message(event.reply_token,
-                    TextSendMessage(
-                        text=args
-                    )
-                )
-    except LineBotApiError as e:
-        print(e.status_code)
-        print(e.error.message)
-        print(e.error.details)
 
 import os
 if __name__ == "__main__":
-    port = int(os.environ.get('PORT',33507))
-    app.run(host='0.0.0.0', port=port)
+    arg_parser = ArgumentParser(
+        usage='Usage: python '+__file__+' [--port <port>] [--help]'
+    )
+    arg_parser.add_argument('-p', '--port', type=int, default=8000, help='port')
+    arg_parser.add_argument('-d', '--debug', default=False, help='debug')
+    options = arg_parser.parse_args()
+    app.run(debug=options.debug, port=options.port)
