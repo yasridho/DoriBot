@@ -22,6 +22,21 @@ import sys, random, datetime, time, re
 import tempfile
 import urllib
 
+from linebot.models import (
+    MessageEvent, TextMessage, TextSendMessage,
+    SourceUser, SourceGroup, SourceRoom,
+    TemplateSendMessage, ConfirmTemplate, MessageAction,
+    ButtonsTemplate, ImageCarouselTemplate, ImageCarouselColumn, URIAction,
+    PostbackAction, DatetimePickerAction,
+    CarouselTemplate, CarouselColumn, PostbackEvent,
+    StickerMessage, StickerSendMessage, LocationMessage, LocationSendMessage,
+    ImageMessage, VideoMessage, AudioMessage, FileMessage,
+    UnfollowEvent, FollowEvent, JoinEvent, LeaveEvent, BeaconEvent,
+    FlexSendMessage, BubbleContainer, CarouselContainer, ImageComponent, BoxComponent,
+    TextComponent, SpacerComponent, IconComponent, ButtonComponent,
+    SeparatorComponent, Error, ErrorDetail
+)
+
 app = Flask(__name__)
 sleep = False
 
@@ -44,23 +59,24 @@ def callback():
 
 @handler.add(JoinEvent)
 def handle_join(event):
-    line_bot_api.reply_message(event.reply_token,
-        TextSendMessage(
-            text="Hai, saya DoriBot! Salam kenal dan senang berada disini :)"
-        ),
-        TextSendMessage(
-            text='DoriBot bisa apa saja? Silahkan ketik ".help" tanpa tanda kutip untuk mengetahui cara kerja DoriBot ;D',
-            quick_reply=QuickReply(
-                items=[
-                    QuickReplyButton(
-                        action=MessageAction(
-                            label=".help",
-                            text=".help"
+    line_bot_api.reply_message(event.reply_token, [
+            TextSendMessage(
+                text="Hai, saya DoriBot! Salam kenal dan senang berada disini :)"
+            ),
+            TextSendMessage(
+                text='DoriBot bisa apa saja? Silahkan ketik ".help" tanpa tanda kutip untuk mengetahui cara kerja DoriBot ;D',
+                quick_reply=QuickReply(
+                    items=[
+                        QuickReplyButton(
+                            action=MessageAction(
+                                label=".help",
+                                text=".help"
+                            )
                         )
-                    )
-                ]
+                    ]
+                )
             )
-        )
+        ]
     )
 
 @handler.add(FollowEvent)
