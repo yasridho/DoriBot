@@ -41,6 +41,8 @@ from linebot.models import (
 app = Flask(__name__)
 sleep = False
 
+notes = {}
+
 #Post Request
 @app.route("/callback", methods=['POST'])
 def callback():
