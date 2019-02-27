@@ -4,10 +4,6 @@ from linebot import (
     LineBotApi, WebhookHandler
 )
 
-from acc import (
-    namaBot, line_bot_api, handler
-)
-
 from linebot.exceptions import (
     InvalidSignatureError, LineBotApiError
 )
@@ -17,10 +13,15 @@ from linebot.models import *
 
 import requests, json
 import os
+import acc
 import errno
 import sys, random, datetime, time, re 
 import tempfile
 import urllib
+
+from acc import (
+    namaBot, line_bot_api, handler
+)
 
 from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage,
@@ -107,7 +108,7 @@ def handle_message(event):
     sender = event.source.user_id
     text = event.message.text
     
-    if text.lower() in ["dori","doribot"]:
+    if text.lower() == namaBot:
         line_bot_api.reply_message(event.reply_token,
             TextSendMessage(
                 text="Ada yang bisa dibantu?"
