@@ -1,5 +1,9 @@
 from flask import Flask, request, abort
 
+from linebot import (
+    LineBotApi, WebhookHandler
+)
+
 from acc import (
     namaBot, line_bot_api, handler
 )
