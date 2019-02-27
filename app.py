@@ -17,6 +17,7 @@ from linebot.models import *
 
 import requests, json
 import os
+import errno
 import sys, random, datetime, time, re 
 import tempfile
 import urllib
