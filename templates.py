@@ -164,7 +164,9 @@ def anilist_search(args,page):
         )
     send = FlexSendMessage(
         alt_text=args,
-        contents=res
+        contents=CarouselContainer(
+            contents=res
+        )
     )
     return send
 
