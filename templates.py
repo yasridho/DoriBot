@@ -240,7 +240,10 @@ def anilist_info(anid,anitype):
     trailer = data["trailer"]
     genres = data["genres"]
     aniformat = data["format"]
-    season = data["season"]+" "+str(data["startDate"]["year"])
+    try:
+        season = data["season"]+" "+str(data["startDate"]["year"])
+    except:
+        season = 'Unknown'
     score = data["averageScore"]
     image = data["coverImage"]["large"]
     judul = data["title"]["romaji"]
@@ -261,6 +264,12 @@ def anilist_info(anid,anitype):
     tr_post = list()
     if source == None:
         source = 'Unknown'
+
+    if startDate == None:
+        startDate = 'Unknown'
+
+    if endDate == None:
+        endDate == 'Unknown'
 
     if trailer != None:
         tr_post.append(
