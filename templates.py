@@ -44,6 +44,8 @@ def anilist_search(args,page):
         anitype = ani["type"]
         title_romaji = ani["title"]["romaji"]
         title_native = ani["title"]["native"]
+        if title_native == None:
+            title_native = title_romaji
         status = ani["status"]
         ani_id = ani["id"]
     
