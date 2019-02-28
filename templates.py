@@ -1,6 +1,7 @@
 import requests, json
 import calendar
 import io
+import urllib
 from colorthief import ColorThief
 from linebot.models import *
 
