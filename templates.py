@@ -250,6 +250,7 @@ def anilist_info(anid,anitype):
     endDate = str(data["endDate"]["day"])+" "+calendar.month_name[data["endDate"]["month"]]+" "+str(data["endDate"]["year"])
     duration = data["duration"]
     episodes = data["episodes"]
+    synopsis = data["description"]
 
     fd = urllib.request.urlopen(urllib.request.Request(image, headers={'User-Agent': "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)"}))
     f = io.BytesIO(fd.read())
