@@ -35,7 +35,7 @@ def anilist_search(args,page):
     url = 'https://graphql.anilist.co'
     response = requests.post(url, json={'query': query, 'variables': variables})
     results = response.text
-    data = json.loads(results)["data"]["media"]
+    data = json.loads(results)["data"]["Page"]["media"]
     res = list()
     for ani in data:
         try:
