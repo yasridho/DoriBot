@@ -137,7 +137,7 @@ def handle_message(event):
                 )
             )
 
-        elif cmd in namaBot.lower():
+        elif cmd in namaBot:
             if args == "help":
                 line_bot_api.reply_message(event.reply_token,
                     TextSendMessage(
