@@ -102,6 +102,22 @@ def handle_follow(event):
         ]
     )
 
+@handler.add(PostbackEvent)
+def handle_postback(event):
+    if ": " in event.postback.data:
+        data = text.split(": ",1)
+        if len(data) > 1:
+            cmd, args = data[0], data[1]
+        else:
+            cmd, args = data[0], ""
+
+        if cmd == "ani":
+            aniid, anitype = args.split(" ")
+            line_bot_api.reply_message(
+                event.reply_token,
+                anilist_info(aniid, anitype)
+            )
+
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     sender = event.source.user_id

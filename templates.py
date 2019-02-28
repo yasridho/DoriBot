@@ -1,4 +1,7 @@
 import requests, json
+import calendar
+import io
+from colorthief import ColorThief
 from linebot.models import *
 
 def anilist_search(args,page):
@@ -145,7 +148,7 @@ def anilist_search(args,page):
                             action=PostbackAction(
                                 label='Details',
                                 text=title_romaji,
-                                data="ani_id: "+str(ani_id)
+                                data="ani: "+str(ani_id)+" "+anitype
                             ),
                             color='#9AA6B4'
                         )
@@ -172,11 +175,107 @@ def anilist_search(args,page):
     )
     return send
 
-def anilist_info(judul,image,genres,anitype,season,source,status,startDate,endDate,episodes,duration,synopsis,score,trailer,colorbg,colortxt):
-    if trailer != '':
-        trailer = 'https://youtu.be/'+trailer
+def anilist_info(anid,anitype):
+    query = '''
+    query ($id: Int) {
+        Media (id: $id, type: '''+anitype.upper()+''') {
+            id
+            genres
+            type
+            format
+            season
+            trailer {
+                id
+            }
+            averageScore
+            coverImage {
+                extraLarge
+                large
+                medium
+                color
+            }
+            title {
+                romaji
+                english
+                native
+                userPreferred
+            }
+            description
+            siteUrl
+            countryOfOrigin
+            source
+            status
+            startDate {
+                year
+                month
+                day
+            }
+            endDate {
+                year
+                month
+                day
+            }
+            synonyms
+            updatedAt
+            isAdult
+            duration
+            episodes
+            rankings {
+                rank
+                type
+                season
+            }
+        }
+    }
+    '''
+    variables = {
+        'id': anid
+    }
+    url = 'https://graphql.anilist.co'
+    response = requests.post(url, json={'query': query, 'variables': variables})
+    results = response.text
+    data = json.loads(results)["data"]["Media"]
+
+    trailer = data["trailer"]
+    genres = data["genres"]
+    aniformat = data["format"]
+    season = data["season"]+" "+data["startDate"]["year"]
+    score = data["averageScore"]
+    image = data["coverImage"]["large"]
+    judul = data["title"]["romaji"]
+    source = data["source"]
+    status = data["status"]
+    startDate = str(data["startDate"]["day"])+" "+calendar.month_name[data["startDate"]["month"]]+" "+str(data["startDate"]["year"])
+    endDate = str(data["endDate"]["day"])+" "+calendar.month_name[data["endDate"]["month"]]+" "+str(data["endDate"]["year"])
+    duration = data["duration"]
+    episodes = data["episodes"]
+
+    fd = urllib.request.urlopen(urllib.request.Request(image, headers={'User-Agent': "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)"}))
+    f = io.BytesIO(fd.read())
+    color_thief = ColorThief(f)
+    colorbg = "#%02x%02x%02x" % color_thief.get_color(quality=1)
+    colortxt = "#%02x%02x%02x" % color_thief.get_palette(quality=1)[0]
+
+    tr_post = list()
+    if trailer != None:
+        tr_post.append(
+            ButtonComponent(
+                action=URIAction(
+                    label='Watch Trailer',
+                    uri='https://youtu.be/'+trailer
+                ),
+                color=colortxt,
+                height='sm'
+            )
+        )
     else:
-        trailer = 'kosong'
+        tr_post.append(
+            TextComponent(
+                text='No Trailer',
+                align='center',
+                color=colortxt
+            )
+        )
     msg = FlexSendMessage(
         alt_text=judul,
         contents=CarouselContainer(
@@ -403,16 +502,7 @@ def anilist_info(judul,image,genres,anitype,season,source,status,startDate,endDa
                     ),
                     footer=BoxComponent(
                         layout='horizontal',
-                        contents=[
-                            ButtonComponent(
-                                action=URIAction(
-                                    label='Trailer',
-                                    uri=trailer
-                                ),
-                                color=colortxt,
-                                height='sm'
-                            )
-                        ]
+                        contents=tr_post
                     ),
                     styles=BubbleStyle(
                         header=BlockStyle(
