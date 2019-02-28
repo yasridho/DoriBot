@@ -146,14 +146,9 @@ def handle_message(event):
                 )
 
         elif cmd == "ani":
-            res = anilist_search(args,1)
-            if res == None:
-                res = TextSendMessage(
-                    text="Dori can't found "+args+" in anilist :("
-                )
             line_bot_api.reply_message(
                 event.reply_token,
-                res
+                anilist_search(args,1)
             )
 
 import os

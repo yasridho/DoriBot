@@ -40,140 +40,145 @@ def anilist_search(args,page):
     response = requests.post(url, json={'query': query, 'variables': variables})
     results = response.text
     data = json.loads(results)["data"]["Page"]["media"]
-    res = list()
-    for ani in data:
-        bannerImage = ani["bannerImage"]
-        if bannerImage == None:
-            bannerImage = 'https://i.postimg.cc/W47ZfhC9/no-image.png'
-        anitype = ani["type"]
-        title_romaji = ani["title"]["romaji"]
-        title_native = ani["title"]["native"]
-        if title_native == None:
-            title_native = title_romaji
-        status = ani["status"]
-        ani_id = ani["id"]
-    
-        res.append(
-            BubbleContainer(
-                direction='ltr',
-                header=BoxComponent(
-                    layout='vertical',
-                    contents=[
-                        TextComponent(
-                            text=args,
-                            align='center',
-                            color='#9AA6B4'
-                        )
-                    ]
-                ),
-                hero=ImageComponent(
-                    url=bannerImage,
-                    size='full',
-                    aspect_ratio='3:1',
-                    aspect_mode='cover'
-                ),
-                body=BoxComponent(
-                    layout='vertical',
-                    contents=[
-                        TextComponent(
-                            text=title_native,
-                            align='center',
-                            color='#9AA6B4'
-                        ),
-                        BoxComponent(
-                            layout='baseline',
-                            margin='sm',
-                            contents=[
-                                TextComponent(
-                                    text='Title',
-                                    size='sm',
-                                    align='start',
-                                    weight='bold',
-                                    color='#9AA6B4'
-                                ),
-                                TextComponent(
-                                    text=title_romaji,
-                                    flex=3,
-                                    size='sm',
-                                    align='start',
-                                    color='#9AA6B4'
-                                )
-                            ]
-                        ),
-                        BoxComponent(
-                            layout='baseline',
-                            margin='sm',
-                            contents=[
-                                TextComponent(
-                                    text='Type',
-                                    size='sm',
-                                    align='start',
-                                    weight='bold',
-                                    color='#9AA6B4'
-                                ),
-                                TextComponent(
-                                    text=anitype.capitalize(),
-                                    flex=3,
-                                    size='sm',
-                                    align='start',
-                                    color='#9AA6B4'
-                                )
-                            ]
-                        ),
-                        BoxComponent(
-                            layout='baseline',
-                            margin='sm',
-                            contents=[
-                                TextComponent(
-                                    text='Status',
-                                    size='sm',
-                                    align='start',
-                                    weight='bold',
-                                    color='#9AA6B4'
-                                ),
-                                TextComponent(
-                                    text=status.capitalize(),
-                                    flex=3,
-                                    size='sm',
-                                    align='start',
-                                    color='#9AA6B4'
-                                )
-                            ]
-                        )
-                    ]
-                ),
-                footer=BoxComponent(
-                    layout='horizontal',
-                    contents=[
-                        ButtonComponent(
-                            action=PostbackAction(
-                                label='Details',
-                                text=title_romaji,
-                                data="ani: "+str(ani_id)+" "+anitype
+    if len(data) != 0:
+        res = list()
+        for ani in data:
+            bannerImage = ani["bannerImage"]
+            if bannerImage == None:
+                bannerImage = 'https://i.postimg.cc/W47ZfhC9/no-image.png'
+            anitype = ani["type"]
+            title_romaji = ani["title"]["romaji"]
+            title_native = ani["title"]["native"]
+            if title_native == None:
+                title_native = title_romaji
+            status = ani["status"]
+            ani_id = ani["id"]
+        
+            res.append(
+                BubbleContainer(
+                    direction='ltr',
+                    header=BoxComponent(
+                        layout='vertical',
+                        contents=[
+                            TextComponent(
+                                text=args,
+                                align='center',
+                                color='#9AA6B4'
+                            )
+                        ]
+                    ),
+                    hero=ImageComponent(
+                        url=bannerImage,
+                        size='full',
+                        aspect_ratio='3:1',
+                        aspect_mode='cover'
+                    ),
+                    body=BoxComponent(
+                        layout='vertical',
+                        contents=[
+                            TextComponent(
+                                text=title_native,
+                                align='center',
+                                color='#9AA6B4'
                             ),
-                            color='#9AA6B4'
+                            BoxComponent(
+                                layout='baseline',
+                                margin='sm',
+                                contents=[
+                                    TextComponent(
+                                        text='Title',
+                                        size='sm',
+                                        align='start',
+                                        weight='bold',
+                                        color='#9AA6B4'
+                                    ),
+                                    TextComponent(
+                                        text=title_romaji,
+                                        flex=3,
+                                        size='sm',
+                                        align='start',
+                                        color='#9AA6B4'
+                                    )
+                                ]
+                            ),
+                            BoxComponent(
+                                layout='baseline',
+                                margin='sm',
+                                contents=[
+                                    TextComponent(
+                                        text='Type',
+                                        size='sm',
+                                        align='start',
+                                        weight='bold',
+                                        color='#9AA6B4'
+                                    ),
+                                    TextComponent(
+                                        text=anitype.capitalize(),
+                                        flex=3,
+                                        size='sm',
+                                        align='start',
+                                        color='#9AA6B4'
+                                    )
+                                ]
+                            ),
+                            BoxComponent(
+                                layout='baseline',
+                                margin='sm',
+                                contents=[
+                                    TextComponent(
+                                        text='Status',
+                                        size='sm',
+                                        align='start',
+                                        weight='bold',
+                                        color='#9AA6B4'
+                                    ),
+                                    TextComponent(
+                                        text=status.capitalize(),
+                                        flex=3,
+                                        size='sm',
+                                        align='start',
+                                        color='#9AA6B4'
+                                    )
+                                ]
+                            )
+                        ]
+                    ),
+                    footer=BoxComponent(
+                        layout='horizontal',
+                        contents=[
+                            ButtonComponent(
+                                action=PostbackAction(
+                                    label='Details',
+                                    text=title_romaji,
+                                    data="ani: "+str(ani_id)+" "+anitype
+                                ),
+                                color='#9AA6B4'
+                            )
+                        ]
+                    ),
+                    styles=BubbleStyle(
+                        header=BlockStyle(
+                            background_color='#1E222C',
+                        ),
+                        body=BlockStyle(
+                            background_color='#262B37'
+                        ),
+                        footer=BlockStyle(
+                            background_color='#262B37'
                         )
-                    ]
-                ),
-                styles=BubbleStyle(
-                    header=BlockStyle(
-                        background_color='#1E222C',
-                    ),
-                    body=BlockStyle(
-                        background_color='#262B37'
-                    ),
-                    footer=BlockStyle(
-                        background_color='#262B37'
                     )
                 )
             )
+        send = FlexSendMessage(
+            alt_text=args,
+            contents=CarouselContainer(
+                contents=res
+            )
         )
-    send = FlexSendMessage(
-        alt_text=args,
-        contents=CarouselContainer(
-            contents=res
+    else:
+        send = TextSendMessage(
+            text="Dori can't found "+args+" in anilist :("
         )
-    )
     return send
 
 def anilist_info(anid,anitype):
