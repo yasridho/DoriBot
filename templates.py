@@ -440,7 +440,7 @@ def anilist_info(judul,image,genres,anitype,season,source,status,startDate,endDa
                         layout='vertical',
                         contents=[
                             TextComponent(
-                                text=synopsis,,
+                                text=synopsis,
                                 size='sm',
                                 align='center',
                                 color=colortxt,
