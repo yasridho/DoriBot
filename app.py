@@ -6,6 +6,7 @@ from linebot.exceptions import (
 
 from argparse import ArgumentParser
 from linebot.models import *
+from templates import *
 
 import requests, json
 import os
@@ -132,6 +133,12 @@ def handle_message(event):
                 TextSendMessage(
                     text=args
                 )
+            )
+
+        elif cmd == "ani":
+            line_bot_api.reply_message(
+                event.reply_token,
+                anilist_search(args,1)
             )
 
 import os
