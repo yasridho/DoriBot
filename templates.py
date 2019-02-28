@@ -249,11 +249,17 @@ def anilist_info(anid,anitype):
     judul = data["title"]["romaji"]
     source = data["source"]
     status = data["status"]
-    startDate = str(data["startDate"]["day"])+" "+calendar.month_name[data["startDate"]["month"]]+" "+str(data["startDate"]["year"])
-    endDate = str(data["endDate"]["day"])+" "+calendar.month_name[data["endDate"]["month"]]+" "+str(data["endDate"]["year"])
+    try:
+        startDate = str(data["startDate"]["day"])+" "+calendar.month_name[data["startDate"]["month"]]+" "+str(data["startDate"]["year"])
+    except:
+        startDate = 'Unknown'
+    try:
+        endDate = str(data["endDate"]["day"])+" "+calendar.month_name[data["endDate"]["month"]]+" "+str(data["endDate"]["year"])
+    except:
+        endDate = 'Unknown'
     duration = data["duration"]
     episodes = data["episodes"]
-    synopsis = data["description"]
+    synopsis = data["description"].replace('<br>','\n')
 
     fd = urllib.request.urlopen(urllib.request.Request(image, headers={'User-Agent': "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)"}))
     f = io.BytesIO(fd.read())
@@ -264,12 +270,6 @@ def anilist_info(anid,anitype):
     tr_post = list()
     if source == None:
         source = 'Unknown'
-
-    if startDate == None:
-        startDate = 'Unknown'
-
-    if endDate == None:
-        endDate == 'Unknown'
 
     if trailer != None:
         tr_post.append(
