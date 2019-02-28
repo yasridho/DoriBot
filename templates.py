@@ -38,9 +38,8 @@ def anilist_search(args,page):
     data = json.loads(results)["data"]["Page"]["media"]
     res = list()
     for ani in data:
-        if bannerImage != None:
-            bannerImage = ani["bannerImage"]
-        else:
+        bannerImage = ani["bannerImage"]
+        if bannerImage == None:
             bannerImage = 'https://i.postimg.cc/W47ZfhC9/no-image.png'
         anitype = ani["type"]
         title_romaji = ani["title"]["romaji"]
