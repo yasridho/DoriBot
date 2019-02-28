@@ -259,6 +259,9 @@ def anilist_info(anid,anitype):
     colortxt = "#%02x%02x%02x" % color_thief.get_palette(quality=1)[1]
 
     tr_post = list()
+    if source == None:
+        source = 'Unknown'
+
     if trailer != None:
         tr_post.append(
             ButtonComponent(
