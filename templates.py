@@ -237,7 +237,7 @@ def anilist_info(anid,anitype):
     results = response.text
     data = json.loads(results)["data"]["Media"]
 
-    trailer = data["trailer"]
+    trailer = data["trailer"]["id"]
     genres = data["genres"]
     aniformat = data["format"]
     season = data["season"]+" "+str(data["startDate"]["year"])
