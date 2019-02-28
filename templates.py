@@ -221,6 +221,8 @@ def anilist_info(anid,anitype):
             isAdult
             duration
             episodes
+            chapters
+            volumes
             rankings {
                 rank
                 type
@@ -245,6 +247,8 @@ def anilist_info(anid,anitype):
     except:
         season = 'Unknown'
     score = data["averageScore"]
+    if score == None:
+        score = 0
     image = data["coverImage"]["large"]
     judul = data["title"]["romaji"]
     source = data["source"]
@@ -257,9 +261,28 @@ def anilist_info(anid,anitype):
         endDate = str(data["endDate"]["day"])+" "+calendar.month_name[data["endDate"]["month"]]+" "+str(data["endDate"]["year"])
     except:
         endDate = 'Unknown'
-    duration = data["duration"]
-    episodes = data["episodes"]
-    synopsis = data["description"].replace('<br>','\n')
+    
+    if anitype == 'ANIME':
+        ani_1 = "Duration"
+        ani_12 = str(data["duration"])+" minutes"
+        if ani_12 == None:
+            ani_12 = 0
+        ani_2 = "Episodes"
+        ani_22 = str(data["episodes"])+" episodes"
+        if ani_22 == None:
+            ani_22 = 0
+    else:
+        ani_1 = "Chapters"
+        ani_12 = str(data["chapters"])+" chapters"
+        if ani_12 == None:
+            ani_12 = 0
+        ani_2 = "Volumes"
+        ani_22 = str(data["volumes"])+" volumes"
+        if ani_22 == None:
+            ani_22 = 0
+    
+    desc = data["description"]
+    synopsis = desc.replace('<br>','\n').replace('<i>','').replace('</i>','').replace('<b>','').replace('</b>','')
 
     fd = urllib.request.urlopen(urllib.request.Request(image, headers={'User-Agent': "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)"}))
     f = io.BytesIO(fd.read())
@@ -378,7 +401,7 @@ def anilist_info(anid,anitype):
                                         color=colortxt
                                     ),
                                     TextComponent(
-                                        text=anitype,
+                                        text=anitype.capitalize(),
                                         flex=3,
                                         size='sm',
                                         color=colortxt
@@ -412,7 +435,7 @@ def anilist_info(anid,anitype):
                                         color=colortxt
                                     ),
                                     TextComponent(
-                                        text=source,
+                                        text=source.capitalize(),
                                         flex=3,
                                         size='sm',
                                         color=colortxt
@@ -429,7 +452,7 @@ def anilist_info(anid,anitype):
                                         color=colortxt
                                     ),
                                     TextComponent(
-                                        text=status,
+                                        text=status.capitalize(),
                                         flex=3,
                                         size='sm',
                                         color=colortxt
@@ -480,14 +503,14 @@ def anilist_info(anid,anitype):
                                 margin='md',
                                 contents=[
                                     TextComponent(
-                                        text='Episodes',
+                                        text=ani_1,
                                         size='sm',
                                         align='start',
                                         weight='bold',
                                         color=colortxt
                                     ),
                                     TextComponent(
-                                        text=str(episodes)+' Episodes',
+                                        text=ani_12,
                                         size='sm',
                                         color=colortxt
                                     )
@@ -499,14 +522,14 @@ def anilist_info(anid,anitype):
                                 margin='md',
                                 contents=[
                                     TextComponent(
-                                        text='Duration',
+                                        text=ani_2,
                                         size='sm',
                                         align='start',
                                         weight='bold',
                                         color=colortxt
                                     ),
                                     TextComponent(
-                                        text=str(duration)+' minutes',
+                                        text=ani_22,
                                         size='sm',
                                         color=colortxt
                                     )
