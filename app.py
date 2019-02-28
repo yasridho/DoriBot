@@ -16,9 +16,7 @@ import sys, random, datetime, time, re
 import tempfile
 import urllib
 
-from acc import (
-    namaBot, line_bot_api, handler
-)
+from acc import *
 
 app = Flask(__name__)
 sleep = False
@@ -66,6 +64,16 @@ def handle_join(event):
 
 @handler.add(FollowEvent)
 def handle_follow(event):
+    data = {'display_name':line_bot_api.get_profile(event.source.user_id).display_name,
+            'picture_url':line_bot_api.get_profile(event.source.user_id).picture_url,
+            'status_message':line_bot_api.get_profile(event.source.user_id).status_message,
+            'follow_time':time.time()}
+    db.child("users").child(event.source.user_id).set(data)
+    try:
+        total = db.child("users").get().val()["total"]
+    except:
+        total = 0
+    db.child("users").child("total").set(total + 1)
     line_bot_api.reply_message(event.reply_token,
         [
             TextSendMessage(
