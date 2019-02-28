@@ -237,7 +237,7 @@ def anilist_info(anid,anitype):
     results = response.text
     data = json.loads(results)["data"]["Media"]
 
-    trailer = data["trailer"]["id"]
+    trailer = data["trailer"]
     genres = data["genres"]
     aniformat = data["format"]
     season = data["season"]+" "+str(data["startDate"]["year"])
@@ -264,7 +264,7 @@ def anilist_info(anid,anitype):
             ButtonComponent(
                 action=URIAction(
                     label='Watch Trailer',
-                    uri='https://youtu.be/'+trailer
+                    uri='https://youtu.be/'+trailer["id"]
                 ),
                 color=colortxt,
                 height='sm'
