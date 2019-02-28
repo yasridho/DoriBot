@@ -133,10 +133,7 @@ def handle_message(event):
             if args == "help":
                 line_bot_api.reply_message(event.reply_token,
                     TextSendMessage(
-                        text="""
-                            Here's some command:\n
-                            Ani: This will search and get anime/manga info from anilist (Usage: 'Ani: <keyword>')
-                            """
+                        text="Here's some command:\nAni: This will search and get anime/manga info from anilist (Usage: 'Ani: <keyword>')"
                     )
                 )
 
