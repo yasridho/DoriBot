@@ -105,7 +105,7 @@ def handle_follow(event):
 @handler.add(PostbackEvent)
 def handle_postback(event):
     if ": " in event.postback.data:
-        data = text.split(": ",1)
+        data = event.postback.data.split(": ",1)
         if len(data) > 1:
             cmd, args = data[0], data[1]
         else:
