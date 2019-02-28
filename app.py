@@ -20,21 +20,6 @@ from acc import (
     namaBot, line_bot_api, handler
 )
 
-from linebot.models import (
-    MessageEvent, TextMessage, TextSendMessage,
-    SourceUser, SourceGroup, SourceRoom,
-    TemplateSendMessage, ConfirmTemplate, MessageAction,
-    ButtonsTemplate, ImageCarouselTemplate, ImageCarouselColumn, URIAction,
-    PostbackAction, DatetimePickerAction,
-    CarouselTemplate, CarouselColumn, PostbackEvent,
-    StickerMessage, StickerSendMessage, LocationMessage, LocationSendMessage,
-    ImageMessage, VideoMessage, AudioMessage, FileMessage,
-    UnfollowEvent, FollowEvent, JoinEvent, LeaveEvent, BeaconEvent,
-    FlexSendMessage, BubbleContainer, CarouselContainer, ImageComponent, BoxComponent,
-    TextComponent, SpacerComponent, IconComponent, ButtonComponent,
-    SeparatorComponent, Error, ErrorDetail
-)
-
 app = Flask(__name__)
 sleep = False
 
@@ -61,16 +46,16 @@ def callback():
 def handle_join(event):
     line_bot_api.reply_message(event.reply_token, [
             TextSendMessage(
-                text="Hai, saya DoriBot! Salam kenal dan senang berada disini :)"
+                text="Hi! I'm DoriBot\nI'm glad to be here ;D"
             ),
             TextSendMessage(
-                text='DoriBot bisa apa saja? Silahkan ketik ".help" tanpa tanda kutip untuk mengetahui cara kerja DoriBot ;D',
+                text='Type "Doribot: help" without quote to see my commands ;)',
                 quick_reply=QuickReply(
                     items=[
                         QuickReplyButton(
                             action=MessageAction(
-                                label=".help",
-                                text=".help"
+                                label="Doribot: help",
+                                text="Doribot: help"
                             )
                         )
                     ]
@@ -84,16 +69,16 @@ def handle_follow(event):
     line_bot_api.reply_message(event.reply_token,
         [
             TextSendMessage(
-                text='Salam kenal '+line_bot_api.get_profile(event.source.user_id).display_name+'! Saya DoriBot, bisa dipanggil Dori ;)'
+                text='Hello '+line_bot_api.get_profile(event.source.user_id).display_name+'! My name is DoriBot, you can call me Dori ;)'
             ),
             TextSendMessage(
-                text='DoriBot bisa apa saja? Silahkan ketik ".help" untuk mengetahui cara kerja DoriBot ;D',
+                text='Type "Doribot: help" without quote to see my commands ;)',
                 quick_reply=QuickReply(
                     items=[
                         QuickReplyButton(
                             action=MessageAction(
-                                label=".help",
-                                text=".help"
+                                label="Doribot: help",
+                                text="Doribot: help"
                             )
                         )
                     ]
@@ -123,17 +108,10 @@ def handle_message(event):
     sender = event.source.user_id
     text = event.message.text
     
-    if text.lower() == namaBot:
+    if text.lower() in namaBot:
         line_bot_api.reply_message(event.reply_token,
             TextSendMessage(
-                text="Ada yang bisa dibantu?"
-            )
-        )
-
-    elif text.lower() == ".help":
-        line_bot_api.reply_message(event.reply_token,
-            TextSendMessage(
-                text='Berikut adalah command yang dapat kakak pakai:'
+                text="What can I do for you?"
             )
         )
 
@@ -150,6 +128,17 @@ def handle_message(event):
                     text=args
                 )
             )
+
+        elif cmd == "doribot":
+            if args == "help":
+                line_bot_api.reply_message(event.reply_token,
+                    TextSendMessage(
+                        text="""
+                            Here's some command:\n
+                            Ani: This will search and get anime/manga info from anilist (Usage: 'Ani: <keyword>')
+                            """
+                    )
+                )
 
         elif cmd == "ani":
             line_bot_api.reply_message(
