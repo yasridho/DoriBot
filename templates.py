@@ -239,7 +239,7 @@ def anilist_info(anid,anitype):
     trailer = data["trailer"]
     genres = data["genres"]
     aniformat = data["format"]
-    season = data["season"]+" "+data["startDate"]["year"]
+    season = data["season"]+" "+str(data["startDate"]["year"])
     score = data["averageScore"]
     image = data["coverImage"]["large"]
     judul = data["title"]["romaji"]
