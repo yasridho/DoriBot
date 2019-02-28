@@ -255,8 +255,8 @@ def anilist_info(anid,anitype):
     fd = urllib.request.urlopen(urllib.request.Request(image, headers={'User-Agent': "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)"}))
     f = io.BytesIO(fd.read())
     color_thief = ColorThief(f)
-    colorbg = "#%02x%02x%02x" % color_thief.get_color(quality=1)
-    colortxt = "#%02x%02x%02x" % color_thief.get_palette(quality=1)[0]
+    colorbg = "#%02x%02x%02x" % color_thief.get_palette(quality=1)[0]
+    colortxt = "#%02x%02x%02x" % color_thief.get_palette(quality=1)[1]
 
     tr_post = list()
     if trailer != None:
