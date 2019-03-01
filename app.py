@@ -49,7 +49,7 @@ def handle_join(event):
     db.child(event.source.type).child(room).set({"joined_at":time.time()})
     try:
         total = db.child(event.source.type).get().val()["total"]
-        db.child(event.source.type).child("total").update(total+1)
+        db.child(event.source.type).update({"total":total+1})
     except:
         db.child(event.source.type).child("total").set(1)
     line_bot_api.reply_message(event.reply_token, [
@@ -178,16 +178,16 @@ def handle_message(event):
         room = event.source.room_id
     elif isinstance(event.source, SourceGroup):
         room = event.source.group_id
-    try:
-        members = db.child(event.source.type).child(room).get.val()["members"]
-        if sender not in members:
-            db.child(event.source.type).child(room).child("members").child(sender).set(line_bot_api.get_profile(sender).display_name)
-        else:
-            if line_bot_api.get_profile(sender).display_name != members[sender]:
-                db.child(event.source.type).child(room).child("members").update({sender:line_bot_api.get_profile(sender).display_name})
-                db.child("users").child(sender).update({'display_name':line_bot_api.get_profile(sender).display_name})
-    except:
+    #try:
+    members = db.child(event.source.type).child(room).get.val()["members"]
+    if sender not in members:
         db.child(event.source.type).child(room).child("members").child(sender).set(line_bot_api.get_profile(sender).display_name)
+    else:
+        if line_bot_api.get_profile(sender).display_name != members[sender]:
+            db.child(event.source.type).child(room).child("members").update({sender:line_bot_api.get_profile(sender).display_name})
+            db.child("users").child(sender).update({'display_name':line_bot_api.get_profile(sender).display_name})
+    #except:
+        #db.child(event.source.type).child(room).child("members").child(sender).set(line_bot_api.get_profile(sender).display_name)
     
     if text.lower() in namaBot:
         reply_with = [
