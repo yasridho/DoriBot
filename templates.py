@@ -23,7 +23,7 @@ def exit_confirm_button(args,roomtype):
             thumbnail_image_url='https://i.postimg.cc/44h5z8pM/warning-sign.png',
             actions=[
                 PostbackAction(
-                    label="NO! DON'T DO THAT!"
+                    label="NO! DON'T DO THAT!",
                     text='Cancel',
                     data='quit: no '+args
                 ),
