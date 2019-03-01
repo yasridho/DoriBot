@@ -5,7 +5,7 @@ import urllib
 import pyrebase
 from colorthief import ColorThief
 from linebot.models import *
-from acc import line_bot_api
+from acc import line_bot_api, db
 
 def dori_id(args):
     try:
