@@ -57,6 +57,9 @@ def handle_join(event):
                 text="Hi! I'm DoriBot\nI'm glad to be here ;D"
             ),
             TextSendMessage(
+                text="I'll not respond before you add me first."
+            )
+            TextSendMessage(
                 text='Type "Doribot: help" without quote to see my commands ;)',
                 quick_reply=QuickReply(
                     items=[
@@ -200,8 +203,8 @@ def handle_message(event):
             )
         )
 
-    elif ": " in text:
-        data = text.split(": ",1)
+    elif ":" in text:
+        data = text.split(":",1)
         if len(data) > 1:
             cmd, args = data[0].lower(), data[1]
         else:
