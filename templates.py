@@ -278,6 +278,10 @@ def anilist_info(anid,anitype):
 
     trailer = data["trailer"]
     genres = data["genres"]
+    if genres == None:
+        genres = 'Unknown'
+    else:
+        genres = ", ".join(genres)
     aniformat = data["format"]
     try:
         season = data["season"]+" "+str(data["startDate"]["year"])
@@ -419,7 +423,7 @@ def anilist_info(anid,anitype):
                                         color=colortxt
                                     ),
                                     TextComponent(
-                                        text=", ".join(genres),
+                                        text=genres,
                                         flex=3,
                                         size='sm',
                                         align='start',
