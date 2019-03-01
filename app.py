@@ -77,7 +77,7 @@ def handle_leave(event):
     if isinstance(event.source,SourceRoom):
         db.child(event.source.type).child(event.source.room_id).remove()
     else:
-        db.child(event.source.type).child(event.source.room_id).remove()
+        db.child(event.source.type).child(event.source.group_id).remove()
     total = db.child(event.source.type).get().val()["total"]
     db.child(event.source.type).update({"total":total - 1})
 
