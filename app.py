@@ -241,6 +241,9 @@ def handle_message(event):
             cmd, args = data[0].lower(), data[1]
         else:
             cmd, args = data[0].lower(), ""
+        
+        if args[0] == " ":
+            args = args[1:]
 
         if cmd == "say":
             line_bot_api.reply_message(event.reply_token,
