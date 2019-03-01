@@ -227,7 +227,7 @@ def handle_message(event):
                         TextSendMessage('Where should I go?')
                     )
                     return
-                if isinstance(event.source, SourceGroup):
+                if isinstance(event.source, SourceRoom):
                     room = event.source.room_id
                 elif isinstance(event.source, SourceGroup):
                     room = event.source.group_id
