@@ -42,7 +42,11 @@ def callback():
 
 @handler.add(JoinEvent)
 def handle_join(event):
-    db.child(event.source.type).child(event.source.room_id).set({"joined_at":time.time()})
+    if isinstance(event.source, SourceRoom):
+        room = event.source.room_id
+    else:
+        room = event.source.group_id
+    db.child(event.source.type).child(room).set({"joined_at":time.time()})
     try:
         total = db.child(event.source.type).get().val()["total"]
         db.child(event.source.type).child("total").update(total+1)
@@ -69,8 +73,11 @@ def handle_join(event):
     )
 
 @handler.add(LeaveEvent)
-def handle_leave():
-    db.child(event.source.type).child(event.source.room_id).remove()
+def handle_leave(event):
+    if isinstance(event.source,SourceRoom):
+        db.child(event.source.type).child(event.source.room_id).remove()
+    else:
+        db.child(event.source.type).child(event.source.room_id).remove()
     total = db.child(event.source.type).get().val()["total"]
     db.child(event.source.type).update({"total":total - 1})
 
