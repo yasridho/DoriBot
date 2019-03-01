@@ -20,7 +20,7 @@ def exit_confirm_button(args,roomtype):
         template=ButtonsTemplate(
             title='Are you sure?',
             text='All data in this '+roomtype+' will be deleted.',
-            thumbnail_image_url='https://i.postimg.cc/44h5z8pM/warning-sign.png'
+            thumbnail_image_url='https://i.postimg.cc/44h5z8pM/warning-sign.png',
             actions=[
                 PostbackAction(
                     label="NO! DON'T DO THAT!"
