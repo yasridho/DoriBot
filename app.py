@@ -110,7 +110,7 @@ def handle_follow(event):
 @handler.add(UnfollowEvent)
 def handle_unfollow(event):
     db.child("users").child(event.source.user_id).remove()
-    total = db.child(event.source.type).get().val()["total"]
+    total = db.child("users").get().val()["total"]
     db.child("users").child("total").update(total - 1)
 
 @handler.add(PostbackEvent)
