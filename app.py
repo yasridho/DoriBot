@@ -42,6 +42,12 @@ def callback():
 
 @handler.add(JoinEvent)
 def handle_join(event):
+    db.child(event.source.type).child(event.source.room_id).set({"joined_at":time.time()})
+    try:
+        total = db.child(event.source.type).get().val()["total"]
+        db.child(event.source.type).child("total").update(total+1)
+    except:
+        db.child(event.source.type).child("total").set(1)
     line_bot_api.reply_message(event.reply_token, [
             TextSendMessage(
                 text="Hi! I'm DoriBot\nI'm glad to be here ;D"
@@ -61,6 +67,12 @@ def handle_join(event):
             )
         ]
     )
+
+@handler.add(LeaveEvent)
+def handle_leave():
+    db.child(event.source.type).child(event.source.room_id).remove()
+    total = db.child(event.source.type).get().val()["total"]
+    db.child(event.source.type).child("total").update(total - 1)
 
 @handler.add(FollowEvent)
 def handle_follow(event):
@@ -95,6 +107,12 @@ def handle_follow(event):
         ]
     )
 
+@handler.add(UnfollowEvent)
+def handle_unfollow():
+    db.child("users").child(event.source.user_id).remove()
+    total = db.child(event.source.type).get().val()["total"]
+    db.child("users").child("total").update(total - 1)
+
 @handler.add(PostbackEvent)
 def handle_postback(event):
     if ": " in event.postback.data:
@@ -111,15 +129,56 @@ def handle_postback(event):
                 anilist_info(aniid, anitype)
             )
 
+        elif cmd == "quit":
+            answer, room = args.split(" ")
+            if room in notes:
+                command, timestamp = notes[room]
+                if command == "exit":
+                    if time.time() - timestamp > 60:
+                        del notes[room]
+                    else:
+                        if answer == "no":
+                            line_bot_api.reply_message(
+                                event.reply_token,
+                                TextSendMessage(text="Okay, I'm not going anywhere ;D")
+                                del notes[room]
+                            )
+                        else:
+                            line_bot_api.reply_message(
+                                event.reply_token,
+                                TextSendMessage(text='Goodbye cruel world :(')
+                            )
+                            if isinstance(event.source, SourceGroup):
+                                line_bot_api.leave_group(event.source.group_id)
+                            else:
+                                line_bot_api.leave_room(event.source.room_id)
+
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     sender = event.source.user_id
     text = event.message.text
     
     if text.lower() in namaBot:
+        reply_with = [
+            "What can I do for you?",
+            "Is there something you need?",
+            "Yesh? O.o",
+            "Dori here! ><>",
+            "Dori is typing...",
+            "What do you want today?"]
         line_bot_api.reply_message(event.reply_token,
             TextSendMessage(
-                text="What can I do for you?"
+                text=random.choice(reply_with),
+                quick_reply=QuickReply(
+                    items=[
+                        QuickReplyButton(
+                            action=MessageAction(
+                                label='Doribot: help',
+                                text='Doribot: help'
+                            )
+                        )
+                    ]
+                )
             )
         )
 
@@ -144,12 +203,58 @@ def handle_message(event):
                         text="Here's some command:\nAni: This will search and get anime/manga info from anilist (Usage: 'Ani: <keyword>')"
                     )
                 )
+            elif args == "id":
+                line_bot_api.reply_message(event.reply_token,
+                    TextSendMessage(
+                        text='Your id is: '+dori_id(event.source.user_id)+'\nType "id: <your_new_id>" to change.'
+                    )
+                )
+            elif args == "bye":
+                if isinstance(even.source, SourceUser):
+                    line_bot_api.reply_message(
+                        event.reply_token,
+                        TextSendMessage('Where should I go?')
+                    )
+                    return
+                if isinstance(event.source, SourceGroup):
+                    room = event.source.room_id
+                elif isinstance(event.source, SourceGroup):
+                    room = event.source.group_id
+                notes.update({room:["exit",time.time()]})
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    exit_confirm_button(room,event.source.type)
+                )
 
         elif cmd == "ani":
             line_bot_api.reply_message(
                 event.reply_token,
                 anilist_search(args,1)
             )
+
+        elif cmd == "id":
+            if " " in args:
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    TextSendMessage(text="It's prohibited to change id with space included.")
+                )
+            else:
+                for user in db.child("users").get().val():
+                    if args == user["user_id"]:
+                        line_bot_api.reply_message(
+                            event.reply_token,
+                            TextSendMessage(text='Id is not available :(')
+                        )
+                        return
+                try:
+                    user_id = db.child("users").child(event.source.user_id).get().val()["user_id"]
+                    db.child("users").child(event.source.user_id).child("user_id").update(args)
+                except:
+                    db.child("users").child(event.source.user_id).child("user_id").set(args)
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    TextSendMessage(text='Changed successfully!\nType "Dori: id" to check your current id ;D')
+                )
 
 import os
 if __name__ == "__main__":

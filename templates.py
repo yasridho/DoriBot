@@ -2,8 +2,39 @@ import requests, json
 import calendar
 import io
 import urllib
+import pyrebase
 from colorthief import ColorThief
 from linebot.models import *
+from acc import line_bot_api
+
+def dori_id(args):
+    try:
+        user_id = db.child("users").child(args).get().val()["user_id"]
+    except:
+        user_id = args
+    return user_id
+
+def exit_confirm_button(args,roomtype):
+    TemplateSendMessage(
+        alt_text='WARNING!',
+        template=ButtonsTemplate(
+            title='Are you sure?',
+            text='All data in this '+roomtype+' will be deleted.',
+            thumbnail_image_url='https://i.postimg.cc/44h5z8pM/warning-sign.png'
+            actions=[
+                PostbackAction(
+                    label="NO! DON'T DO THAT!"
+                    text='Cancel',
+                    data='quit: no '+args
+                ),
+                PostbackAction(
+                    label='JUST DO IT!',
+                    text='Get out',
+                    data='quit: yes '+args
+                )
+            ]
+        )
+    )
 
 def anilist_search(args,page):
     query = '''
