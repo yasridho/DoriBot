@@ -240,7 +240,7 @@ def handle_message(event):
                 )
             else:
                 for user in db.child("users").get().val():
-                    if args == db.child("users").child("user_id").get().val():
+                    if args == db.child("users").child(user).child("user_id").get().val():
                         line_bot_api.reply_message(
                             event.reply_token,
                             TextSendMessage(text='Id is not available :(')
