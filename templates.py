@@ -209,7 +209,7 @@ def anilist_search(args,page):
                     hero=ImageComponent(
                         url='https://i.postimg.cc/9FzFN3Bj/next.png',
                         size='full',
-                        aspect_ratio='20:13',
+                        aspect_ratio='1:1',
                         aspect_mode='cover'
                     ),
                     footer=BoxComponent(
@@ -217,7 +217,6 @@ def anilist_search(args,page):
                         contents=[
                             ButtonComponent(
                                 color='#9AA6B4',
-                                gravity='center',
                                 action=PostbackAction(
                                     label='NEXT PAGE',
                                     text='next',
