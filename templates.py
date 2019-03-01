@@ -15,7 +15,7 @@ def dori_id(args):
     return user_id
 
 def exit_confirm_button(args,roomtype):
-    TemplateSendMessage(
+    msg = TemplateSendMessage(
         alt_text='WARNING!',
         template=ButtonsTemplate(
             title='Are you sure?',
@@ -35,6 +35,7 @@ def exit_confirm_button(args,roomtype):
             ]
         )
     )
+    return msg
 
 def anilist_search(args,page):
     query = '''
