@@ -135,6 +135,13 @@ def handle_postback(event):
                 event.reply_token,
                 anilist_info(aniid, anitype)
             )
+        
+        elif cmd == "anires":
+            page, keyword = args.split(" ",1)
+            line_bot_api.reply_message(
+                event.reply_token,
+                anilist_search(keyword,page)
+            )
 
         elif cmd == "quit":
             answer, room = args.split(" ")
