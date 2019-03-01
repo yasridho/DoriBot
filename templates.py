@@ -278,7 +278,7 @@ def anilist_info(anid,anitype):
 
     trailer = data["trailer"]
     genres = data["genres"]
-    if genres == None:
+    if len(genres) == 0:
         genres = 'Unknown'
     else:
         genres = ", ".join(genres)
