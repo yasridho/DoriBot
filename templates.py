@@ -211,6 +211,7 @@ def anilist_search(args,page):
                         contents=[
                             ButtonComponent(
                                 color='#9AA6B4',
+                                gravity='center',
                                 action=PostbackAction(
                                     label='NEXT PAGE',
                                     text='next',
