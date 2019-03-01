@@ -58,7 +58,7 @@ def handle_join(event):
             ),
             TextSendMessage(
                 text="I'll not respond before you add me first."
-            )
+            ),
             TextSendMessage(
                 text='Type "Doribot: help" without quote to see my commands ;)',
                 quick_reply=QuickReply(
