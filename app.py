@@ -102,6 +102,9 @@ def handle_follow(event):
                 text='Hello '+line_bot_api.get_profile(event.source.user_id).display_name+'! My name is DoriBot, you can call me Dori ;)'
             ),
             TextSendMessage(
+                text='Your default id is: '+event.source.user_id+'\nType "Id:<your_new_id>" to change.'
+            ),
+            TextSendMessage(
                 text='Type "Doribot: help" without quote to see my commands ;)',
                 quick_reply=QuickReply(
                     items=[
@@ -184,7 +187,14 @@ def handle_message(event):
             db.child(event.source.type).child(room).child("members").child(sender).set(line_bot_api.get_profile(sender).display_name)
         else:
             if line_bot_api.get_profile(sender).display_name != members[sender]:
-                db.child(event.source.type).child(room).child("members").update({sender:line_bot_api.get_profile(sender).display_name})
+                for room in db.child("room").get().val():
+                    for person in db.child("room").child(room).get().val():
+                        if person == sender:
+                            db.child("room").child(room).child("members").update({person:line_bot_api.get_profile(person).display_name})
+                for group in db.child("group").get().val():
+                    for person in db.child("group").child(group).get().val():
+                        if person == sender:
+                            db.child("group").child(group).child("members").update({person:line_bot_api.get_profile(person).display_name})
                 db.child("users").child(sender).update({'display_name':line_bot_api.get_profile(sender).display_name})
     except:
         db.child(event.source.type).child(room).child("members").child(sender).set(line_bot_api.get_profile(sender).display_name)
