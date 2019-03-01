@@ -206,8 +206,14 @@ def anilist_search(args,page):
             res.append(
                 BubbleContainer(
                     direction='ltr',
-                    body=BoxComponent(
-                        layout='vertical',
+                    hero=ImageComponent(
+                        url='https://i.postimg.cc/9FzFN3Bj/next.png',
+                        size='full',
+                        aspect_ratio='20:13',
+                        aspect_mode='cover'
+                    ),
+                    footer=BoxComponent(
+                        layout='horizontal',
                         contents=[
                             ButtonComponent(
                                 color='#9AA6B4',
@@ -221,7 +227,7 @@ def anilist_search(args,page):
                         ]
                     ),
                     styles=BubbleStyle(
-                        body=BlockStyle(
+                        footer=BlockStyle(
                             background_color='#262B37'
                         )
                     )
