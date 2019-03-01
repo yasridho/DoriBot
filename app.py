@@ -181,23 +181,31 @@ def handle_message(event):
         room = event.source.room_id
     elif isinstance(event.source, SourceGroup):
         room = event.source.group_id
-    #try:
-    members = db.child(event.source.type).child(room).get().val()["members"]
-    if sender not in members:
-        db.child(event.source.type).child(room).child("members").child(sender).set(line_bot_api.get_profile(sender).display_name)
-    else:
-        if line_bot_api.get_profile(sender).display_name != members[sender]:
-            for room in db.child("room").get().val():
-                for person in db.child("room").child(room).get().val():
-                    if person == sender:
-                        db.child("room").child(room).child("members").update({person:line_bot_api.get_profile(person).display_name})
-            for group in db.child("group").get().val():
-                for person in db.child("group").child(group).get().val():
-                    if person == sender:
-                        db.child("group").child(group).child("members").update({person:line_bot_api.get_profile(person).display_name})
-            db.child("users").child(sender).update({'display_name':line_bot_api.get_profile(sender).display_name})
-    #except:
-        #db.child(event.source.type).child(room).child("members").child(sender).set(line_bot_api.get_profile(sender).display_name)
+    
+    if event.source.type in ["room","group"]:
+        try:
+            members = db.child(event.source.type).child(room).get().val()["members"]
+            if sender not in members:
+                db.child(event.source.type).child(room).child("members").child(sender).set(line_bot_api.get_profile(sender).display_name)
+        except:
+            db.child(event.source.type).child(room).child("members").child(sender).set(line_bot_api.get_profile(sender).display_name)
+    
+    if line_bot_api.get_profile(sender).display_name != db.child("users").child(sender).child('display_name').get().val():
+        for room in db.child("room").get().val():
+            for person in db.child("room").child(room).get().val():
+                if person == sender:
+                    db.child("room").child(room).child("members").update({person:line_bot_api.get_profile(person).display_name})
+        for group in db.child("group").get().val():
+            for person in db.child("group").child(group).get().val():
+                if person == sender:
+                    db.child("group").child(group).child("members").update({person:line_bot_api.get_profile(person).display_name})
+        db.child("users").child(sender).update({'display_name':line_bot_api.get_profile(sender).display_name})
+
+    if line_bot_api.get_profile(sender).picture_url != db.child("users").child(sender).child('picture_url').get().val():
+        db.child("users").child(sender).update({'picture_url':line_bot_api.get_profile(sender).picture_url})
+
+    if line_bot_api.get_profile(sender).status_message != db.child("users").child(sender).child('status_message').get().val():
+        db.child("users").child(sender).update({'status_message':line_bot_api.get_profile(sender).status_message})
     
     if text.lower() in namaBot:
         reply_with = [
