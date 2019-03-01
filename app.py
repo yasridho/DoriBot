@@ -210,7 +210,7 @@ def handle_message(event):
                     )
                 )
             elif args == "bye":
-                if isinstance(even.source, SourceUser):
+                if isinstance(event.source, SourceUser):
                     line_bot_api.reply_message(
                         event.reply_token,
                         TextSendMessage('Where should I go?')
