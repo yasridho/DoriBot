@@ -72,7 +72,7 @@ def handle_join(event):
 def handle_leave():
     db.child(event.source.type).child(event.source.room_id).remove()
     total = db.child(event.source.type).get().val()["total"]
-    db.child(event.source.type).child("total").update(total - 1)
+    db.child(event.source.type).update({"total":total - 1})
 
 @handler.add(FollowEvent)
 def handle_follow(event):
@@ -111,7 +111,7 @@ def handle_follow(event):
 def handle_unfollow(event):
     db.child("users").child(event.source.user_id).remove()
     total = db.child("users").get().val()["total"]
-    db.child("users").child("total").update(total - 1)
+    db.child("users").update({"total":total - 1})
 
 @handler.add(PostbackEvent)
 def handle_postback(event):
