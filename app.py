@@ -164,6 +164,10 @@ def handle_postback(event):
 def handle_message(event):
     sender = event.source.user_id
     text = event.message.text
+    if isinstance(event.source,SourceGroup):
+        db.child(event.source.type).child(event.source.group_id).child("members").child(sender).set(line_bot_api.get_profile(sender).display_name)
+    elif isinstance(event.source,SourceRoom):
+        db.child(event.source.type).child(event.source.room_id).child("members").child(sender).set(line_bot_api.get_profile(sender).display_name)
     
     if text.lower() in namaBot:
         reply_with = [
