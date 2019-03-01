@@ -202,29 +202,29 @@ def anilist_search(args,page):
                     )
                 )
             )
-            if has_next_page:
-                res.append(
-                    BubbleContainer(
-                        direction='ltr',
-                        body=BoxComponent(
-                            contents=[
-                                ButtonComponent(
-                                    color='#9AA6B4',
-                                    action=PostbackAction(
-                                        label='NEXT PAGE',
-                                        text='next',
-                                        data='anires: '+str(int(page)+1)+' '+args
-                                    )
+        if has_next_page:
+            res.append(
+                BubbleContainer(
+                    direction='ltr',
+                    body=BoxComponent(
+                        contents=[
+                            ButtonComponent(
+                                color='#9AA6B4',
+                                action=PostbackAction(
+                                    label='NEXT PAGE',
+                                    text='next',
+                                    data='anires: '+str(int(page)+1)+' '+args
                                 )
-                            ]
-                        ),
-                        styles=BubbleStyle(
-                            body=BlockStyle(
-                                background_color='#262B37'
                             )
+                        ]
+                    ),
+                    styles=BubbleStyle(
+                        body=BlockStyle(
+                            background_color='#262B37'
                         )
                     )
                 )
+            )
         send = FlexSendMessage(
             alt_text=args,
             contents=CarouselContainer(
