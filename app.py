@@ -192,11 +192,11 @@ def handle_message(event):
     
     if line_bot_api.get_profile(sender).display_name != db.child("users").child(sender).child('display_name').get().val():
         for room in db.child("room").get().val():
-            for person in db.child("room").child(room).get().val():
+            for person in db.child("room").child(room).child("members").get().val():
                 if person == sender:
                     db.child("room").child(room).child("members").update({person:line_bot_api.get_profile(person).display_name})
         for group in db.child("group").get().val():
-            for person in db.child("group").child(group).get().val():
+            for person in db.child("group").child(group).child("members").get().val():
                 if person == sender:
                     db.child("group").child(group).child("members").update({person:line_bot_api.get_profile(person).display_name})
         db.child("users").child(sender).update({'display_name':line_bot_api.get_profile(sender).display_name})
