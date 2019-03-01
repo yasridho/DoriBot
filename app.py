@@ -141,8 +141,8 @@ def handle_postback(event):
                             line_bot_api.reply_message(
                                 event.reply_token,
                                 TextSendMessage(text="Okay, I'm not going anywhere ;D")
-                                del notes[room]
                             )
+                            del notes[room]
                         else:
                             line_bot_api.reply_message(
                                 event.reply_token,
