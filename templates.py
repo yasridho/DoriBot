@@ -207,7 +207,7 @@ def anilist_search(args,page):
                 BubbleContainer(
                     direction='ltr',
                     body=BoxComponent(
-                        layout='vertical'
+                        layout='vertical',
                         contents=[
                             ButtonComponent(
                                 color='#9AA6B4',
