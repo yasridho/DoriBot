@@ -15,6 +15,279 @@ def dori_id(args):
         user_id = args
     return user_id
 
+def xxi_playing(kode_bioskop):
+    try:
+        url = urllib.request.urlopen('https://mtix.21cineplex.com/gui.schedule.php?sid=&find_by=1&cinema_id='+kode_bioskop+'&movie_id=')
+        udict = url.read().decode('utf-8').replace('\r','').replace('\n','')
+        #data = re.findall('<li class="list-group-item" style="border-color: #FFFFFF; padding:0px">(.*?)</p>', udict, re.S)
+        
+        gambar = re.findall('<img src="(.*?)" border="0" width="125" class="img-responsive pull-left gap-left" style="margin-right:10px;"/>',udict, re.S)
+        gambar = gambar[1:]
+        
+        judul = re.findall('<a >(.*?)</a>',udict, re.S)
+        judul = judul[1:]
+
+        tipe = re.findall('<br>                     <span class="btn btn-default btn-outline disabled" style="color: #005350;">(.*?)</span>',udict, re.S)
+        tipe = tipe[1:]
+
+        rating = re.findall('</span>                     <span class="btn btn-default btn-outline disabled" style="color: #005350;">(.*?)</span>',udict, re.S)
+        rating = rating[1:]
+
+        durasi = re.findall('<span class="glyphicon glyphicon-time"></span> (.*?)</div>',udict, re.S)
+        durasi = durasi[2:]
+
+        tanggal = re.findall('<div class="row">                            <div class="col-xs-7" style="text-align:left"><p class="p_date"><p class="p_date">(.*?)</p></div>',udict, re.S)
+        bioskop = re.findall('<h4><span><strong>(.*?)</strong></span></h4>',udict, re.S)[0]
+
+        harga = re.findall('</p></div><div class="col-xs-5" style="text-align:right"><span class="p_price">(.*?)</span></div><br><p class="p_time pull-left" style="margin: 10px">',udict, re.S)
+
+        jamku = {}
+        main = list()
+        waktu = re.findall('<p class="p_time pull-left" style="margin: 10px">(.*?) </p><div class="clearfix"></div>',udict, re.S)
+        num = 1
+        for i in waktu:
+            data = re.findall('<a class="btn btn-outline-primary div_schedule" style="border-color: #337ab7;font-size:14px; margin-left:3px; margin-top:15px" href="#" onClick="(.*?)">(.*?)</a>',i, re.S)
+            data1 = re.findall('<a class="btn btn-default btn-outline disabled div_schedule" style="color: #FFFFFF; background-color: #737373;font-size:14px; margin-left:3px; margin-top:15px" >(.*?)</a>',i, re.S)
+            puluh = 0
+            for jam in data1:
+                try:
+                    if (len(jamku[num]) - 7 == puluh):
+                        jamku[num].append(SeparatorComponent())
+                        puluh = puluh + 7
+                    jamku[num].append(
+                        TextComponent(
+                            text=jam,
+                            align='center',
+                            color='#9AA6B4',
+                            size='xs'
+                        )
+                    )
+                    jamku[num].append(SeparatorComponent())
+                except:
+                    jamku.update({num:[]})
+                    jamku[num].append(SeparatorComponent())
+                    jamku[num].append(
+                        TextComponent(
+                            text=jam,
+                            align='center',
+                            color='#9AA6B4',
+                            size='xs'
+                        )
+                    )
+                    jamku[num].append(SeparatorComponent())
+            for klik, jam in data:
+                if tanggal[0] in klik:
+                    try:
+                        if (len(jamku[num]) - 7 == puluh):
+                            jamku[num].append(SeparatorComponent())
+                            puluh = puluh + 7
+                        jamku[num].append(
+                            TextComponent(
+                                text=jam,
+                                align='center',
+                                size='xs'
+                            )
+                        )
+                        jamku[num].append(SeparatorComponent())
+                    except:
+                        jamku.update({num:[]})
+                        jamku[num].append(SeparatorComponent())
+                        jamku[num].append(
+                            TextComponent(
+                                text=jam,
+                                align='center',
+                                size='xs'
+                            )
+                        )
+                        jamku[num].append(SeparatorComponent())
+            num = len(jamku) + 1
+        num = 1
+        gabungin = zip(gambar, judul, tipe, rating, durasi, tanggal, harga)
+        if gabungin:
+            res = list()
+            for y in gabungin:
+                img, title, tpe, rate, lama, tgl, rupiah = y
+                clock = list()
+                if len(jamku[num]) < 7:
+                    clock.append(
+                        BoxComponent(
+                            layout='horizontal',
+                            margin='md',
+                            contents=jamku[num]
+                        )
+                    )
+                else:
+                    jwaktu = len(jamku[num])
+                    batas = 7
+                    while batas < jwaktu:
+                        awal = batas - 7
+                        clock.append(
+                            BoxComponent(
+                                layout='horizontal',
+                                margin='md',
+                                contents=jamku[num][awal:batas]
+                            )
+                        )
+                        batas = batas + 7
+                    awal = batas - 7
+                    if awal < jwaktu:
+                        clock.append(
+                            BoxComponent(
+                                layout='horizontal',
+                                margin='md',
+                                contents=jamku[num][awal:]
+                            )
+                        )
+                res.append(
+                    BubbleContainer(
+                        header=BoxComponent(
+                            layout='vertical',
+                            contents=[
+                                TextComponent(
+                                    text=bioskop,
+                                    align='center',
+                                    weight='bold',
+                                    color='#9AA6B4',
+                                    wrap=True
+                                )
+                            ]
+                        ),
+                        hero=ImageComponent(
+                            url=img,
+                            size='full',
+                            aspect_ratio='3:4',
+                            aspect_mode='cover'
+                        ),
+                        body=BoxComponent(
+                            layout='vertical',
+                            contents=[
+                                TextComponent(
+                                    text=title,
+                                    size='xl',
+                                    align='center',
+                                    weight='bold',
+                                    wrap=True
+                                ),
+                                SeparatorComponent(margin='md'),
+                                BoxComponent(
+                                    layout='horizontal',
+                                    margin='md',
+                                    contents=[
+                                        TextComponent(
+                                            text=tpe,
+                                            flex=1,
+                                            align='center',
+                                            gravity='center',
+                                            weight='bold'
+                                        ),
+                                        SeparatorComponent(margin='md'),
+                                        TextComponent(
+                                            text=rate,
+                                            flex=1,
+                                            align='center',
+                                            gravity='center',
+                                            weight='bold'
+                                        )
+                                    ]
+                                ),
+                                SeparatorComponent(margin='md'),
+                                BoxComponent(
+                                    layout='horizontal',
+                                    margin='lg',
+                                    contents=[
+                                        BoxComponent(
+                                            layout='baseline',
+                                            spacing='md',
+                                            margin='xl',
+                                            contents=[
+                                                IconComponent(
+                                                    url='https://www.freeiconspng.com/uploads/clock-png-5.png',
+                                                    margin='sm',
+                                                    aspect_ratio='1:1'
+                                                ),
+                                                TextComponent(
+                                                    text=lama,
+                                                    flex=2,
+                                                    margin='lg',
+                                                    align='start'
+                                                )
+                                            ]
+                                        ),
+                                        BoxComponent(
+                                            layout='baseline',
+                                            spacing='md',
+                                            margin='md',
+                                            contents=[
+                                                IconComponent(
+                                                    url='https://cdn4.iconfinder.com/data/icons/small-n-flat/24/calendar-512.png',
+                                                    margin='sm',
+                                                    aspect_ratio='1:1'
+                                                ),
+                                                TextComponent(
+                                                    text=tgl
+                                                )
+                                            ]
+                                        )
+                                    ]
+                                ),
+                                SeparatorComponent(margin='md'),
+                                TextComponent(
+                                    text=rupiah,
+                                    margin='md',
+                                    size='lg',
+                                    align='center'
+                                ),
+                                SeparatorComponent(margin='md'),
+                                BoxComponent(
+                                    layout='vertical',
+                                    margin='md',
+                                    contents=clock
+                                )
+                            ]
+                        ),
+                        footer=BoxComponent(
+                            layout='horizontal',
+                            contents=[
+                                ButtonComponent(
+                                    PostbackAction(
+                                        label='Details',
+                                        data='movie: '+img.replace('https://web3.21cineplex.com/movie-images/','').replace('.jpg',''),
+                                        text='Movie details'
+                                    ),
+                                    color='#9AA6B4'
+                                )
+                            ]
+                        ),
+                        styles=BubbleStyle(
+                            header=BlockStyle(
+                                background_color='#1E222C'
+                            ),
+                            body=BlockStyle(
+                                background_color='#262B37',
+                            )
+                            footer=BlockStyle(
+                                background_color='#262B37'
+                            )
+                        )
+                    )
+                )
+                num = num + 1
+            hasil = FlexSendMessage(
+                alt_text="Now playing at "+bioskop.capitalize(),
+                contents=CarouselContainer(
+                    contents=res
+                )    
+            )
+            return hasil
+    except Exception as e:
+        try:
+            et, ev, tb = sys.exc_info()
+            lineno = tb.tb_lineno
+            fn = tb.tb_frame.f_code.co_filename
+            return TextSendMessage(text="[Expectation Failed] %s Line %i - %s"% (fn, lineno, str(e)))
+        except:
+            return TextSendMessage(text="Undescribeable error detected!!")
+
 def nearest_theater(latitude, longitude):
     cinema = cinema21.Cinema21()
     terdekat = cinema.nearest_cinemas(latitude, longitude)
