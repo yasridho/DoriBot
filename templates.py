@@ -263,8 +263,8 @@ def xxi_playing(kode_bioskop):
                                 background_color='#1E222C'
                             ),
                             body=BlockStyle(
-                                background_color='#262B37',
-                            )
+                                background_color='#262B37'
+                            ),
                             footer=BlockStyle(
                                 background_color='#262B37'
                             )
