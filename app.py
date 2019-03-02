@@ -312,10 +312,14 @@ def handle_message(event):
                 notes.update({sender:["location",time.time()]})
                 msg = TextSendMessage(
                     text='Where are you?\nPlease share your location first.',
-                    quick_reply=QuickReplyButton(
-                        action=LocationAction(
-                            label='Share location'
-                        )
+                    quick_reply=QuickReply(
+                        items=[
+                            QuickReplyButton(
+                                action=LocationAction(
+                                    label='Share Location'
+                                )
+                            )
+                        ]
                     )
                 )
             line_bot_api.reply_message(event.reply_token,msg)
