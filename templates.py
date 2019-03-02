@@ -59,7 +59,7 @@ def xxi_playing(kode_bioskop):
                     TextComponent(
                         text=jam,
                         align='center',
-                        color='#9AA6B4',
+                        color='#A5A5A5',
                         size='xs'
                     )
                 )
@@ -71,7 +71,7 @@ def xxi_playing(kode_bioskop):
                     TextComponent(
                         text=jam,
                         align='center',
-                        color='#9AA6B4',
+                        color='#A5A5A5',
                         size='xs'
                     )
                 )
@@ -86,6 +86,7 @@ def xxi_playing(kode_bioskop):
                         TextComponent(
                             text=jam,
                             align='center',
+                            color='#9AA6B4',
                             size='xs'
                         )
                     )
@@ -97,6 +98,7 @@ def xxi_playing(kode_bioskop):
                         TextComponent(
                             text=jam,
                             align='center',
+                            color='#9AA6B4',
                             size='xs'
                         )
                     )
@@ -167,6 +169,7 @@ def xxi_playing(kode_bioskop):
                                 size='xl',
                                 align='center',
                                 weight='bold',
+                                color='#9AA6B4',
                                 wrap=True
                             ),
                             SeparatorComponent(margin='md'),
@@ -179,6 +182,7 @@ def xxi_playing(kode_bioskop):
                                         flex=1,
                                         align='center',
                                         gravity='center',
+                                        color='#9AA6B4',
                                         weight='bold'
                                     ),
                                     SeparatorComponent(margin='md'),
@@ -187,6 +191,7 @@ def xxi_playing(kode_bioskop):
                                         flex=1,
                                         align='center',
                                         gravity='center',
+                                        color='#9AA6B4',
                                         weight='bold'
                                     )
                                 ]
@@ -210,6 +215,7 @@ def xxi_playing(kode_bioskop):
                                                 text=lama,
                                                 flex=2,
                                                 margin='lg',
+                                                color='#9AA6B4',
                                                 align='start'
                                             )
                                         ]
@@ -225,7 +231,8 @@ def xxi_playing(kode_bioskop):
                                                 aspect_ratio='1:1'
                                             ),
                                             TextComponent(
-                                                text=tgl
+                                                text=tgl,
+                                                color='#9AA6B4',
                                             )
                                         ]
                                     )
