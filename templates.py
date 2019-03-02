@@ -103,7 +103,7 @@ def xxi_playing(kode_bioskop):
                         )
                     )
                     jamku[num].append(SeparatorComponent())
-        num = len(jamku) + 1
+        num = num + 1
     num = 1
     gabungin = zip(gambar, judul, tipe, rating, durasi, tanggal, harga)
     if gabungin:
