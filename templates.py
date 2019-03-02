@@ -105,44 +105,42 @@ def xxi_playing(kode_bioskop):
                     jamku[num].append(SeparatorComponent())
         num = len(jamku) + 1
     num = 1
-    clock = list()
-    for mytime in jamku:
-        if len(jamku[num]) < 7:
-            clock.append(
-                BoxComponent(
-                    layout='horizontal',
-                    margin='md',
-                    contents=jamku[num]
-                )
-            )
-        else:
-            jwaktu = len(jamku[num])
-            batas = 7
-            while batas < jwaktu:
-                awal = batas - 7
-                clock.append(
-                    BoxComponent(
-                        layout='horizontal',
-                        margin='md',
-                        contents=jamku[num][awal:batas]
-                    )
-                )
-                batas = batas + 7
-            awal = batas - 7
-            if awal < jwaktu:
-                clock.append(
-                    BoxComponent(
-                        layout='horizontal',
-                        margin='md',
-                        contents=jamku[num][awal:]
-                    )
-                )
-        num = num + 1
     gabungin = zip(gambar, judul, tipe, rating, durasi, tanggal, harga)
     if gabungin:
         results = list()
         for y in gabungin:
             img, title, tpe, rate, lama, tgl, rupiah = y
+            clock = list()
+            if len(jamku[num]) < 7:
+                clock.append(
+                    BoxComponent(
+                        layout='horizontal',
+                        margin='md',
+                        contents=jamku[num]
+                    )
+                )
+            else:
+                jwaktu = len(jamku[num])
+                batas = 7
+                while batas < jwaktu:
+                    awal = batas - 7
+                    clock.append(
+                        BoxComponent(
+                            layout='horizontal',
+                            margin='md',
+                            contents=jamku[num][awal:batas]
+                        )
+                    )
+                    batas = batas + 7
+                awal = batas - 7
+                if awal < jwaktu:
+                    clock.append(
+                        BoxComponent(
+                            layout='horizontal',
+                            margin='md',
+                            contents=jamku[num][awal:]
+                        )
+                    )
             results.append(
                 BubbleContainer(
                     header=BoxComponent(
@@ -281,6 +279,7 @@ def xxi_playing(kode_bioskop):
                     )
                 )
             )
+            num = num + 1
         hasil = FlexSendMessage(
             alt_text="Now playing at "+bioskop.capitalize(),
             contents=CarouselContainer(
