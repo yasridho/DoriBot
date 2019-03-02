@@ -2,6 +2,7 @@ import requests, json
 import cinema21
 import calendar
 import io
+import re
 import errno
 import urllib
 import pyrebase
