@@ -105,7 +105,7 @@ def xxi_playing(kode_bioskop):
     num = 1
     gabungin = zip(gambar, judul, tipe, rating, durasi, tanggal, harga)
     if gabungin:
-        res = list()
+        results = list()
         for y in gabungin:
             img, title, tpe, rate, lama, tgl, rupiah = y
             clock = list()
@@ -276,7 +276,7 @@ def xxi_playing(kode_bioskop):
         hasil = FlexSendMessage(
             alt_text="Now playing at "+bioskop.capitalize(),
             contents=CarouselContainer(
-                contents=res
+                contents=results
             )    
         )
         return hasil
