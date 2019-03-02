@@ -141,6 +141,7 @@ def handle_location_message(event):
 						'longitude':event.message.longitude}
                 db.child("users").child(sender).child("location").set(data)
                 del notes[sender]
+                line_bot_api.reply_message(event.reply_token,msg)
 
 @handler.add(PostbackEvent)
 def handle_postback(event):
