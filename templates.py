@@ -139,7 +139,7 @@ def xxi_playing(kode_bioskop):
                             contents=jamku[num][awal:]
                         )
                     )
-            res.append(
+            results.append(
                 BubbleContainer(
                     header=BoxComponent(
                         layout='vertical',
