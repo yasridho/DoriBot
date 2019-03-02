@@ -16,228 +16,219 @@ def dori_id(args):
     return user_id
 
 def nearest_theater(latitude, longitude):
-    try:
-        cinema = cinema21.Cinema21()
-        terdekat = cinema.nearest_cinemas(latitude, longitude)
-        premiere = terdekat[0]
-        xxi = terdekat[1]
-        imax = terdekat[2]
-        res = list()
-                
-        if len(premiere) > 0:
-            for film in premiere:
-                bioskop = film[4]
-                kode = film[0]
-                keterangan = film[6].replace('\r','')
-                res.append(
-                    BubbleContainer(
-                        header=BoxComponent(
-                            layout='vertical',
-                            contents=[
-                                TextComponent(
-                                    text=bioskop,
-                                    size='lg',
-                                    align='center',
-                                    weight='bold',
-                                    color='#9AA6B4',
-                                    wrap=True
-                                )
-                            ]
-                        ),
-                        hero=ImageComponent(
-                            url='https://i.postimg.cc/28r8Vsnt/premiere.png',
-                            size='full',
-                            aspect_ratio='3:1',
-                            aspect_mode='cover'
-                        ),
-                        body=BoxComponent(
-                            layout='vertical',
-                            contents=[
-                                TextComponent(
-                                    text=keterangan,
-                                    margin='lg',
-                                    size='sm',
-                                    align='center',
-                                    color='#9AA6B4',
-                                    wrap=True
-                                )
-                            ]
-                        ),
-                        footer=BoxComponent(
-                            layout='horizontal',
-                            contents=[
-                                ButtonComponent(
-                                    action=PostbackAction(
-                                        text='Check theater',
-                                        label='Check theater',
-                                        data='theater '+kode
-                                    ),
-                                    color='#9AA6B4'
-                                )
-                            ]
-                        ),
-                        styles=BubbleStyle(
-                            header=BlockStyle(
-                                background_color='#1E222C'
-                            ),
-                            body=BlockStyle(
-                                background_color='#262B37'
-                            ),
-                            footer=BlockStyle(
-                                background_color='#262B37'
+    cinema = cinema21.Cinema21()
+    terdekat = cinema.nearest_cinemas(latitude, longitude)
+    premiere = terdekat[0]
+    xxi = terdekat[1]
+    imax = terdekat[2]
+    res = list()
+            
+    if len(premiere) > 0:
+        for film in premiere:
+            bioskop = film[4]
+            kode = film[0]
+            keterangan = film[6].replace('\r','')
+            res.append(
+                BubbleContainer(
+                    header=BoxComponent(
+                        layout='vertical',
+                        contents=[
+                            TextComponent(
+                                text=bioskop,
+                                size='lg',
+                                align='center',
+                                weight='bold',
+                                color='#9AA6B4',
+                                wrap=True
                             )
+                        ]
+                    ),
+                    hero=ImageComponent(
+                        url='https://i.postimg.cc/28r8Vsnt/premiere.png',
+                        size='full',
+                        aspect_ratio='3:1',
+                        aspect_mode='cover'
+                    ),
+                    body=BoxComponent(
+                        layout='vertical',
+                        contents=[
+                            TextComponent(
+                                text=keterangan,
+                                margin='lg',
+                                size='sm',
+                                align='center',
+                                color='#9AA6B4',
+                                wrap=True
+                            )
+                        ]
+                    ),
+                    footer=BoxComponent(
+                        layout='horizontal',
+                        contents=[
+                            ButtonComponent(
+                                action=PostbackAction(
+                                    text='Check theater',
+                                    label='Check theater',
+                                    data='theater '+kode
+                                ),
+                                color='#9AA6B4'
+                            )
+                        ]
+                    ),
+                    styles=BubbleStyle(
+                        header=BlockStyle(
+                            background_color='#1E222C'
+                        ),
+                        body=BlockStyle(
+                            background_color='#262B37'
+                        ),
+                        footer=BlockStyle(
+                            background_color='#262B37'
                         )
                     )
                 )
+            )
 
-        if len(xxi) > 0:
-            for film in xxi:
-                bioskop = film[4]
-                kode = film[0]
-                keterangan = film[6].replace('\r','')
-                res.append(
-                    BubbleContainer(
-                        header=BoxComponent(
-                            layout='vertical',
-                            contents=[
-                                TextComponent(
-                                    text=bioskop,
-                                    size='lg',
-                                    align='center',
-                                    weight='bold',
-                                    color='#9AA6B4',
-                                    wrap=True
-                                )
-                            ]
-                        ),
-                        hero=ImageComponent(
-                            url='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiTQHHaE05tNJ7cNhMbE6DmB0EXBHe0HnbRULKt0YpG9-uc5v5',
-                            size='full',
-                            aspect_ratio='3:1',
-                            aspect_mode='cover'
-                        ),
-                        body=BoxComponent(
-                            layout='vertical',
-                            contents=[
-                                TextComponent(
-                                    text=keterangan,
-                                    margin='lg',
-                                    size='sm',
-                                    align='center',
-                                    color='#9AA6B4',
-                                    wrap=True
-                                )
-                            ]
-                        ),
-                        footer=BoxComponent(
-                            layout='horizontal',
-                            contents=[
-                                ButtonComponent(
-                                    action=PostbackAction(
-                                        text='Check theater',
-                                        label='Check theater',
-                                        data='theater: '+kode
-                                    ),
-                                    color='#9AA6B4'
-                                )
-                            ]
-                        ),
-                        styles=BubbleStyle(
-                            header=BlockStyle(
-                                background_color='#1E222C'
-                            ),
-                            body=BlockStyle(
-                                background_color='#262B37'
-                            ),
-                            footer=BlockStyle(
-                                background_color='#262B37'
+    if len(xxi) > 0:
+        for film in xxi:
+            bioskop = film[4]
+            kode = film[0]
+            keterangan = film[6].replace('\r','')
+            res.append(
+                BubbleContainer(
+                    header=BoxComponent(
+                        layout='vertical',
+                        contents=[
+                            TextComponent(
+                                text=bioskop,
+                                size='lg',
+                                align='center',
+                                weight='bold',
+                                color='#9AA6B4',
+                                wrap=True
                             )
+                        ]
+                    ),
+                    hero=ImageComponent(
+                        url='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiTQHHaE05tNJ7cNhMbE6DmB0EXBHe0HnbRULKt0YpG9-uc5v5',
+                        size='full',
+                        aspect_ratio='3:1',
+                        aspect_mode='cover'
+                    ),
+                    body=BoxComponent(
+                        layout='vertical',
+                        contents=[
+                            TextComponent(
+                                text=keterangan,
+                                margin='lg',
+                                size='sm',
+                                align='center',
+                                color='#9AA6B4',
+                                wrap=True
+                            )
+                        ]
+                    ),
+                    footer=BoxComponent(
+                        layout='horizontal',
+                        contents=[
+                            ButtonComponent(
+                                action=PostbackAction(
+                                    text='Check theater',
+                                    label='Check theater',
+                                    data='theater: '+kode
+                                ),
+                                color='#9AA6B4'
+                            )
+                        ]
+                    ),
+                    styles=BubbleStyle(
+                        header=BlockStyle(
+                            background_color='#1E222C'
+                        ),
+                        body=BlockStyle(
+                            background_color='#262B37'
+                        ),
+                        footer=BlockStyle(
+                            background_color='#262B37'
                         )
                     )
                 )
-                
-        if len(imax) > 0:
-            for film in imax:
-                bioskop = film[4]
-                kode = film[0]
-                keterangan = film[6].replace('\r','')
-                res.append(
-                    BubbleContainer(
-                        header=BoxComponent(
-                            layout='vertical',
-                            contents=[
-                                TextComponent(
-                                    text=bioskop,
-                                    size='lg',
-                                    align='center',
-                                    weight='bold',
-                                    color='#9AA6B4',
-                                    wrap=True
-                                )
-                            ]
-                        ),
-                        hero=ImageComponent(
-                            url='https://i.postimg.cc/nLY3cQxg/imax.png',
-                            size='full',
-                            aspect_ratio='3:1',
-                            aspect_mode='cover'
-                        ),
-                        body=BoxComponent(
-                            layout='vertical',
-                            contents=[
-                                TextComponent(
-                                    text=keterangan,
-                                    margin='lg',
-                                    size='sm',
-                                    align='center',
-                                    color='#9AA6B4',
-                                    wrap=True
-                                )
-                            ]
-                        ),
-                        footer=BoxComponent(
-                            layout='horizontal',
-                            contents=[
-                                ButtonComponent(
-                                    action=PostbackAction(
-                                        text='Check theater',
-                                        label='Check theater',
-                                        data='theater: '+kode
-                                    ),
-                                    color='#9AA6B4'
-                                )
-                            ]
-                        ),
-                        styles=BubbleStyle(
-                            header=BlockStyle(
-                                background_color='#1E222C'
-                            ),
-                            body=BlockStyle(
-                                background_color='#262B37'
-                            ),
-                            footer=BlockStyle(
-                                background_color='#262B37'
+            )
+            
+    if len(imax) > 0:
+        for film in imax:
+            bioskop = film[4]
+            kode = film[0]
+            keterangan = film[6].replace('\r','')
+            res.append(
+                BubbleContainer(
+                    header=BoxComponent(
+                        layout='vertical',
+                        contents=[
+                            TextComponent(
+                                text=bioskop,
+                                size='lg',
+                                align='center',
+                                weight='bold',
+                                color='#9AA6B4',
+                                wrap=True
                             )
+                        ]
+                    ),
+                    hero=ImageComponent(
+                        url='https://i.postimg.cc/nLY3cQxg/imax.png',
+                        size='full',
+                        aspect_ratio='3:1',
+                        aspect_mode='cover'
+                    ),
+                    body=BoxComponent(
+                        layout='vertical',
+                        contents=[
+                            TextComponent(
+                                text=keterangan,
+                                margin='lg',
+                                size='sm',
+                                align='center',
+                                color='#9AA6B4',
+                                wrap=True
+                            )
+                        ]
+                    ),
+                    footer=BoxComponent(
+                        layout='horizontal',
+                        contents=[
+                            ButtonComponent(
+                                action=PostbackAction(
+                                    text='Check theater',
+                                    label='Check theater',
+                                    data='theater: '+kode
+                                ),
+                                color='#9AA6B4'
+                            )
+                        ]
+                    ),
+                    styles=BubbleStyle(
+                        header=BlockStyle(
+                            background_color='#1E222C'
+                        ),
+                        body=BlockStyle(
+                            background_color='#262B37'
+                        ),
+                        footer=BlockStyle(
+                            background_color='#262B37'
                         )
                     )
                 )
-                
-        hasil = FlexSendMessage(
-            alt_text="Nearest theater from your place",
-            contents=CarouselContainer(
-                contents=res
-            )    
-        )
-        
-        return hasil
-    except Exception as e:
-        try:
-            et, ev, tb = sys.exc_info()
-            lineno = tb.tb_lineno
-            fn = tb.tb_frame.f_code.co_filename
-            return TextSendMessage(text="[Expectation Failed] %s Line %i - %s"% (fn, lineno, str(e)))
-        except:
-            return TextSendMessage(text="Undescribeable error detected!!")
+            )
+            
+    hasil = FlexSendMessage(
+        alt_text="Nearest theater from your place",
+        contents=CarouselContainer(
+            contents=res
+        )    
+    )
+    
+    return hasil
 
 def exit_confirm_button(args,roomtype):
     msg = TemplateSendMessage(

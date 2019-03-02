@@ -135,12 +135,26 @@ def handle_location_message(event):
             del notes[sender]
         else:
             if command == "location":
-                msg = nearest_theater(event.message.latitude, event.message.longitude)
+                try:
+                    msg = nearest_theater(event.message.latitude, event.message.longitude)
+                    del notes[sender]
+                except:
+                    msg = TextSendMessage(
+                        text="Can't find nearest theater in your area.\nMake sure you drop the pin in the right area.",
+                        quick_reply=QuickReply(
+                            items=[
+                                QuickReplyButton(
+                                    action=LocationAction(
+                                        label='Share location'
+                                    )
+                                )
+                            ]
+                        )
+                    )
                 data = {'address':event.message.address,
 						'latitude':event.message.latitude,
 						'longitude':event.message.longitude}
                 db.child("users").child(sender).child("location").set(data)
-                del notes[sender]
                 line_bot_api.reply_message(event.reply_token,msg)
 
 @handler.add(PostbackEvent)
