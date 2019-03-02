@@ -126,6 +126,22 @@ def handle_unfollow(event):
     total = db.child("users").get().val()["total"]
     db.child("users").update({"total":total - 1})
 
+@handler.add(MessageEvent, message=LocationMessage)
+def handle_location_message(event):
+    sender = event.source.user_id
+    if sender in notes:
+        command, timestamp = notes[sender]
+        if (time.time() - timestamp) > 60:
+            del notes[sender]
+        else:
+            if command == "location":
+                msg = nearest_theater(event.message.latitude, event.message.longitude)
+                data = {'address':event.message.address,
+						'latitude':event.message.latitude,
+						'longitude':event.message.longitude}
+                db.child("users").child(sender).child("location").set(data)
+                del notes[sender]
+
 @handler.add(PostbackEvent)
 def handle_postback(event):
     if ": " in event.postback.data:
@@ -287,6 +303,22 @@ def handle_message(event):
                 event.reply_token,
                 anilist_search(args,1)
             )
+
+        elif cmd == "xxi":
+            try:
+                location = db.child("users").child(sender).get().val()["location"]
+                msg = nearest_theater(location["latitude"],location["longitude"])
+            except:
+                notes.update({sender:["location",time.time()]})
+                msg = TextSendMessage(
+                    text='Where are you?\nPlease share your location first.',
+                    quick_reply=QuickReplyButton(
+                        action=LocationAction(
+                            label='Share location'
+                        )
+                    )
+                )
+            line_bot_api.reply_message(event.reply_token,msg)
 
         elif cmd == "id":
             if " " in args:
