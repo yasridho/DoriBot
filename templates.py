@@ -26,9 +26,9 @@ def file_size(args):
         args = args/minimal
         n = n + 1
     if args == 1:
-        return str(args)+ukuran[n]+'byte'
+        return str(args)+" "+ukuran[n]+'byte'
     else:
-        return str(args)+ukuran[n]+'bytes'
+        return str(args)+" "+ukuran[n]+'bytes'
 
 def gis(args,startIndex):
     search = args.split()
