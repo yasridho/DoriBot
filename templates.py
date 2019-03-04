@@ -31,9 +31,8 @@ def file_size(args):
         return str(args)+" "+ukuran[n]+'bytes'
 
 def bitly_shortener(args):
-    access_token = bitly_access_token
     query_params = {
-        'access_token':access_token,
+        'access_token':bitly_access_token,
         'longUrl':args
     }
     endpoint = "https://api-ssl.bitly.com/v3/shorten"
@@ -42,6 +41,18 @@ def bitly_shortener(args):
     data = json.loads(response.content.decode('utf-8'))
 
     return data["data"]["url"]
+
+def bitly_expander(args):
+    query_params = {
+        'access_token':bitly_access_token,
+        'shortUrl':args
+    }
+    endpoint = "https://api-ssl.bitly.com/v3/expand"
+    response = requests.get(endpoint, params=query_params)
+
+    data = json.loads(response.content.decode('utf-8'))
+
+    return data["data"]["expand"][0]["long_url"]
 
 def gis(args,startIndex):
     search = args.split()
@@ -55,7 +66,6 @@ def gis(args,startIndex):
         if gambar[:7] == "http://":
             #gambar = shorturl(gambar)
             gambar = "https://proxy.duckduckgo.com/iu/?u="+urllib.parse.quote(gambar)+'&f=1'
-            gambar = bitly_shortener(gambar)
             #imgur = os.popen("curl --request POST \
             #            --url https://api.imgur.com/3/image \
             #            --header 'Authorization: Client-ID 802f673008792da' \
@@ -70,7 +80,6 @@ def gis(args,startIndex):
         link = d["image"]["contextLink"]
         display_link = d["displayLink"]
         preview_img = d["image"]["thumbnailLink"]
-        preview_img = bitly_shortener(preview_img)
         size = d["image"]["byteSize"]
         size = file_size(size)
         result.append(
@@ -192,7 +201,7 @@ def gis(args,startIndex):
                             action=PostbackAction(
                                 label='Download image',
                                 text='Download image',
-                                data='img: '+gambar+' '+preview_img
+                                data='img: '+bitly_shortener(gambar)+' '+bitly_shortener(preview_img)
                             ),
                             color='#9AA6B4',
                             height='sm'
