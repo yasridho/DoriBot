@@ -15,3 +15,8 @@ config = {
 
 firebase = pyrebase.initialize_app(config)
 db = firebase.database()
+
+bitly_username = os.environ.get('BITLY_USERNAME')
+bitly_password = os.environ.get('BITLY_PASSWORD')
+
+google_key = os.environ.get('GOOGLE_API_KEY')

@@ -3,12 +3,14 @@ import cinema21
 import calendar
 import io
 import re
+import os
 import errno
 import urllib
 import pyrebase
+import bitly_api
 from colorthief import ColorThief
 from linebot.models import *
-from acc import line_bot_api, db
+from acc import *
 
 def dori_id(args):
     try:
@@ -16,6 +18,235 @@ def dori_id(args):
     except:
         user_id = args
     return user_id
+
+def bitly_get_connection():
+    access_token = os.popen('curl -u "'+bitly_username+':'+bitly_password+'" -X POST "https://api-ssl.bitly.com/oauth/access_token"').read()
+    bitly = bitly_api.Connection(access_token=access_token)
+    return bitly
+
+def shorturl(args):
+    bitly = bitly_get_connection()
+    data = bitly.shorten(args)
+    return data['hash']
+
+def file_size(args):
+	minimal = 2**10
+	n = 0
+	ukuran = {0:'', 1:'Kilo', 2:'Mega', 3:'Giga', 4:'Tera'}
+	while args > minimal:
+		args = args/minimal
+		n = n + 1
+	if args == 1:
+		return args, ukuran[n]+'byte'
+	else:
+		return args, ukuran[n]+'bytes'
+
+def gis(args,startIndex):
+	search = args.split()
+	url = urllib.request.urlopen('https://www.googleapis.com/customsearch/v1?q='+'+'.join(search)+'&cx=012011408610071646553%3A9m9ecisn3oe&imgColorType=color&num=9&start='+str(startIndex)+'&safe=off&searchType=image&key='+google_key)
+	udict = url.read().decode('utf-8')
+	data = json.loads(udict)
+	result = list()
+    nextPage = data["queries"]["nextPage"]["startIndex"]
+	for d in data["items"]:
+		gambar = d["link"]
+		if gambar[:7] == "http://":
+            gambar = shorturl(gambar)
+			#imgur = os.popen("curl --request POST \
+			#			--url https://api.imgur.com/3/image \
+			#			--header 'Authorization: Client-ID 802f673008792da' \
+			#			--form 'image="+gambar+"'").read()
+			#ganti = json.loads(imgur)
+			#gambar = ganti["data"]["link"]
+		jenis = d["mime"].replace("image/","")
+		tinggi = d["image"]["height"]
+		lebar = d["image"]["width"]
+		judul = d["title"]
+        html_snippet = d["htmlSnippet"]
+		link = d["image"]["contextLink"]
+        display_link = d["displayLink"]
+        preview_img = d["image"]["thumbnailLink"]
+        size = d["byteSize"]
+        size = file_size(size)
+		result.append(
+			BubbleContainer(
+                direction='ltr',
+                header=BoxComponent(
+                    layout='vertical',
+                    contents=[
+                        TextComponent(
+                            text=args,
+                            align='center',
+                            weight='bold',
+                            color='#9AA6B4'
+                        )
+                    ]
+                ),
+                hero=ImageComponent(
+                    url=gambar,
+                    size='full',
+                    aspect_mode='fit',
+                    aspect_ratio='20:13'
+                ),
+                body=BoxComponent(
+                    layout='vertical',
+                    contents=[
+                        TextComponent(
+                            text=judul,
+                            size='sm',
+                            align='center',
+                            weight='bold',
+                            color='#9AA6B4',
+                            wrap=True
+                        ),
+                        SeparatorComponent(
+                            margin='xl'
+                        ),
+                        BoxComponent(
+                            layout='horizontal',
+                            spacing='none',
+                            margin='md',
+                            contents=[
+                                TextComponent(
+                                    text=str(lebar)+' x '+str(tinggi),
+                                    flex=1,
+                                    size='sm',
+                                    align='center',
+                                    color='#9AA6B4'
+                                ),
+                                SeparatorComponent(
+                                    margin='none'
+                                ),
+                                TextComponent(
+                                    text=jenis+' image',
+                                    size='sm',
+                                    align='center',
+                                    color='#9AA6B4'
+                                )
+                            ]
+                        ),
+                        SeparatorComponent(
+                            margin='md'
+                        ),
+                        BoxComponent(
+                            layout='baseline',
+                            margin='md',
+                            contents=[
+                                IconComponent(
+                                    url='https://i.postimg.cc/vB4GrXT5/449px-Media-Viewer-Icon-Link-Hover-svg.png',
+                                    size='xs'
+                                ),
+                                TextComponent(
+                                    text=display_link,
+                                    margin='md',
+                                    size='sm',
+                                    color='#9AA6B4'
+                                )
+                            ]
+                        ),
+                        BoxComponent(
+                            layout='baseline',
+                            margin='md',
+                            contents=[
+                                IconComponent(
+                                    url='https://i.postimg.cc/BbJMW7FK/1024px-Folder-4-icon-72a7cf-svg.png',
+                                    size='xs'
+                                ),
+                                TextComponent(
+                                    text=size,
+                                    margin='md',
+                                    size='sm',
+                                    color='#9AA6B4'
+                                )
+                            ]
+                        ),
+                        SeparatorComponent(
+                            margin='md'
+                        ),
+                        TextComponent(
+                            text=html_snippet,
+                            margin='md',
+                            size='xs',
+                            color='#9AA6B4',
+                            wrap=True
+                        )
+                    ]
+                ),
+                footer=BoxComponent(
+                    layout='vertical',
+                    contents=[
+                        ButtonComponent(
+                            action=URIAction(
+                                label='To the source',
+                                uri=link
+                            ),
+                            color='#9AA6B4',
+                            height='sm'
+                        ),
+                        ButtonComponent(
+                            action=PostbackAction(
+                                label='Download image',
+                                text='Download image',
+                                data='img: '+gambar+' '+preview_img
+                            ),
+                            color='#9AA6B4',
+                            height='sm'
+                        )
+                    ]
+                ),
+                styles=BubbleStyle(
+                    header=BlockStyle(
+                        background_color='#1E222C'
+                    ),
+                    hero=BlockStyle(
+                        background_color='#262B37'
+                    ),
+                    body=BlockStyle(
+                        background_color='#262B37'
+                    ),
+                    footer=BlockStyle(
+                        background_color='#262B37'
+                    )
+                )
+            )
+		)
+    if nextPage < 92:
+        result.append(
+            BubbleContainer(
+                direction='ltr',
+                hero=ImageComponent(
+                    url='https://i.postimg.cc/9FzFN3Bj/next.png',
+                    size='full',
+                    aspect_ratio='1:1',
+                    aspect_mode='cover'
+                ),
+                footer=BoxComponent(
+                    layout='horizontal',
+                    contents=[
+                        ButtonComponent(
+                            color='#9AA6B4',
+                            action=PostbackAction(
+                                label='NEXT PAGE',
+                                text='next',
+                                data='img_page: '+str(nextPage)+' '+args
+                            )
+                        )
+                    ]
+                ),
+                styles=BubbleStyle(
+                    footer=BlockStyle(
+                        background_color='#262B37'
+                    )
+                )
+            )
+        )
+	hasil = FlexSendMessage(
+        alt_text='Search Result for: '+args,
+        contents=CarouselContainer(
+            contents=result
+        )
+    )
+	return hasil
 
 def xxi_playing(kode_bioskop):
     url = urllib.request.urlopen('https://mtix.21cineplex.com/gui.schedule.php?sid=&find_by=1&cinema_id='+kode_bioskop+'&movie_id=')
@@ -103,7 +334,7 @@ def xxi_playing(kode_bioskop):
                         )
                     )
                     jamku[num].append(SeparatorComponent())
-        num = num + 1
+        num = len(jamku) + 1
     num = 1
     gabungin = zip(gambar, judul, tipe, rating, durasi, tanggal, harga)
     if gabungin:

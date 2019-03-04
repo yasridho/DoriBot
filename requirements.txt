@@ -4,3 +4,4 @@ requests
 colorthief
 pyrebase
 cinema21
+bitly_api

@@ -94,8 +94,8 @@ def handle_follow(event):
     try:
         total = db.child("users").get().val()["total"]
     except:
-        total = 0
-    db.child("users").child("total").set(total + 1)
+        db.child("users").child("total").set(0)
+    db.child("users").update({"total":total+1})
     line_bot_api.reply_message(event.reply_token,
         [
             TextSendMessage(
@@ -184,6 +184,23 @@ def handle_postback(event):
             line_bot_api.reply_message(
                 event.reply_token,
                 xxi_playing(args)
+            )
+
+        elif cmd == "img":
+            link, preview = args.split()
+            line_bot_api.reply_message(
+                event.reply_token,
+                ImageSendMessage(
+                    original_content_url=link,
+                    preview_image_url=preview
+                )
+            )
+
+        elif cmd == "img_page":
+            startIndex, keyword = args.split(" ",1)
+            line_bot_api.reply_message(
+                event.reply_token,
+                gis(keyword,startIndex)
             )
 
         elif cmd == "quit":
@@ -323,6 +340,12 @@ def handle_message(event):
             line_bot_api.reply_message(
                 event.reply_token,
                 anilist_search(args,1)
+            )
+
+        elif cmd == "gis":
+            line_bot_api.reply_message(
+                event.reply_token,
+                gis(args,1)
             )
 
         elif cmd == "xxi":
