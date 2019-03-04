@@ -224,39 +224,40 @@ def gis(args,startIndex):
                 )
             )
         )
-    if (nextPage < 92) and (nextPage != None):
-        result.append(
-            BubbleContainer(
-                direction='ltr',
-                hero=ImageComponent(
-                    url='https://i.postimg.cc/9FzFN3Bj/next.png',
-                    size='full',
-                    aspect_ratio='3:4',
-                    aspect_mode='cover'
-                ),
-                footer=BoxComponent(
-                    layout='horizontal',
-                    contents=[
-                        ButtonComponent(
-                            color='#9AA6B4',
-                            action=PostbackAction(
-                                label='NEXT PAGE',
-                                text='next',
-                                data='img_page: '+str(nextPage)+' '+args
-                            )
-                        )
-                    ]
-                ),
-                styles=BubbleStyle(
-                    body=BlockStyle(
-                        background_color='#262B37'
+    if nextPage != None:
+        if nextPage < 92:
+            result.append(
+                BubbleContainer(
+                    direction='ltr',
+                    hero=ImageComponent(
+                        url='https://i.postimg.cc/9FzFN3Bj/next.png',
+                        size='full',
+                        aspect_ratio='3:4',
+                        aspect_mode='cover'
                     ),
-                    footer=BlockStyle(
-                        background_color='#262B37'
+                    footer=BoxComponent(
+                        layout='horizontal',
+                        contents=[
+                            ButtonComponent(
+                                color='#9AA6B4',
+                                action=PostbackAction(
+                                    label='NEXT PAGE',
+                                    text='next',
+                                    data='img_page: '+str(nextPage)+' '+args
+                                )
+                            )
+                        ]
+                    ),
+                    styles=BubbleStyle(
+                        body=BlockStyle(
+                            background_color='#262B37'
+                        ),
+                        footer=BlockStyle(
+                            background_color='#262B37'
+                        )
                     )
                 )
             )
-        )
     hasil = FlexSendMessage(
         alt_text='Search Result for: '+args,
         contents=CarouselContainer(
