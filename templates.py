@@ -26,9 +26,9 @@ def file_size(args):
         args = args/minimal
         n = n + 1
     if args == 1:
-        return str(args)+" "+ukuran[n]+'byte'
+        return str(int(args))+" "+ukuran[n]+'byte'
     else:
-        return str(args)+" "+ukuran[n]+'bytes'
+        return str(int(args))+" "+ukuran[n]+'bytes'
 
 def bitly_shortener(args):
     query_params = {
@@ -76,7 +76,6 @@ def gis(args,startIndex):
         tinggi = d["image"]["height"]
         lebar = d["image"]["width"]
         judul = d["title"]
-        html_snippet = d["htmlSnippet"]
         link = d["image"]["contextLink"]
         display_link = d["displayLink"]
         preview_img = d["image"]["thumbnailLink"]
@@ -181,16 +180,6 @@ def gis(args,startIndex):
                                     color='#9AA6B4'
                                 )
                             ]
-                        ),
-                        SeparatorComponent(
-                            margin='md'
-                        ),
-                        TextComponent(
-                            text=html_snippet,
-                            margin='md',
-                            size='xs',
-                            color='#9AA6B4',
-                            wrap=True
                         )
                     ]
                 ),
