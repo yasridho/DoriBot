@@ -33,10 +33,10 @@ def file_size(args):
 def gis(args,startIndex):
     search = args.split()
     url = urllib.request.urlopen('https://www.googleapis.com/customsearch/v1?q='+'+'.join(search)+'&cx=012011408610071646553%3A9m9ecisn3oe&imgColorType=color&num=9&start='+str(startIndex)+'&safe=off&searchType=image&key='+google_key)
-    udict = url.read().decode('utf-8')
+    udict = url.read().decode('utf-8')[0]
     datagis = json.loads(udict)
     result = list()
-    nextPage = datagis[0]["queries"]["nextPage"]["startIndex"]
+    nextPage = datagis["queries"]["nextPage"]["startIndex"]
     for d in datagis["items"]:
         gambar = d["link"]
         if gambar[:7] == "http://":
