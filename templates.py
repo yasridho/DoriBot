@@ -7,7 +7,6 @@ import os
 import errno
 import urllib
 import pyrebase
-from pyshorteners import Shortener
 from colorthief import ColorThief
 from linebot.models import *
 from acc import *
@@ -31,6 +30,19 @@ def file_size(args):
     else:
         return str(args)+" "+ukuran[n]+'bytes'
 
+def bitly_shortener(args):
+    access_token = os.popen('curl -u "'+bitly_username+':'+bitly_password+'" -X POST "https://api-ssl.bitly.com/oauth/access_token"').read()
+    query_params = {
+        'access_token':access_token,
+        'longUrl':args
+    }
+    endpoint = "https://api-ssl.bitly.com/v3/shorten"
+    response = requests.get(endpoint, params=query_params)
+
+    data = json.loads(response.content)
+
+    return data['data']['url']
+
 def gis(args,startIndex):
     search = args.split()
     url = urllib.request.urlopen('https://www.googleapis.com/customsearch/v1?q='+'+'.join(search)+'&cx=012011408610071646553%3A9m9ecisn3oe&imgColorType=color&num=9&start='+str(startIndex)+'&safe=off&searchType=image&key='+google_key)
@@ -44,7 +56,7 @@ def gis(args,startIndex):
         if gambar[:7] == "http://":
             #gambar = shorturl(gambar)
             gambar = "https://proxy.duckduckgo.com/iu/?u="+urllib.parse.quote(gambar)+'&f=1'
-            gambar = s.tinyurl.short(gambar)
+            gambar = bitly_shortener(gambar)
             #imgur = os.popen("curl --request POST \
             #            --url https://api.imgur.com/3/image \
             #            --header 'Authorization: Client-ID 802f673008792da' \
@@ -59,7 +71,7 @@ def gis(args,startIndex):
         link = d["image"]["contextLink"]
         display_link = d["displayLink"]
         preview_img = d["image"]["thumbnailLink"]
-        preview_img = s.tinyurl.short(preview_img)
+        preview_img = bitly_shortener(preview_img)
         size = d["image"]["byteSize"]
         size = file_size(size)
         result.append(
