@@ -50,7 +50,6 @@ def gis(args,startIndex):
     datagis = json.loads(udict)
     result = list()
     nextPage = datagis["queries"]["nextPage"][0]["startIndex"]
-    s = Shortener()
     for d in datagis["items"]:
         gambar = d["link"]
         if gambar[:7] == "http://":
