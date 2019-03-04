@@ -31,7 +31,7 @@ def file_size(args):
         return str(args)+" "+ukuran[n]+'bytes'
 
 def bitly_shortener(args):
-    access_token = os.popen('curl -u "'+bitly_username+':'+bitly_password+'" -X POST "https://api-ssl.bitly.com/oauth/access_token"').read()
+    access_token = bitly_access_token
     query_params = {
         'access_token':access_token,
         'longUrl':args
