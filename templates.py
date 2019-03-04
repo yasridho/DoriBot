@@ -224,7 +224,7 @@ def gis(args,startIndex):
                 )
             )
         )
-    if (nextPage < 92) or (nextPage != None):
+    if (nextPage < 92) and (nextPage != None):
         result.append(
             BubbleContainer(
                 direction='ltr',
