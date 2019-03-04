@@ -235,11 +235,12 @@ def gis(args,startIndex):
                         aspect_ratio='3:4',
                         aspect_mode='cover'
                     ),
-                    footer=BoxComponent(
+                    body=BoxComponent(
                         layout='horizontal',
                         contents=[
                             ButtonComponent(
                                 color='#9AA6B4',
+                                gravity='bottom',
                                 action=PostbackAction(
                                     label='NEXT PAGE',
                                     text='next',
@@ -250,9 +251,6 @@ def gis(args,startIndex):
                     ),
                     styles=BubbleStyle(
                         body=BlockStyle(
-                            background_color='#262B37'
-                        ),
-                        footer=BlockStyle(
                             background_color='#262B37'
                         )
                     )
