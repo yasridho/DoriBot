@@ -56,7 +56,7 @@ def gis(args,startIndex):
         link = d["image"]["contextLink"]
         display_link = d["displayLink"]
         preview_img = d["image"]["thumbnailLink"]
-        size = d["byteSize"]
+        size = d["image"]["byteSize"]
         size = file_size(size)
         result.append(
             BubbleContainer(
