@@ -36,7 +36,7 @@ def gis(args,startIndex):
     udict = url.read().decode('utf-8')
     datagis = json.loads(udict)
     result = list()
-    nextPage = datagis["queries"]["nextPage"]["startIndex"]
+    nextPage = datagis[0]["queries"]["nextPage"]["startIndex"]
     for d in datagis["items"]:
         gambar = d["link"]
         if gambar[:7] == "http://":
