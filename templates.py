@@ -82,6 +82,10 @@ def gis(args,startIndex):
         preview_img = d["image"]["thumbnailLink"]
         size = d["image"]["byteSize"]
         size = file_size(size)
+        if len(preview_img) >= 100:
+            preview_link = bitly_shortener(preview_img)
+        if len(gambar) >= 100:
+            gambar_link = bitly_shortener(gambar)
         result.append(
             BubbleContainer(
                 direction='ltr',
@@ -201,7 +205,7 @@ def gis(args,startIndex):
                             action=PostbackAction(
                                 label='Download image',
                                 text='Download image',
-                                data='img: '+bitly_shortener(gambar)+' '+bitly_shortener(preview_img)
+                                data='img: '+gambar_link+' '+preview_link
                             ),
                             color='#9AA6B4',
                             height='sm'

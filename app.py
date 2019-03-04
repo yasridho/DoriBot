@@ -188,11 +188,15 @@ def handle_postback(event):
 
         elif cmd == "img":
             link, preview = args.split()
+            if link[:14] == "http://bit.ly/":
+                link = bitly_expander(link)
+            if preview[:14] == "http://bit.ly/":
+                preview = bitly_expander(preview)
             line_bot_api.reply_message(
                 event.reply_token,
                 ImageSendMessage(
-                    original_content_url=bitly_expander(link),
-                    preview_image_url=bitly_expander(preview)
+                    original_content_url=link,
+                    preview_image_url=preview
                 )
             )
 
