@@ -44,7 +44,7 @@ def gis(args,startIndex):
         if gambar[:7] == "http://":
             #gambar = shorturl(gambar)
             gambar = "https://proxy.duckduckgo.com/iu/?u="+urllib.parse.quote(gambar)+'&f=1'
-            gambar = s.bitly.short(gambar)
+            gambar = s.tinyurl.short(gambar)
             #imgur = os.popen("curl --request POST \
             #            --url https://api.imgur.com/3/image \
             #            --header 'Authorization: Client-ID 802f673008792da' \
@@ -59,7 +59,7 @@ def gis(args,startIndex):
         link = d["image"]["contextLink"]
         display_link = d["displayLink"]
         preview_img = d["image"]["thumbnailLink"]
-        preview_img = s.bitly.short(preview_img)
+        preview_img = s.tinyurl.short(preview_img)
         size = d["image"]["byteSize"]
         size = file_size(size)
         result.append(
