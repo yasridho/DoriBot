@@ -7,7 +7,7 @@ import os
 import errno
 import urllib
 import pyrebase
-import pyshorteners
+from pyshorteners import Shortener
 from colorthief import ColorThief
 from linebot.models import *
 from acc import *
@@ -38,7 +38,7 @@ def gis(args,startIndex):
     datagis = json.loads(udict)
     result = list()
     nextPage = datagis["queries"]["nextPage"][0]["startIndex"]
-    s = pyshorteners.Shortener()
+    s = Shortener()
     for d in datagis["items"]:
         gambar = d["link"]
         if gambar[:7] == "http://":
