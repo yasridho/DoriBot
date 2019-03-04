@@ -224,6 +224,9 @@ def gis(args,startIndex):
                     ]
                 ),
                 styles=BubbleStyle(
+                    body=BlockStyle(
+                        background_color='#262B37'
+                    ),
                     footer=BlockStyle(
                         background_color='#262B37'
                     )
