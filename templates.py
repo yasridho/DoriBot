@@ -7,7 +7,6 @@ import os
 import errno
 import urllib
 import pyrebase
-import bitly_api
 from colorthief import ColorThief
 from linebot.models import *
 from acc import *
@@ -18,16 +17,6 @@ def dori_id(args):
     except:
         user_id = args
     return user_id
-
-def bitly_get_connection():
-    access_token = os.popen('curl -u "'+bitly_username+':'+bitly_password+'" -X POST "https://api-ssl.bitly.com/oauth/access_token"').read()
-    bitly = bitly_api.Connection(access_token=access_token)
-    return bitly
-
-def shorturl(args):
-    bitly = bitly_get_connection()
-    data = bitly.shorten(args)
-    return data['hash']
 
 def file_size(args):
     minimal = 2**10
@@ -51,7 +40,8 @@ def gis(args,startIndex):
     for d in data["items"]:
         gambar = d["link"]
         if gambar[:7] == "http://":
-            gambar = shorturl(gambar)
+            #gambar = shorturl(gambar)
+            gambar = "https://proxy.duckduckgo.com/iu/?u="+urllib.parse.quote(gambar)+'&f=1'
             #imgur = os.popen("curl --request POST \
             #            --url https://api.imgur.com/3/image \
             #            --header 'Authorization: Client-ID 802f673008792da' \
