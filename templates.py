@@ -34,10 +34,10 @@ def gis(args,startIndex):
     search = args.split()
     url = urllib.request.urlopen('https://www.googleapis.com/customsearch/v1?q='+'+'.join(search)+'&cx=012011408610071646553%3A9m9ecisn3oe&imgColorType=color&num=9&start='+str(startIndex)+'&safe=off&searchType=image&key='+google_key)
     udict = url.read().decode('utf-8')
-    data = json.loads(udict)
+    datagis = json.loads(udict)
     result = list()
-    nextPage = data["queries"]["nextPage"]["startIndex"]
-    for d in data["items"]:
+    nextPage = datagis["queries"]["nextPage"]["startIndex"]
+    for d in datagis["items"]:
         gambar = d["link"]
         if gambar[:7] == "http://":
             #gambar = shorturl(gambar)
