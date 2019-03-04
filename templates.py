@@ -84,8 +84,12 @@ def gis(args,startIndex):
         size = file_size(size)
         if len(preview_img) >= 100:
             preview_link = bitly_shortener(preview_img)
+        else:
+            preview_link = preview_img
         if len(gambar) >= 100:
             gambar_link = bitly_shortener(gambar)
+        else:
+            gambar_link = gambar
         result.append(
             BubbleContainer(
                 direction='ltr',
