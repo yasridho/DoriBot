@@ -39,9 +39,9 @@ def bitly_shortener(args):
     endpoint = "https://api-ssl.bitly.com/v3/shorten"
     response = requests.get(endpoint, params=query_params)
 
-    data = json.loads(response.content)
+    data = json.loads(response.content.decode('utf-8'))
 
-    return data['data']['url']
+    return data["data"]["url"]
 
 def gis(args,startIndex):
     search = args.split()
