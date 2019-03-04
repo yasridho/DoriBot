@@ -207,7 +207,7 @@ def gis(args,startIndex):
                 hero=ImageComponent(
                     url='https://i.postimg.cc/9FzFN3Bj/next.png',
                     size='full',
-                    aspect_ratio='1:1',
+                    aspect_ratio='3:4',
                     aspect_mode='cover'
                 ),
                 footer=BoxComponent(
