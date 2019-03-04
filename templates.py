@@ -60,7 +60,10 @@ def gis(args,startIndex):
     udict = url.read().decode('utf-8')
     datagis = json.loads(udict)
     result = list()
-    nextPage = datagis["queries"]["nextPage"][0]["startIndex"]
+    try:
+        nextPage = datagis["queries"]["nextPage"][0]["startIndex"]
+    except:
+        nextPage = None
     for d in datagis["items"]:
         gambar = d["link"]
         if gambar[:7] == "http://":
@@ -221,7 +224,7 @@ def gis(args,startIndex):
                 )
             )
         )
-    if nextPage < 92:
+    if (nextPage < 92) or (nextPage != None):
         result.append(
             BubbleContainer(
                 direction='ltr',
