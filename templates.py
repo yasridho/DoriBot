@@ -30,46 +30,46 @@ def shorturl(args):
     return data['hash']
 
 def file_size(args):
-	minimal = 2**10
-	n = 0
-	ukuran = {0:'', 1:'Kilo', 2:'Mega', 3:'Giga', 4:'Tera'}
-	while args > minimal:
-		args = args/minimal
-		n = n + 1
-	if args == 1:
-		return args, ukuran[n]+'byte'
-	else:
-		return args, ukuran[n]+'bytes'
+    minimal = 2**10
+    n = 0
+    ukuran = {0:'', 1:'Kilo', 2:'Mega', 3:'Giga', 4:'Tera'}
+    while args > minimal:
+        args = args/minimal
+        n = n + 1
+    if args == 1:
+        return args, ukuran[n]+'byte'
+    else:
+        return args, ukuran[n]+'bytes'
 
 def gis(args,startIndex):
-	search = args.split()
-	url = urllib.request.urlopen('https://www.googleapis.com/customsearch/v1?q='+'+'.join(search)+'&cx=012011408610071646553%3A9m9ecisn3oe&imgColorType=color&num=9&start='+str(startIndex)+'&safe=off&searchType=image&key='+google_key)
-	udict = url.read().decode('utf-8')
-	data = json.loads(udict)
-	result = list()
+    search = args.split()
+    url = urllib.request.urlopen('https://www.googleapis.com/customsearch/v1?q='+'+'.join(search)+'&cx=012011408610071646553%3A9m9ecisn3oe&imgColorType=color&num=9&start='+str(startIndex)+'&safe=off&searchType=image&key='+google_key)
+    udict = url.read().decode('utf-8')
+    data = json.loads(udict)
+    result = list()
     nextPage = data["queries"]["nextPage"]["startIndex"]
-	for d in data["items"]:
-		gambar = d["link"]
-		if gambar[:7] == "http://":
+    for d in data["items"]:
+        gambar = d["link"]
+        if gambar[:7] == "http://":
             gambar = shorturl(gambar)
-			#imgur = os.popen("curl --request POST \
-			#			--url https://api.imgur.com/3/image \
-			#			--header 'Authorization: Client-ID 802f673008792da' \
-			#			--form 'image="+gambar+"'").read()
-			#ganti = json.loads(imgur)
-			#gambar = ganti["data"]["link"]
-		jenis = d["mime"].replace("image/","")
-		tinggi = d["image"]["height"]
-		lebar = d["image"]["width"]
-		judul = d["title"]
+            #imgur = os.popen("curl --request POST \
+            #            --url https://api.imgur.com/3/image \
+            #            --header 'Authorization: Client-ID 802f673008792da' \
+            #            --form 'image="+gambar+"'").read()
+            #ganti = json.loads(imgur)
+            #gambar = ganti["data"]["link"]
+        jenis = d["mime"].replace("image/","")
+        tinggi = d["image"]["height"]
+        lebar = d["image"]["width"]
+        judul = d["title"]
         html_snippet = d["htmlSnippet"]
-		link = d["image"]["contextLink"]
+        link = d["image"]["contextLink"]
         display_link = d["displayLink"]
         preview_img = d["image"]["thumbnailLink"]
         size = d["byteSize"]
         size = file_size(size)
-		result.append(
-			BubbleContainer(
+        result.append(
+            BubbleContainer(
                 direction='ltr',
                 header=BoxComponent(
                     layout='vertical',
@@ -209,7 +209,7 @@ def gis(args,startIndex):
                     )
                 )
             )
-		)
+        )
     if nextPage < 92:
         result.append(
             BubbleContainer(
@@ -240,13 +240,13 @@ def gis(args,startIndex):
                 )
             )
         )
-	hasil = FlexSendMessage(
+    hasil = FlexSendMessage(
         alt_text='Search Result for: '+args,
         contents=CarouselContainer(
             contents=result
         )
     )
-	return hasil
+    return hasil
 
 def xxi_playing(kode_bioskop):
     url = urllib.request.urlopen('https://mtix.21cineplex.com/gui.schedule.php?sid=&find_by=1&cinema_id='+kode_bioskop+'&movie_id=')
