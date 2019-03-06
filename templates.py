@@ -305,7 +305,8 @@ def warning_message(message,command,usage_args,example_args):
                                 text='Usage',
                                 flex=1,
                                 weight='bold',
-                                color='#9AA6B4'
+                                color='#9AA6B4',
+                                size='sm'
                             ),
                             BoxComponent(
                                 layout='baseline',
@@ -338,6 +339,7 @@ def warning_message(message,command,usage_args,example_args):
                         contents=[
                             TextComponent(
                                 text='Example',
+                                size='sm',
                                 flex=1,
                                 weight='bold',
                                 color='#9AA6B4'
