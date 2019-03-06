@@ -270,7 +270,7 @@ def warning_message(message,command,usage_args,example_args):
         contents=BubbleContainer(
             direction='ltr',
             header=BoxComponent(
-                layout='vertcial',
+                layout='vertical',
                 contents=[
                     TextComponent(
                         text='ATTENTION!',
