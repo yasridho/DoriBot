@@ -292,7 +292,6 @@ def handle_message(event):
             cmd, args = data[0].lower(), data[1]
         else:
             cmd, args = data[0].lower(), ""
-        
         if args[0] == " ":
             args = args[1:]
 
@@ -338,6 +337,18 @@ def handle_message(event):
                 event.reply_token,
                 anilist_search(args,1)
             )
+
+        elif cmd == "bitly":
+            try:
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    TextSendMessage(text=bitly_shortener(args))
+                )
+            except:
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    TextSendMessage(text="Link is invalid, make sure you type it correctly")
+                )
 
         elif cmd == "gis":
             line_bot_api.reply_message(
