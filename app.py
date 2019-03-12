@@ -283,8 +283,8 @@ def handle_message(event):
             return
     except:
         if dori_id(sender) != sender:
-            db.child("user_id").child("list").set({dori_id(sender):sender})
-            db.child("user_id").child("total").set(1)
+            db.child("user_id").child("list").update({dori_id(sender):sender})
+            db.child("user_id").child("total").update(1)
     
     if text.lower() in namaBot:
         reply_with = [
