@@ -261,30 +261,6 @@ def handle_message(event):
 
     if line_bot_api.get_profile(sender).status_message != db.child("users").child(sender).child('status_message').get().val():
         db.child("users").child(sender).update({'status_message':line_bot_api.get_profile(sender).status_message})
-
-    try:
-        uid_list = db.child("user_id").get().val()["list"]
-        uid_total = db.child("user_id").get().val()["total"]
-        if dori_id(sender) != sender:
-            if dori_id(sender) not in uid_list:
-                db.child("user_id").child("list").update({dori_id(sender):sender})
-                db.child("user_id").update({"total":uid_total+1})
-        else:
-            if isinstance(event.source, SourceUser):
-                line_bot_api.reply_message(
-                    event.reply_token,
-                    warning_message(
-                        "You need to change your default id!",
-                        "id:",
-                        "your_new_user_id",
-                        "human_being"
-                    )
-                )
-            return
-    except:
-        if dori_id(sender) != sender:
-            db.child("user_id").child("list").set({dori_id(sender):sender})
-            db.child("user_id").child("total").set(1)
     
     if text.lower() in namaBot:
         reply_with = [
