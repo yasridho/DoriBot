@@ -402,35 +402,35 @@ def xxi_playing(kode_bioskop):
             date = movies.find('div', style = "margin-top:10px;")
             date = date.find('div', class_ = "col-xs-7")
             date = date.find_all('p', class_ = "p_date")[1].get_text()
-            jamku = []
+            jamku = {}
             for i in time:
                 puluh = 0
-                for jam in data1:
-                    try:
-                        if (len(jamku[num]) - 7 == puluh):
-                            jamku[num].append(SeparatorComponent())
-                            puluh = puluh + 7
-                        jamku[num].append(
-                            TextComponent(
-                                text=time,
-                                align='center',
-                                color='#A5A5A5',
-                                size='xs'
-                            )
+                try:
+                    if (len(jamku[num]) - 7 == puluh):
+                        jamku[num].append(SeparatorComponent())
+                        puluh = puluh + 7
+                    jamku[num].append(
+                        TextComponent(
+                            text=i,
+                            align='center',
+                            color='#A5A5A5',
+                            size='xs'
                         )
-                        jamku[num].append(SeparatorComponent())
-                    except:
-                        jamku.update({num:[]})
-                        jamku[num].append(SeparatorComponent())
-                        jamku[num].append(
-                            TextComponent(
-                                text=time,
-                                align='center',
-                                color='#A5A5A5',
-                                size='xs'
-                            )
+                    )
+                    jamku[num].append(SeparatorComponent())
+                except:
+                    jamku.update({num:[]})
+                    jamku[num].append(SeparatorComponent())
+                    jamku[num].append(
+                        TextComponent(
+                            text=i,
+                            align='center',
+                            color='#A5A5A5',
+                            size='xs'
                         )
-                        jamku[num].append(SeparatorComponent())
+                    )
+                    jamku[num].append(SeparatorComponent())
+
             clock = list()
             if len(jamku[num]) < 7:
                 clock.append(
