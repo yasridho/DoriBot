@@ -412,7 +412,7 @@ def xxi_playing(kode_bioskop):
                             puluh = puluh + 7
                         jamku[num].append(
                             TextComponent(
-                                text=jam,
+                                text=time,
                                 align='center',
                                 color='#A5A5A5',
                                 size='xs'
@@ -424,7 +424,7 @@ def xxi_playing(kode_bioskop):
                         jamku[num].append(SeparatorComponent())
                         jamku[num].append(
                             TextComponent(
-                                text=jam,
+                                text=time,
                                 align='center',
                                 color='#A5A5A5',
                                 size='xs'
