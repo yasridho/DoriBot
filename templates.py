@@ -383,8 +383,8 @@ def warning_message(message,command,usage_args,example_args):
 
 def xxi_playing(kode_bioskop):
     url = urllib.request.urlopen('https://mtix.21cineplex.com/gui.schedule.php?sid=&find_by=1&cinema_id='+kode_bioskop+'&movie_id=')
-    udict = url.read().decode('utf-8').replace('\r','').replace('\n','')
-    content = urllib.request.urlopen(url).read()
+    content = url.read()
+    udict = content.decode('utf-8').replace('\r','').replace('\n','')
     soup = BeautifulSoup(content,features="lxml")
     theater = re.findall('<h4><span><strong>(.*?)</strong></span></h4>',udict, re.S)[0]
     res = []
