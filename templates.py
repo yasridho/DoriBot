@@ -388,6 +388,7 @@ def xxi_playing(kode_bioskop):
     soup = BeautifulSoup(content,"lxml")
     theater = re.findall('<h4><span><strong>(.*?)</strong></span></h4>',udict, re.S)[0]
     results = []
+    num = 1
     for things in soup.find_all('ul', class_ = "list-group "):
         for movies in things.find_all('li', class_ = "list-group-item"):
             TitleNTime = [some.get_text() for some in movies.find_all('a')[1:]]
@@ -598,7 +599,8 @@ def xxi_playing(kode_bioskop):
                         )
                     )
                 )
-            ) 
+            )
+            num = num + 1
     hasil = FlexSendMessage(
         alt_text="Now playing at "+theater.capitalize(),
         contents=CarouselContainer(
