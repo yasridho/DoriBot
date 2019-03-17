@@ -387,7 +387,7 @@ def xxi_playing(kode_bioskop):
     udict = content.decode('utf-8').replace('\r','').replace('\n','')
     soup = BeautifulSoup(content,"lxml")
     theater = re.findall('<h4><span><strong>(.*?)</strong></span></h4>',udict, re.S)[0]
-    res = []
+    results = []
     for things in soup.find_all('ul', class_ = "list-group "):
         for movies in things.find_all('li', class_ = "list-group-item"):
             TitleNTime = [some.get_text() for some in movies.find_all('a')[1:]]
@@ -461,7 +461,7 @@ def xxi_playing(kode_bioskop):
                             contents=jamku[num][awal:]
                         )
                     )
-            res.append(
+            results.append(
                 BubbleContainer(
                     header=BoxComponent(
                         layout='vertical',
@@ -600,11 +600,11 @@ def xxi_playing(kode_bioskop):
                 )
             ) 
     hasil = FlexSendMessage(
-                alt_text="Now playing at "+theater.capitalize(),
-                contents=CarouselContainer(
-                    contents=res
-                )    
-            )
+        alt_text="Now playing at "+theater.capitalize(),
+        contents=CarouselContainer(
+            contents=results
+        )
+    )
     return hasil
 
 def nearest_theater(latitude, longitude):
