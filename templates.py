@@ -602,7 +602,7 @@ def xxi_playing(kode_bioskop):
     hasil = FlexSendMessage(
                 alt_text="Now playing at "+theater.capitalize(),
                 contents=CarouselContainer(
-                    contents=results
+                    contents=res
                 )    
             )
     return hasil
