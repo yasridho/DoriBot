@@ -89,6 +89,7 @@ def listTP():
                             text=name,
                             align='center',
                             weight='bold',
+                            color='#9AA6B4',
                             wrap=True
                         )
                     ]
@@ -102,9 +103,24 @@ def listTP():
                                 text='TP:'+short.upper()
                             ),
                             style='primary',
+                            color='#9AA6B4',
                             gravity='bottom'
                         )
                     ]
+                ),
+                styles=BubbleStyle(
+                    header=BlockStyle(
+                        background_color='#1E222C'
+                    ),
+                    hero=BlockStyle(
+                        background_color='#262B37'
+                    ),
+                    body=BlockStyle(
+                        background_color='#262B37'
+                    ),
+                    footer=BlockStyle(
+                        background_color='#262B37'
+                    )
                 )
             )
         )
