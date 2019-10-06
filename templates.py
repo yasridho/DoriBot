@@ -106,7 +106,7 @@ def listTP():
             )
         )
     results = FlexSendMessage(
-        alt_text='Ini list Tugas Pendahuluan'
+        alt_text='Ini list Tugas Pendahuluan',
         contents=CarouselContainer(
             contents=bubble
         )
