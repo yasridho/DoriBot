@@ -179,6 +179,24 @@ def handle_postback(event):
                 xxi_playing(args)
             )
 
+        elif cmd == "tp":
+            matkul = {
+                "strukdat":"struktur-data",
+                "dap":"dasar-algoritma-dan-pemrograman",
+                "std":"struktur-data",
+                "pbo":"pemrograman-berorientasi-objek-a",
+                "pbd":"pemodelan-basis-data",
+                "jarkom":"jaringan-komputer",
+                "sod":"sistem-operasi-dasar",
+                "bd":"basis-data"
+            }
+            if args == "list":
+                msg = listTP()
+            elif args in matkul:
+                msg = cekTP(args)
+
+            line_bot_api.reply_message(event.reply_token, msg)
+        
         elif cmd == "img":
             link, preview = args.split()
             if link[:14] == "http://bit.ly/":
@@ -355,6 +373,9 @@ def handle_message(event):
                 event.reply_token,
                 gis(args,1)
             )
+
+        elif cmd == "tp":
+
 
         elif cmd == "xxi":
             try:

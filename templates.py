@@ -4,6 +4,7 @@ import calendar
 import io
 import re
 import os
+import html
 import errno
 import urllib
 import pyrebase
@@ -54,6 +55,128 @@ def bitly_expander(args):
     data = json.loads(response.content.decode('utf-8'))
 
     return data["data"]["expand"][0]["long_url"]
+
+def listTP():
+    matkul = {
+                "strukdat":"struktur-data",
+                "dap":"dasar-algoritma-dan-pemrograman",
+                "std":"struktur-data",
+                "pbo":"pemrograman-berorientasi-objek-a",
+                "pbd":"pemodelan-basis-data",
+                "jarkom":"jaringan-komputer",
+                "sod":"sistem-operasi-dasar",
+                "bd":"basis-data"
+            }
+    url = urllib.request.urlopen(urllib.request.Request('https://informatics.labs.telkomuniversity.ac.id', headers={'User-Agent': "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)"}))
+    udict = url.read().decode('utf-8')
+    data = re.findall('<li id="menu-item-44" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-44"><a>Praktikum</a>(.*?)<li id="menu-item-45" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-45"><a>Layanan</a>',udict, re.S)[0]
+    praktikum = re.findall('<li id="(.*?)" class="(.*?)"><a href="(.*?)">(.*?)</a></li>',data, re.S)
+    bubble = []
+    for web_id, web_class, link, name in praktikum:
+        long_name = link.replace('https://informatics.labs.telkomuniversity.ac.id/category/praktikum/','')
+        long_name = link.replace('/','')
+        short = list(matkul.keys())[list(matkul.values()).index(long_name)]
+        bubble.append(
+            BubbleContainer(
+                direction='ltr',
+                header=BoxComponent(
+                    layout='vertical',
+                    contents=[
+                        TextComponent(
+                            text=name,
+                            align='center',
+                            weight='bold',
+                            wrap=True
+                        )
+                    ]
+                ),
+                footer=BoxComponent(
+                    layout='horizontal',
+                    contents=[
+                        ButtonComponent(
+                            MessageAction(
+                                label='Cek Tugas',
+                                text='TP:'+short
+                            ),
+                            style='primary',
+                            gravity='bottom'
+                        )
+                    ]
+                )
+            )
+        )
+    results = FlexSendMessage(
+        alt_text='Ini list Tugas Pendahuluan'
+        contents=CarouselContainer(
+            contents=bubble
+        )
+    )
+    return results
+
+def cekTP(args):
+    matkul = {
+                "strukdat":"struktur-data",
+                "dap":"dasar-algoritma-dan-pemrograman",
+                "std":"struktur-data",
+                "pbo":"pemrograman-berorientasi-objek-a",
+                "pbd":"pemodelan-basis-data",
+                "jarkom":"jaringan-komputer",
+                "sod":"sistem-operasi-dasar",
+                "bd":"basis-data"
+            }
+    url_link = urllib.request.urlopen(urllib.request.Request('https://informatics.labs.telkomuniversity.ac.id/category/praktikum/'+matkul[args], headers={'User-Agent': "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)"}))
+    url_dict = url_link.read().decode('utf-8')
+    data = re.findall('<article id="(.*?)" class="(.*?)">(.*?)</article><!-- #post-## -->',udict, re.S)
+    bubble = []
+    for web_id, web_class, article in data:
+        post = re.findall('<h2 class="entry-title"><a href="(.*?)" rel="bookmark">(.*?)</a></h2>',article,re.S)
+        for link, title in post[:2]:
+            bubble.append(
+                BubbleContainer(
+                    direction='ltr',
+                    header=BoxComponent(
+                        layout='vertical',
+                        contents=[
+                            TextComponent(
+                                text=args.upper(),
+                                align='center',
+                                weight='bold'
+                            )
+                        ]
+                    ),
+                    body=BoxComponent(
+                        layout='vertical',
+                        contents=[
+                            TextComponent(
+                                text=html.unescape(title),
+                                align='center',
+                                weight='bold',
+                                wrap=True
+                            )
+                        ]
+                    ),
+                    footer=BoxComponent(
+                        layout='horizontal',
+                        contents=[
+                            ButtonComponent(
+                                PostbackAction(
+                                    label='Link Tugas',
+                                    text='Liat Tugas TP '+args.upper(),
+                                    data='TP:'+link
+                                ),
+                                style='primary'
+                            )
+                        ]
+                    )
+                )
+            )
+    results = FlexSendMessage(
+        alt_text='Ini TP '+args.upper(),
+        contents=CarouselContainer(
+            contents=bubble
+        )
+    )
+    return results
 
 def gis(args,startIndex):
     search = args.split()
