@@ -351,8 +351,10 @@ def handle_message(event):
             }
             if args.lower() == "list":
                 msg = listTP()
-            elif args in matkul:
+            elif args.lower() in matkul:
                 msg = cekTP(args)
+            else:
+                msg = TextSendMessage(text=args.capitalize()+' tidak ada TP :/')
 
             line_bot_api.reply_message(event.reply_token, msg)
 
