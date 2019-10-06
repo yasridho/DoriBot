@@ -162,10 +162,9 @@ def cekTP(args):
                         layout='horizontal',
                         contents=[
                             ButtonComponent(
-                                PostbackAction(
+                                URIAction(
                                     label='Link Tugas',
-                                    text='Liat Tugas TP '+args.upper(),
-                                    data='TP:'+link
+                                    uri=link
                                 ),
                                 style='primary'
                             )
