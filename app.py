@@ -349,7 +349,7 @@ def handle_message(event):
                 "sod":"sistem-operasi-dasar",
                 "bd":"basis-data"
             }
-            if args == "list":
+            if args.lower() == "list":
                 msg = listTP()
             elif args in matkul:
                 msg = cekTP(args)
