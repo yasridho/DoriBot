@@ -143,7 +143,8 @@ def cekTP(args):
                             TextComponent(
                                 text=args.upper(),
                                 align='center',
-                                weight='bold'
+                                weight='bold',
+                                color='#9AA6B4'
                             )
                         ]
                     ),
@@ -154,6 +155,7 @@ def cekTP(args):
                                 text=html.unescape(title),
                                 align='center',
                                 weight='bold',
+                                color='#9AA6B4',
                                 wrap=True
                             )
                         ]
@@ -166,9 +168,24 @@ def cekTP(args):
                                     label='Link Tugas',
                                     uri=link
                                 ),
-                                style='primary'
+                                style='primary',
+                                color='#9AA6B4'
                             )
                         ]
+                    ),
+                    styles=BubbleStyle(
+                        header=BlockStyle(
+                            background_color='#1E222C'
+                        ),
+                        hero=BlockStyle(
+                            background_color='#262B37'
+                        ),
+                        body=BlockStyle(
+                            background_color='#262B37'
+                        ),
+                        footer=BlockStyle(
+                            background_color='#262B37'
+                        )
                     )
                 )
             )
