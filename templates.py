@@ -73,7 +73,9 @@ def listTP():
     praktikum = re.findall('<li id="(.*?)" class="(.*?)"><a href="(.*?)">(.*?)</a></li>',data, re.S)
     bubble = []
     for web_id, web_class, link, name in praktikum:
-        long_name = link.replace('https://informatics.labs.telkomuniversity.ac.id/category/praktikum/','')
+        long_name = link.replace('https://','')
+        long_name = long_name.replace('http://','')
+        long_name = long_name.replace('informatics.labs.telkomuniversity.ac.id/category/praktikum/','')
         long_name = long_name.replace('/','')
         short = list(matkul.keys())[list(matkul.values()).index(long_name)]
         bubble.append(
