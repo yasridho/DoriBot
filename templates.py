@@ -99,7 +99,7 @@ def listTP():
                         ButtonComponent(
                             MessageAction(
                                 label='Cek Tugas',
-                                text='TP:'+short
+                                text='TP:'+short.upper()
                             ),
                             style='primary',
                             gravity='bottom'
@@ -129,7 +129,7 @@ def cekTP(args):
             }
     url_link = urllib.request.urlopen(urllib.request.Request('https://informatics.labs.telkomuniversity.ac.id/category/praktikum/'+matkul[args], headers={'User-Agent': "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)"}))
     url_dict = url_link.read().decode('utf-8')
-    data = re.findall('<article id="(.*?)" class="(.*?)">(.*?)</article><!-- #post-## -->',udict, re.S)
+    data = re.findall('<article id="(.*?)" class="(.*?)">(.*?)</article><!-- #post-## -->',url_dict, re.S)
     bubble = []
     for web_id, web_class, article in data:
         post = re.findall('<h2 class="entry-title"><a href="(.*?)" rel="bookmark">(.*?)</a></h2>',article,re.S)
