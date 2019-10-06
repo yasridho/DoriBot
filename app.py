@@ -352,7 +352,7 @@ def handle_message(event):
             if args.lower() == "list":
                 msg = listTP()
             elif args.lower() in matkul:
-                msg = cekTP(args)
+                msg = cekTP(args.lower())
             else:
                 msg = TextSendMessage(text=args.capitalize()+' tidak ada TP :/')
 
