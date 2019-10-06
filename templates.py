@@ -65,7 +65,8 @@ def listTP():
                 "pbd":"pemodelan-basis-data",
                 "jarkom":"jaringan-komputer",
                 "sod":"sistem-operasi-dasar",
-                "bd":"basis-data"
+                "bd":"basis-data",
+                "pw":"pemrograman-web"
             }
     url = urllib.request.urlopen(urllib.request.Request('https://informatics.labs.telkomuniversity.ac.id', headers={'User-Agent': "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)"}))
     udict = url.read().decode('utf-8')
