@@ -74,7 +74,7 @@ def listTP():
     bubble = []
     for web_id, web_class, link, name in praktikum:
         long_name = link.replace('https://informatics.labs.telkomuniversity.ac.id/category/praktikum/','')
-        long_name = link.replace('/','')
+        long_name = long_name.replace('/','')
         short = list(matkul.keys())[list(matkul.values()).index(long_name)]
         bubble.append(
             BubbleContainer(
