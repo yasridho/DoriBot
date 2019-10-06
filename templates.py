@@ -131,9 +131,9 @@ def cekTP(args):
     url_dict = url_link.read().decode('utf-8')
     data = re.findall('<article id="(.*?)" class="(.*?)">(.*?)</article><!-- #post-## -->',url_dict, re.S)
     bubble = []
-    for web_id, web_class, article in data:
+    for web_id, web_class, article in data[:2]:
         post = re.findall('<h2 class="entry-title"><a href="(.*?)" rel="bookmark">(.*?)</a></h2>',article,re.S)
-        for link, title in post[:2]:
+        for link, title in post:
             bubble.append(
                 BubbleContainer(
                     direction='ltr',
