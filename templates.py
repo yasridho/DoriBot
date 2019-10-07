@@ -102,7 +102,6 @@ def listTP():
                                 label='Cek Tugas',
                                 text='TP:'+short.upper()
                             ),
-                            style='primary',
                             color='#9AA6B4',
                             gravity='bottom'
                         )
@@ -110,16 +109,16 @@ def listTP():
                 ),
                 styles=BubbleStyle(
                     header=BlockStyle(
-                        background_color='#1E222C'
+                        background_color='#25272B'
                     ),
                     hero=BlockStyle(
-                        background_color='#262B37'
+                        background_color='#25272B'
                     ),
                     body=BlockStyle(
-                        background_color='#262B37'
+                        background_color='#1F2129'
                     ),
                     footer=BlockStyle(
-                        background_color='#262B37'
+                        background_color='#1F2129'
                     )
                 )
             )
@@ -150,6 +149,12 @@ def cekTP(args):
     bubble = []
     for web_id, web_class, article in data[:2]:
         post = re.findall('<h2 class="entry-title"><a href="(.*?)" rel="bookmark">(.*?)</a></h2>',article,re.S)
+        task = re.findall('<p>(.*?)</p>',article,re.S)[0]
+        if len(task) > 30:
+            task = task[:30]+"..."
+        date = re.findall('<span class="day">(.*?)</span>',article,re.S)[0]
+        month = re.findall('<span class="month">(.*?)</span>',article,re.S)[0]
+        year = re.findall('<span class="year">(.*?)</span>',article,re.S)[0]
         for link, title in post:
             bubble.append(
                 BubbleContainer(
@@ -161,7 +166,7 @@ def cekTP(args):
                                 text=args.upper(),
                                 align='center',
                                 weight='bold',
-                                color='#9AA6B4'
+                                color='#DFF536'
                             )
                         ]
                     ),
@@ -174,6 +179,41 @@ def cekTP(args):
                                 weight='bold',
                                 color='#9AA6B4',
                                 wrap=True
+                            ),
+                            TextComponent(
+                                text=html.unescape(task),
+                                margin='md',
+                                color='#9AA6B4',
+                                wrap=True
+                            ),
+                            BoxComponent(
+                                layout='horizontal',
+                                margin='md',
+                                contents=[
+                                    TextComponent(
+                                        text=date,
+                                        flex=0,
+                                        size='xl',
+                                        weight='bold',
+                                        color='#9AA6B4'
+                                    ),
+                                    TextComponent(
+                                        text=month,
+                                        flex=0,
+                                        margin='sm',
+                                        size='md',
+                                        weight='bold',
+                                        color='#9AA6B4'
+                                    ),
+                                    TextComponent(
+                                        text=year,
+                                        flex=0,
+                                        margin='sm',
+                                        size='xl',
+                                        weight='bold',
+                                        color='#9AA6B4'
+                                    )
+                                ]
                             )
                         ]
                     ),
@@ -185,23 +225,22 @@ def cekTP(args):
                                     label='Link Tugas',
                                     uri=link
                                 ),
-                                style='primary',
-                                color='#9AA6B4'
+                                color='#DFF536'
                             )
                         ]
                     ),
                     styles=BubbleStyle(
                         header=BlockStyle(
-                            background_color='#1E222C'
+                            background_color='#25272B'
                         ),
                         hero=BlockStyle(
-                            background_color='#262B37'
+                            background_color='#25272B'
                         ),
                         body=BlockStyle(
-                            background_color='#262B37'
+                            background_color='#1F2129'
                         ),
                         footer=BlockStyle(
-                            background_color='#262B37'
+                            background_color='#1F2129'
                         )
                     )
                 )
