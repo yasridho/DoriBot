@@ -274,8 +274,10 @@ def handle_message(event):
         except:pass
         db.child("users").child(sender).update({'display_name':line_bot_api.get_profile(sender).display_name})
     
-    if line_bot_api.get_profile(sender).picture_url != db.child("users").child(sender).child('picture_url').get().val():
-        db.child("users").child(sender).update({'picture_url':line_bot_api.get_profile(sender).picture_url})
+    try:
+        if line_bot_api.get_profile(sender).picture_url != db.child("users").child(sender).child('picture_url').get().val():
+            db.child("users").child(sender).update({'picture_url':line_bot_api.get_profile(sender).picture_url})
+    except:pass
 
     if line_bot_api.get_profile(sender).status_message != db.child("users").child(sender).child('status_message').get().val():
         db.child("users").child(sender).update({'status_message':line_bot_api.get_profile(sender).status_message})
