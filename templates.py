@@ -58,7 +58,6 @@ def bitly_expander(args):
 
 def listTP():
     matkul = {
-                "strukdat":"struktur-data",
                 "dap":"dasar-algoritma-dan-pemrograman",
                 "std":"struktur-data",
                 "pbo":"pemrograman-berorientasi-objek-a",
