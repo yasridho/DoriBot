@@ -280,6 +280,12 @@ def handle_message(event):
                                 label='Doribot: help',
                                 text='Doribot: help'
                             )
+                        ),
+                        QuickReplyButton(
+                            action=MessageAction(
+                                label='Check TP',
+                                text='TP: List'
+                            )
                         )
                     ]
                 )
@@ -306,7 +312,9 @@ def handle_message(event):
             if args == "help":
                 line_bot_api.reply_message(event.reply_token,
                     TextSendMessage(
-                        text="Here's some command:\nAni: This will search and get anime/manga info from anilist (Usage: 'Ani: <keyword>')"
+                        text="""Here's some command:\nAni: This will search and get anime/manga info from anilist (Usage: 'Ani: <keyword>')
+                        \nTP: Weekend? MITOS, coba cek ada TP gak? (Usage: 'TP: List' or 'TP: <matkul>')
+                        """
                     )
                 )
             elif args == "id":
@@ -347,11 +355,18 @@ def handle_message(event):
                 "pbd":"pemodelan-basis-data",
                 "jarkom":"jaringan-komputer",
                 "sod":"sistem-operasi-dasar",
-                "bd":"basis-data"
+                "bd":"basis-data",
+                "pw":"pemrograman-web"
             }
+            try:
+                short = list(matkul.keys())[list(matkul.values()).index(args.lower().replcae(" ","-"))]
+            except:
+                short = None
             if args.lower() == "list":
                 msg = listTP()
             elif args.lower() in matkul:
+                if short:
+                    args = short
                 msg = cekTP(args.lower())
             else:
                 msg = TextSendMessage(text=args.capitalize()+' tidak ada TP :/')
