@@ -54,7 +54,7 @@ def handle_join(event):
         db.child(event.source.type).child("total").set(1)
     line_bot_api.reply_message(event.reply_token, [
             TextSendMessage(
-                text="Hi! I'm DoriBot\nI'm glad to be here ;D"
+                text="Hi! I'm DoriBot\nGlad to be here ;D"
             ),
             TextSendMessage(
                 text="I'll not respond until you add me first."
