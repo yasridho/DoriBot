@@ -67,18 +67,16 @@ def listTP():
                 "sod":"sistem-operasi-dasar",
                 "bd":"basis-data",
                 "pw":"pemrograman-web"
-            }
-    url = urllib.request.urlopen(urllib.request.Request('https://informatics.labs.telkomuniversity.ac.id', headers={'User-Agent': "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)"}))
-    udict = url.read().decode('utf-8')
-    data = re.search('<li id="menu-item-44" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-44"><a>Praktikum</a>(.*?)<li id="menu-item-45" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-45"><a>Layanan</a>',udict, re.S).group(1)
-    praktikum = re.findall('<li id="(.*?)" class="(.*?)"><a href="(.*?)">(.*?)</a></li>',data, re.S)
+            }    
     bubble = []
-    for web_id, web_class, link, name in praktikum:
-        long_name = link.replace('https://','')
-        long_name = long_name.replace('http://','')
-        long_name = long_name.replace('informatics.labs.telkomuniversity.ac.id/category/praktikum/','')
-        long_name = long_name.replace('/','')
-        short = list(matkul.keys())[list(matkul.values()).index(long_name)]
+    for data in matkul:
+        name = matkul[data].split("-")
+        full_name = []
+        for r in name:
+            if r != "dan":
+                r = r.capitalize()
+            full_name.append(r)
+        full_name = " ".join(full_name)
         bubble.append(
             BubbleContainer(
                 direction='ltr',
@@ -86,7 +84,7 @@ def listTP():
                     layout='vertical',
                     contents=[
                         TextComponent(
-                            text=name,
+                            text=full_name,
                             align='center',
                             weight='bold',
                             color='#9AA6B4',
@@ -100,7 +98,7 @@ def listTP():
                         ButtonComponent(
                             MessageAction(
                                 label='Cek Tugas',
-                                text='TP:'+short.upper()
+                                text='TP:'+data.upper()
                             ),
                             color='#DFF536',
                             gravity='bottom'
