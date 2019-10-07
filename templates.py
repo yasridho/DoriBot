@@ -102,7 +102,7 @@ def listTP():
                                 label='Cek Tugas',
                                 text='TP:'+short.upper()
                             ),
-                            color='#9AA6B4',
+                            color='#DFF536',
                             gravity='bottom'
                         )
                     ]
@@ -150,8 +150,8 @@ def cekTP(args):
     for web_id, web_class, article in data[:2]:
         post = re.findall('<h2 class="entry-title"><a href="(.*?)" rel="bookmark">(.*?)</a></h2>',article,re.S)
         task = re.findall('<p>(.*?)</p>',article,re.S)[0]
-        if len(task) > 30:
-            task = task[:30]+"..."
+        if len(task) > 60:
+            task = task[:60]+"..."
         date = re.findall('<span class="day">(.*?)</span>',article,re.S)[0]
         month = re.findall('<span class="month">(.*?)</span>',article,re.S)[0]
         year = re.findall('<span class="year">(.*?)</span>',article,re.S)[0]
@@ -188,6 +188,7 @@ def cekTP(args):
                             ),
                             BoxComponent(
                                 layout='horizontal',
+                                flex=0,
                                 margin='md',
                                 contents=[
                                     TextComponent(
