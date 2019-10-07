@@ -152,8 +152,8 @@ def cekTP(args):
         link = re.search('<link>(.*?)</link>',article,re.S).group(1)
         task = re.search('<description>(.*?)</p>',article,re.S).group(1)
         task = task.replace('<![CDATA[<p>','')
-        if len(task) > 60:
-            task = task[:60]+"..."
+        if len(task) > 120:
+            task = task[:120]+"..."
         post_time = re.search('<pubDate>(.*?)</pubDate>',article,re.S).group(1)
         day = post_time[:3]
         post_time = post_time[5:].split(" ")
@@ -186,7 +186,7 @@ def cekTP(args):
                         ),
                         TextComponent(
                             text=html.unescape(task),
-                            margin='md',
+                            margin='sm',
                             color='#9AA6B4',
                             wrap=True
                         ),

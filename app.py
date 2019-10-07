@@ -312,8 +312,10 @@ def handle_message(event):
             if args == "help":
                 line_bot_api.reply_message(event.reply_token,
                     TextSendMessage(
-                        text="""Here's some command:\nAni: This will search and get anime/manga info from anilist (Usage: 'Ani: <keyword>')
-                        \nTP: Weekend? MITOS, coba cek ada TP gak? (Usage: 'TP: List' or 'TP: <matkul>')
+                        text="""Here's some command:
+                        \nAni: This will search and get anime/manga info from anilist (Usage: 'Ani: anime/manga')
+                        \nTP: Weekend? MITOS, coba cek ada TP gak? (Usage: 'TP: List' or 'TP: matkul')
+                        \nBitly: Shorten your link with bitly (Usage: 'Bitly: long_url')
                         """
                     )
                 )
