@@ -150,7 +150,8 @@ def cekTP(args):
     for article in data[:2]:
         title = re.search('<title>(.*?)</title>',article,re.S).group(1)
         link = re.search('<guid isPermaLink="false">(.*?)</guid>',article,re.S).group(1)
-        task = re.search('<description><![CDATA[<p>(.*?)</p>',article,re.S).group(1)
+        task = re.search('<description>(.*?)</p>',article,re.S).group(1)
+        task = task.replace('<![CDATA[<p>','')
         if len(task) > 60:
             task = task[:60]+"..."
         post_time = re.search('<pubDate>(.*?)</pubDate>',article,re.S).group(1)
