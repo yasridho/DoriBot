@@ -152,8 +152,8 @@ def cekTP(args):
         task = re.findall('<p>(.*?)</p>',article,re.S)[0]
         if len(task) > 60:
             task = task[:60]+"..."
-        date = re.findall('<span class="day">(.*?)</span>',article,re.S)[0].replace(" ","")
-        month = re.findall('<span class="month">(.*?)</span>',article,re.S)[0].replace(" ","")
+        date = re.findall('<span class="day">(.*?)</span>',article,re.S)[0].replace("	","")
+        month = re.findall('<span class="month">(.*?)</span>',article,re.S)[0].replace("	","")
         year = re.findall('<span class="year">(.*?)</span>',article,re.S)[0].replace(" ","")
         for link, title in post:
             bubble.append(
