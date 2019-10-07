@@ -86,9 +86,17 @@ def handle_leave(event):
 
 @handler.add(FollowEvent)
 def handle_follow(event):
+    try:
+        gambar = line_bot_api.get_profile(event.source.user_id).picture_url
+    except:
+        gambar = ''
+    try:
+        status = line_bot_api.get_profile(event.source.user_id).status_message
+    except:
+        status = ''
     data = {'display_name':line_bot_api.get_profile(event.source.user_id).display_name,
-            'picture_url':line_bot_api.get_profile(event.source.user_id).picture_url,
-            'status_message':line_bot_api.get_profile(event.source.user_id).status_message,
+            'picture_url':gambar,
+            'status_message':status,
             'follow_time':time.time()}
     db.child("users").child(event.source.user_id).set(data)
     try:
