@@ -358,16 +358,17 @@ def handle_message(event):
                 "bd":"basis-data",
                 "pw":"pemrograman-web"
             }
+            args = args.lower()
             try:
-                short = list(matkul.keys())[list(matkul.values()).index(args.lower().replace(" ","-"))]
+                short = list(matkul.keys())[list(matkul.values()).index(args.replace(" ","-"))]
+                args = short
             except:
                 short = None
-            if args.lower() == "list":
+            
+            if args == "list":
                 msg = listTP()
-            elif args.lower() in matkul:
-                if short:
-                    args = short
-                msg = cekTP(args.lower())
+            elif args in matkul:
+                msg = cekTP(args)
             else:
                 msg = TextSendMessage(text=args.capitalize()+' tidak ada TP :/')
 
