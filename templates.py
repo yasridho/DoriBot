@@ -190,15 +190,28 @@ def cekTP(args):
                             color='#9AA6B4',
                             wrap=True
                         ),
+                        TextComponent(
+                            text='Posted in',
+                            margin='md',
+                            color='#68C8FF'
+                        ),
                         BoxComponent(
                             layout='horizontal',
                             flex=0,
                             margin='md',
                             contents=[
                                 TextComponent(
+                                    text=day,
+                                    flex=0,
+                                    size='xl',
+                                    weight='bold',
+                                    color='#85D481'
+                                ),
+                                TextComponent(
                                     text=date,
                                     flex=0,
                                     size='xl',
+                                    margin='lg',
                                     weight='bold',
                                     color='#9AA6B4'
                                 ),
