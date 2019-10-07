@@ -143,7 +143,7 @@ def cekTP(args):
             }
     url_link = urllib.request.urlopen(urllib.request.Request('https://informatics.labs.telkomuniversity.ac.id/category/praktikum/'+matkul[args]+'/feed/', headers={'User-Agent': "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)"}))
     url_dict = url_link.read().decode('utf-8')
-    data = xmltodict.parse(udict)["rss"]["channel"]["item"]
+    data = xmltodict.parse(url_dict)["rss"]["channel"]["item"]
     bubble = []
     for article in data[:2]:
         title = article["title"]
