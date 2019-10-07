@@ -57,7 +57,7 @@ def handle_join(event):
                 text="Hi! I'm DoriBot\nI'm glad to be here ;D"
             ),
             TextSendMessage(
-                text="I'll not respond before you add me first."
+                text="I'll not respond until you add me first."
             ),
             TextSendMessage(
                 text='Type "Doribot: help" without quote to see my commands ;)',
@@ -65,7 +65,7 @@ def handle_join(event):
                     items=[
                         QuickReplyButton(
                             action=MessageAction(
-                                label="Doribot: help",
+                                label="Help",
                                 text="Doribot: help"
                             )
                         )
