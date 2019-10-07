@@ -149,7 +149,7 @@ def cekTP(args):
     bubble = []
     for article in data[:2]:
         title = re.search('<title>(.*?)</title>',article,re.S).group(1)
-        link = re.search('<guid isPermaLink="false">(.*?)</guid>',article,re.S).group(1)
+        link = re.search('<link>(.*?)</link>',article,re.S).group(1)
         task = re.search('<description>(.*?)</p>',article,re.S).group(1)
         task = task.replace('<![CDATA[<p>','')
         if len(task) > 60:
