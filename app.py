@@ -359,7 +359,7 @@ def handle_message(event):
                 "pw":"pemrograman-web"
             }
             try:
-                short = list(matkul.keys())[list(matkul.values()).index(args.lower().replcae(" ","-"))]
+                short = list(matkul.keys())[list(matkul.values()).index(args.lower().replace(" ","-"))]
             except:
                 short = None
             if args.lower() == "list":
