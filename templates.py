@@ -8,6 +8,7 @@ import html
 import errno
 import urllib
 import pyrebase
+import xmltodict
 from colorthief import ColorThief
 from bs4 import BeautifulSoup
 from linebot.models import *
@@ -142,16 +143,16 @@ def cekTP(args):
             }
     url_link = urllib.request.urlopen(urllib.request.Request('https://informatics.labs.telkomuniversity.ac.id/category/praktikum/'+matkul[args]+'/feed/', headers={'User-Agent': "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)"}))
     url_dict = url_link.read().decode('utf-8')
-    data = re.findall('<item>(.*?)</item>',url_dict, re.S)
+    data = xmltodict.parse(udict)["rss"]["channel"]["item"]
     bubble = []
     for article in data[:2]:
-        title = re.search('<title>(.*?)</title>',article,re.S).group(1)
-        link = re.search('<link>(.*?)</link>',article,re.S).group(1)
-        task = re.search('<description>(.*?)</p>',article,re.S).group(1)
-        task = task.replace('<![CDATA[<p>','')
+        title = article["title"]
+        link = article["link"]
+        task = article["description"]
+        task = task.replace('<p>','').replace('</p>','')
         if len(task) > 120:
             task = task[:120]+"..."
-        post_time = re.search('<pubDate>(.*?)</pubDate>',article,re.S).group(1)
+        post_time = article["pubDate"]
         day = post_time[:3]
         post_time = post_time[5:].split(" ")
         date = post_time[0]

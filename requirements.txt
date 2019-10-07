@@ -6,3 +6,4 @@ pyrebase
 cinema21
 bs4
 lxml
+xmltodict
