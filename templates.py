@@ -70,7 +70,7 @@ def listTP():
             }
     url = urllib.request.urlopen(urllib.request.Request('https://informatics.labs.telkomuniversity.ac.id', headers={'User-Agent': "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)"}))
     udict = url.read().decode('utf-8')
-    data = re.findall('<li id="menu-item-44" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-44"><a>Praktikum</a>(.*?)<li id="menu-item-45" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-45"><a>Layanan</a>',udict, re.S)[0]
+    data = re.search('<li id="menu-item-44" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-44"><a>Praktikum</a>(.*?)<li id="menu-item-45" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-45"><a>Layanan</a>',udict, re.S).group(1)
     praktikum = re.findall('<li id="(.*?)" class="(.*?)"><a href="(.*?)">(.*?)</a></li>',data, re.S)
     bubble = []
     for web_id, web_class, link, name in praktikum:
@@ -148,14 +148,14 @@ def cekTP(args):
     data = re.findall('<item>(.*?)</item>',url_dict, re.S)
     bubble = []
     for article in data[:2]:
-        title = re.search('<title>(.*?)</title>',article,re.S)
-        link = re.search('<guid isPermaLink="false">(.*?)</guid>',article,re.S)
-        task = re.search('<description><![CDATA[<p>(.*?)</a>.</p>',article,re.S)
+        title = re.search('<title>(.*?)</title>',article,re.S).group(1)
+        link = re.search('<guid isPermaLink="false">(.*?)</guid>',article,re.S).group(1)
+        task = re.search('<description><![CDATA[<p>(.*?)</a>.</p>',article,re.S).group(1)
         if len(task) > 60:
             task = task[:60]+"..."
-        post_time = re.search('<pubDate>(.*?)</pubDate>',article,re.S)
+        post_time = re.search('<pubDate>(.*?)</pubDate>',article,re.S).group(1)
         day = post_time[:3]
-        post_time = post_time.split(" ")
+        post_time = post_time[5:].split(" ")
         date = post_time[0]
         month = post_time[1]
         year = post_time[2]
