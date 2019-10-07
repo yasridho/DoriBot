@@ -143,109 +143,112 @@ def cekTP(args):
                 "bd":"basis-data",
                 "pw":"pemrograman-web"
             }
-    url_link = urllib.request.urlopen(urllib.request.Request('https://informatics.labs.telkomuniversity.ac.id/category/praktikum/'+matkul[args], headers={'User-Agent': "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)"}))
+    url_link = urllib.request.urlopen(urllib.request.Request('https://informatics.labs.telkomuniversity.ac.id/category/praktikum/'+matkul[args]+'/feed/', headers={'User-Agent': "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)"}))
     url_dict = url_link.read().decode('utf-8')
-    data = re.findall('<article id="(.*?)" class="(.*?)">(.*?)</article><!-- #post-## -->',url_dict, re.S)
+    data = re.findall('<item>(.*?)</item>',url_dict, re.S)
     bubble = []
-    for web_id, web_class, article in data[:2]:
-        post = re.findall('<h2 class="entry-title"><a href="(.*?)" rel="bookmark">(.*?)</a></h2>',article,re.S)
-        task = re.findall('<p>(.*?)</p>',article,re.S)[0]
+    for article in data[:2]:
+        title = re.search('<title>(.*?)</title>',article,re.S)
+        link = re.search('<guid isPermaLink="false">(.*?)</guid>',article,re.S)
+        task = re.search('<description><![CDATA[<p>(.*?)</a>.</p>',article,re.S)
         if len(task) > 60:
             task = task[:60]+"..."
-        date = re.findall('<span class="day">(.*?)</span>',article,re.S)[0].replace("	","")
-        month = re.findall('<span class="month">(.*?)</span>',article,re.S)[0].replace("	","")
-        year = re.findall('<span class="year">(.*?)</span>',article,re.S)[0].replace(" ","")
-        for link, title in post:
-            bubble.append(
-                BubbleContainer(
-                    direction='ltr',
-                    header=BoxComponent(
-                        layout='vertical',
-                        contents=[
-                            TextComponent(
-                                text=args.upper(),
-                                align='center',
-                                weight='bold',
-                                color='#DFF536'
-                            )
-                        ]
-                    ),
-                    body=BoxComponent(
-                        layout='vertical',
-                        contents=[
-                            TextComponent(
-                                text=html.unescape(title),
-                                align='center',
-                                weight='bold',
-                                color='#9AA6B4',
-                                wrap=True
-                            ),
-                            TextComponent(
-                                text=html.unescape(task),
-                                margin='md',
-                                color='#9AA6B4',
-                                wrap=True
-                            ),
-                            BoxComponent(
-                                layout='horizontal',
-                                flex=0,
-                                margin='md',
-                                contents=[
-                                    TextComponent(
-                                        text=date,
-                                        flex=0,
-                                        size='xl',
-                                        weight='bold',
-                                        color='#9AA6B4'
-                                    ),
-                                    TextComponent(
-                                        text=month,
-                                        flex=0,
-                                        margin='sm',
-                                        size='md',
-                                        weight='bold',
-                                        color='#9AA6B4'
-                                    ),
-                                    TextComponent(
-                                        text=year,
-                                        flex=0,
-                                        margin='sm',
-                                        size='xl',
-                                        weight='bold',
-                                        color='#9AA6B4'
-                                    )
-                                ]
-                            )
-                        ]
-                    ),
-                    footer=BoxComponent(
-                        layout='horizontal',
-                        contents=[
-                            ButtonComponent(
-                                URIAction(
-                                    label='Link Tugas',
-                                    uri=link
-                                ),
-                                color='#DFF536'
-                            )
-                        ]
-                    ),
-                    styles=BubbleStyle(
-                        header=BlockStyle(
-                            background_color='#25272B'
-                        ),
-                        hero=BlockStyle(
-                            background_color='#25272B'
-                        ),
-                        body=BlockStyle(
-                            background_color='#1F2129'
-                        ),
-                        footer=BlockStyle(
-                            background_color='#1F2129'
+        post_time = re.search('<pubDate>(.*?)</pubDate>',article,re.S)
+        day = post_time[:3]
+        post_time = post_time.split(" ")
+        date = post_time[0]
+        month = post_time[1]
+        year = post_time[2]
+        bubble.append(
+            BubbleContainer(
+                direction='ltr',
+                header=BoxComponent(
+                    layout='vertical',
+                    contents=[
+                        TextComponent(
+                            text=args.upper(),
+                            align='center',
+                            weight='bold',
+                            color='#DFF536'
                         )
+                    ]
+                ),
+                body=BoxComponent(
+                    layout='vertical',
+                    contents=[
+                        TextComponent(
+                            text=html.unescape(title),
+                            align='center',
+                            weight='bold',
+                            color='#9AA6B4',
+                            wrap=True
+                        ),
+                        TextComponent(
+                            text=html.unescape(task),
+                            margin='md',
+                            color='#9AA6B4',
+                            wrap=True
+                        ),
+                        BoxComponent(
+                            layout='horizontal',
+                            flex=0,
+                            margin='md',
+                            contents=[
+                                TextComponent(
+                                    text=date,
+                                    flex=0,
+                                    size='xl',
+                                    weight='bold',
+                                    color='#9AA6B4'
+                                ),
+                                TextComponent(
+                                    text=month,
+                                    flex=0,
+                                    margin='sm',
+                                    size='md',
+                                    weight='bold',
+                                    color='#9AA6B4'
+                                ),
+                                TextComponent(
+                                    text=year,
+                                    flex=0,
+                                    margin='sm',
+                                    size='xl',
+                                    weight='bold',
+                                    color='#9AA6B4'
+                                )
+                            ]
+                        )
+                    ]
+                ),
+                footer=BoxComponent(
+                    layout='horizontal',
+                    contents=[
+                        ButtonComponent(
+                            URIAction(
+                                label='Link Tugas',
+                                uri=link
+                            ),
+                            color='#DFF536'
+                        )
+                    ]
+                ),
+                styles=BubbleStyle(
+                    header=BlockStyle(
+                        background_color='#25272B'
+                    ),
+                    hero=BlockStyle(
+                        background_color='#25272B'
+                    ),
+                    body=BlockStyle(
+                        background_color='#1F2129'
+                    ),
+                    footer=BlockStyle(
+                        background_color='#1F2129'
                     )
                 )
             )
+        )
     results = FlexSendMessage(
         alt_text='Ini TP '+args.upper(),
         contents=CarouselContainer(
