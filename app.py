@@ -101,14 +101,24 @@ def handle_follow(event):
             TextSendMessage(
                 text='Hello '+line_bot_api.get_profile(event.source.user_id).display_name+'! My name is DoriBot, you can call me Dori ;)'
             ),
-            TextSendMessage(
-                text='Your default id is: '+event.source.user_id
-            ),
             warning_message(
                 "You need to change your default id!",
                 "id:",
                 "your_new_user_id",
                 "human_being"
+            ),
+            TextSendMessage(
+                text='Just call me when you need me ;)',
+                quick_reply=QuickReply(
+                    items=[
+                        QuickReplyButton(
+                            action=MessageAction(
+                                label='Help',
+                                text='Doribot: help'
+                            )
+                        )
+                    ]
+                )
             )
         ]
     )
