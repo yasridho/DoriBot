@@ -23,21 +23,19 @@ def TODQuestionUpdate(tod, question):
         tod_db.child("Pending").child(tod.capitalize()).set([question])
     tod_question.update(tod_db.get().val())
 
-def TODRemovePending(tod, index):
+def TODRemovePending(tod, question):
     try:
-        question = tod_question["Pending"][tod.capitalize()][index]
+        tod_question["Pending"][tod.capitalize()].remove(question)
     except:
         tod_question.update(tod_db.get().val())
-        question = tod_question["Pending"][tod.capitalize()][index]
     tod_question["Pending"][tod.capitalize()].remove(question)
     tod_db.child("Pending").update(tod_question["Pending"])
 
-def TODAdd(tod, index):
+def TODAdd(tod, question):
     try:
-        question = tod_question["Pending"][tod.capitalize()][index]
+        tod_question[tod.capitalize()].append(question)
     except:
         tod_question.update(tod_db.get().val())
-        question = tod_question["Pending"][tod.capitalize()][index]
     tod_question[tod.capitalize()].append(question)
     tod_db.update(tod_question)
 
@@ -96,7 +94,7 @@ def TODReview(tod):
                                 label='Decline',
                                 data=tod+': decline '+str(num)
                             ),
-                            color='#DFF536'
+                            color='#F53636'
                         )
                     ]
                 ),
