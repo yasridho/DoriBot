@@ -227,13 +227,13 @@ def handle_postback(event):
             )
 
         elif (cmd == "truth") or (cmd == "dare"):
-            decision, int(index) = args.split(" ")
+            decision, index = args.split(" ")
             if decision == "accept":
-                TODAdd(cmd, index)
+                TODAdd(cmd, int(index))
                 msg = TextSendMessage(text="Accepted")
             else:
                 msg = TextSendMessage(text="Declined")
-            TODRemovePending(cmd, index)
+            TODRemovePending(cmd, int(index))
             line_bot_api.reply_message(event.reply_token,msg)
 
         elif cmd == "tod":
