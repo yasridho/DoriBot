@@ -259,7 +259,9 @@ def handle_postback(event):
                         target_name = line_bot_api.get_profile(target).display_name
                         send = "Botol berputar... menunjuk ke "+target_name
                         players[room].update({"chosen":target})
-                        msg = TODPlayerChoose(target_name)
+                        msg = []
+                        msg.append(text=send)
+                        msg.append(TODPlayerChoose(target_name))
                     else:
                         msg = TextSendMessage(
                             text='Permainan sudah dimulai'
@@ -274,7 +276,9 @@ def handle_postback(event):
                     name = line_bot_api.get_profile(lucky_guy).display_name
                     send = name+' memutar botol... botol menunjuk ke '+target_name
                     players[room]["chosen"] = target
-                    msg = TODPlayerChoose(target_name)
+                    msg = []
+                    msg.append(text=send)
+                    msg.append(TODPlayerChoose(target_name))
                 else:
                     msg = TextSendMessage(
                         text='Bukan giliran lau'
