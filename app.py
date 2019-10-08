@@ -423,7 +423,7 @@ def handle_message(event):
             else:
                 msg = TextSendMessage(text=name+' berhenti bermain\nKarena kekurangan pemain, permainan diberhentikan')
                 players.pop(room)
-            line_bot_api.reply_message(reply_token,msg)
+            line_bot_api.reply_message(event.reply_token,msg)
 
     elif ":" in text:
         data = text.split(":",1)
@@ -576,6 +576,7 @@ def handle_message(event):
             if args == "tod" or args == "truth or dare":
                 players.update({room:{"game":"tod","players":[],"lastActive":time.time()}})
                 msg = TODRules()
+            line_bot_api.reply_message(event.reply_token,msg)
 
 import os
 if __name__ == "__main__":
