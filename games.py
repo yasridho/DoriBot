@@ -3,8 +3,6 @@ import pyrebase
 import random
 from acc import tod_db
 
-players = {"idroom":{"game":"tod","players":["player1","player2"],"lastActive":"time"}}
-
 def getRandomTOD(choose):
     tod_data = random.choice(tod_db.child(choose).get().val())
     question = tod_db.child(choose).child(tod_data).get().val()
