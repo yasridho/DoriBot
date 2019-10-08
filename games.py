@@ -13,7 +13,9 @@ def getRandomTOD(choose):
 
 def TODQuestionUpdate(tod, question):
     try:
-        tod_db.child("Pending").child(tod.capitalize()).update([question])
+        pending = tod_db.child("Pending").child(tod.capitalize()).get().val()
+        pending.append(question)
+        tod_db.child("Pending").child(tod.capitalize()).update(pending)
     except:
         tod_db.child("Pending").child(tod.capitalize()).set([question])
     tod_question.update(tod_db.get().val())

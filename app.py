@@ -621,6 +621,7 @@ def handle_message(event):
                 msg = TextSendMessage(text='Terima Kasih\nPerintah kamu akan kami review ;D')
             else:
                 msg = TextSendMessage(text='Perintahnya apa? O.o')
+            line_bot_api.reply_message(event.reply_token, msg)
 
 import os
 if __name__ == "__main__":
