@@ -439,6 +439,7 @@ def handle_message(event):
             elif sender in players[room]["idle"]:
                 players[room]["idle"].remove(sender)
                 players[room]["jumlahPemain"] = jumlahPemain - 1
+                name = line_bot_api.get_profile(sender).display_name
                 msg = []
                 msg.append(TextSendMessage(text=name+' keluar sebelum permainan dimulai :/'))
                 if players[room]["jumlahPemain"] > 1:
