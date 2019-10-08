@@ -231,10 +231,10 @@ def handle_postback(event):
             index = int(index)
 
             try:
-                question = tod_question["Pending"][tod.capitalize()][index]
+                question = tod_question["Pending"][cmd.capitalize()][index]
             except:
                 tod_question.update(tod_db.get().val())
-                question = tod_question["Pending"][tod.capitalize()][index]
+                question = tod_question["Pending"][cmd.capitalize()][index]
             
             if decision == "accept":
                 TODAdd(cmd, question)
