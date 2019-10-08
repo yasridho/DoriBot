@@ -104,8 +104,10 @@ def TODReview(tod):
         )
         num += 1
     msg = FlexSendMessage(
-        alt_text=user_name+' memilih '+choose.capitalize(),
-        contents=bubble
+        alt_text='You\'re reviewing',
+        contents=CarouselContainer(
+            contents=bubble
+        )
     )
     return msg
 
