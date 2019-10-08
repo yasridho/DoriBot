@@ -451,7 +451,7 @@ def handle_message(event):
                         msg.append(TODPlayerChoose(target_name))
                 else:
                     msg = TextSendMessage(text="Karena kekurangan pemain, permainan diberhentikan")
-                line_bot_api.reply_message(event.reply_token,msg)
+            line_bot_api.reply_message(event.reply_token,msg)
 
     elif ":" in text:
         data = text.split(":",1)
