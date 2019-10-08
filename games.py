@@ -13,101 +13,98 @@ def getRandomTOD(choose):
 
 def TODQuestionUpdate(tod, question):
     try:
-        pending = {tod.capitalize():[]}
-        database = tod_db.child("Pending").child(tod.capitalize()).get().val()
-        for i in database:
-            pending[tod.capitalize()].append(i)
-        pending[tod.capitalize()].append(question)
-        tod_db.child("Pending").update(pending)
+        total = tod_db.child("Pending").child(tod.capitalize()).child("total").get().val()
+        num = total+1
+        tod_db.child("Pending").update(tod.capitalize()).update({"Question"+str(num):question})
+        tod_db.child("Pending").child(tod.capitalize()).update({"total":num})
     except:
-        tod_db.child("Pending").child(tod.capitalize()).set([question])
+        tod_db.child("Pending").child(tod.capitalize()).set({"Question0":question})
+        tod_db.child("Pending").child(tod.capitalize()).set({"total":0})
     tod_question.update(tod_db.get().val())
 
-def TODRemovePending(tod, question):
+def TODRemovePending(tod, index):
     tod_question.update(tod_db.get().val())
-    tod_question["Pending"][tod.capitalize()].remove(question)
+    tod_question["Pending"][tod.capitalize()].pop(index)
     tod_db.child("Pending").update(tod_question["Pending"])
-    tod_question.update(tod_db.get().val())
 
 def TODAdd(tod, question):
     try:
         tod_question[tod.capitalize()].append(question)
     except:
         tod_question.update(tod_db.get().val())
-    tod_question[tod.capitalize()].append(question)
+        tod_question[tod.capitalize()].append(question)
     tod_db.update(tod_question)
-    tod_question.update(tod_db.get().val())
 
 def TODReview(tod):
     database = tod_db.child("Pending").child(tod.capitalize()).get().val()
     bubble = []
     num = 0
-    for question in database:
-        bubble.append(
-            BubbleContainer(
-                direction='ltr',
-                body=BoxComponent(
-                    layout='vertical',
-                    contents=[
-                        BoxComponent(
-                            layout='vertical',
-                            spacing='md',
-                            contents=[
-                                ImageComponent(
-                                    url='https://img.icons8.com/flat_round/64/000000/question-mark.png',
-                                    size='xxs'
-                                ),
-                                TextComponent(
-                                    text=tod.capitalize(),
-                                    align='center',
-                                    weight='bold',
-                                    color='#9AA6B4'
-                                )
-                            ]
-                        ),
-                        TextComponent(
-                            text=question,
-                            margin='md',
-                            size='sm',
-                            align='center',
-                            color='#9AA6B4',
-                            wrap=True
-                        )
-                    ]
-                ),
-                footer=BoxComponent(
-                    layout='horizontal',
-                    contents=[
-                        ButtonComponent(
-                            action=PostbackAction(
-                                label='Accept',
-                                data=tod+': accept '+str(num)
+    for r in database:
+        for question in database[r]:
+            bubble.append(
+                BubbleContainer(
+                    direction='ltr',
+                    body=BoxComponent(
+                        layout='vertical',
+                        contents=[
+                            BoxComponent(
+                                layout='vertical',
+                                spacing='md',
+                                contents=[
+                                    ImageComponent(
+                                        url='https://img.icons8.com/flat_round/64/000000/question-mark.png',
+                                        size='xxs'
+                                    ),
+                                    TextComponent(
+                                        text=tod.capitalize(),
+                                        align='center',
+                                        weight='bold',
+                                        color='#9AA6B4'
+                                    )
+                                ]
                             ),
-                            color='#DFF536'
-                        ),
-                        SeparatorComponent(
-                            color='#6E6E6E'
-                        ),
-                        ButtonComponent(
-                            action=PostbackAction(
-                                label='Decline',
-                                data=tod+': decline '+str(num)
-                            ),
-                            color='#F53636'
-                        )
-                    ]
-                ),
-                styles=BubbleStyle(
-                    body=BlockStyle(
-                        background_color='#1F2129'
+                            TextComponent(
+                                text=question,
+                                margin='md',
+                                size='sm',
+                                align='center',
+                                color='#9AA6B4',
+                                wrap=True
+                            )
+                        ]
                     ),
-                    footer=BlockStyle(
-                        background_color='#1F2129'
+                    footer=BoxComponent(
+                        layout='horizontal',
+                        contents=[
+                            ButtonComponent(
+                                action=PostbackAction(
+                                    label='Accept',
+                                    data=tod+': accept '+r
+                                ),
+                                color='#DFF536'
+                            ),
+                            SeparatorComponent(
+                                color='#6E6E6E'
+                            ),
+                            ButtonComponent(
+                                action=PostbackAction(
+                                    label='Decline',
+                                    data=tod+': decline '+r
+                                ),
+                                color='#F53636'
+                            )
+                        ]
+                    ),
+                    styles=BubbleStyle(
+                        body=BlockStyle(
+                            background_color='#1F2129'
+                        ),
+                        footer=BlockStyle(
+                            background_color='#1F2129'
+                        )
                     )
                 )
             )
-        )
-        num += 1
     msg = FlexSendMessage(
         alt_text='You\'re reviewing',
         contents=CarouselContainer(
