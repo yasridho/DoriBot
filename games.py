@@ -4,7 +4,7 @@ import random
 from acc import tod_db
 
 def getRandomTOD(choose):
-    data = tod_db.child(choose.capitalize())
+    data = tod_db.child(choose.capitalize()).get().val()
     question = random.choice(data)
     return question
 
