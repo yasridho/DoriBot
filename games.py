@@ -148,7 +148,7 @@ def TODRules():
                     action=PostbackAction(
                         label='Gabung',
                         text='Aing ikut',
-                        data='tod:join'
+                        data='tod: join'
                     ),
                     color='#DFF536'
                 )
@@ -216,7 +216,7 @@ def TODPlayerNotif():
                     action=PostbackAction(
                         label='Aku Siap!',
                         text='Ashiaapp',
-                        data='tod:start'
+                        data='tod: start'
                     ),
                     color='#DFF536'
                 )
@@ -280,7 +280,7 @@ def TODPlayerChoose(user_name):
                     action=PostbackAction(
                         label='Truth',
                         text='Jujur',
-                        data='tod:truth'
+                        data='tod: truth'
                     ),
                     color='#38F536'
                 ),
@@ -291,7 +291,7 @@ def TODPlayerChoose(user_name):
                     action=PostbackAction(
                         label='Dare',
                         text='Berani',
-                        data='tod:dare'
+                        data='tod: dare'
                     ),
                     color='#FFC27D'
                 )
@@ -375,7 +375,7 @@ def TODPlayerQuestion(user_name, choose):
                     action=PostbackAction(
                         label='Done',
                         text='Udah',
-                        data='tod:done'
+                        data='tod: done'
                     ),
                     color='#DFF536'
                 )
