@@ -259,27 +259,7 @@ def handle_postback(event):
                         target_name = line_bot_api.get_profile(target).display_name
                         send = "Botol berputar... menunjuk ke "+target_name
                         players[room].update({"chosen":target})
-                        msg = TextSendMessage(
-                            text=send,
-                            quick_reply=QuickReply(
-                                items=[
-                                    QuickReplyButton(
-                                        action=PostbackAction(
-                                            label='Truth',
-                                            text='Jujur',
-                                            data='tod: truth'
-                                        )
-                                    ),
-                                    QuickReplyButton(
-                                        action=PostbackAction(
-                                            label='Dare',
-                                            text='Berani',
-                                            data='tod: dare'
-                                        )
-                                    )
-                                ]
-                            )
-                        )
+                        msg = TODPlayerChoose(target_name)
                     else:
                         msg = TextSendMessage(
                             text='Permainan sudah dimulai'
@@ -294,27 +274,7 @@ def handle_postback(event):
                     name = line_bot_api.get_profile(lucky_guy).display_name
                     send = name+' memutar botol... botol menunjuk ke '+target_name
                     players[room]["chosen"] = target
-                    msg = TextSendMessage(
-                        text=send,
-                        quick_reply=QuickReply(
-                            items=[
-                                QuickReplyButton(
-                                    action=PostbackAction(
-                                        label='Truth',
-                                        text='Jujur',
-                                        data='tod: truth'
-                                    )
-                                ),
-                                QuickReplyButton(
-                                    action=PostbackAction(
-                                        label='Dare',
-                                        text='Berani',
-                                        data='tod: dare'
-                                    )
-                                )
-                            ]
-                        )
-                    )
+                    msg = TODPlayerChoose(target_name)
                 else:
                     msg = TextSendMessage(
                         text='Bukan giliran lau'
