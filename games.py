@@ -4,9 +4,8 @@ import random
 from acc import tod_db
 
 def getRandomTOD(choose):
-    data = tod_db.child(choose.capitalize()).get().val()
-    tod_data = random.choice(data)
-    question = tod_db.child(choose.capitalize()).child(tod_data).get().val()
+    data = tod_db.child(choose.capitalize())
+    question = random.choice(data)
     return question
 
 def TODRules():
