@@ -23,6 +23,92 @@ def TODQuestionUpdate(tod, question):
         tod_db.child("Pending").child(tod.capitalize()).set([question])
     tod_question.update(tod_db.get().val())
 
+def TODRemovePending(tod, index):
+    question = tod_question["Pending"][tod.capitalize()][index]
+    tod_question["Pending"][tod.capitalize()].remove(question)
+    tod_db.child("Pending").update(tod_question["Pending"])
+
+def TODAdd(tod, index):
+    question = tod_question["Pending"][tod.capitalize()][index]
+    tod_question[tod.capitalize()].append(question)
+    tod_db.update(tod_question)
+
+def TODReview(tod):
+    database = tod_db.child("Pending").child(tod.capitalize()).get().val()
+    bubble = []
+    num = 0
+    for question in database:
+        bubble.append(
+            BubbleContainer(
+                direction='ltr',
+                body=BoxComponent(
+                    layout='vertical',
+                    contents=[
+                        BoxComponent(
+                            layout='vertical',
+                            spacing='md',
+                            contents=[
+                                ImageComponent(
+                                    url='https://img.icons8.com/flat_round/64/000000/question-mark.png',
+                                    size='xxs'
+                                ),
+                                TextComponent(
+                                    text=tod.capitalize(),
+                                    align='center',
+                                    weight='bold',
+                                    color='#9AA6B4'
+                                )
+                            ]
+                        ),
+                        TextComponent(
+                            text=question,
+                            margin='md',
+                            size='sm',
+                            align='center',
+                            color='#9AA6B4',
+                            wrap=True
+                        )
+                    ]
+                ),
+                footer=BoxComponent(
+                    layout='horizontal',
+                    contents=[
+                        ButtonComponent(
+                            action=PostbackAction(
+                                label='Accept',
+                                data=tod+': accept '+num
+                            ),
+                            color='#DFF536'
+                        ),
+                        SeparatorComponent(
+                            color='#6E6E6E'
+                        ),
+                        ButtonComponent(
+                            action=PostbackAction(
+                                label='Decline',
+                                data=tod+': decline '+num
+                            ),
+                            color='#DFF536'
+                        )
+                    ]
+                ),
+                styles=BubbleStyle(
+                    body=BlockStyle(
+                        background_color='#1F2129'
+                    ),
+                    footer=BlockStyle(
+                        background_color='#1F2129'
+                    )
+                )
+            )
+        )
+        num += 1
+    msg = FlexSendMessage(
+        alt_text=user_name+' memilih '+choose.capitalize(),
+        contents=bubble
+    )
+    return msg
+
 def TODRules():
     bubble = BubbleContainer(
         direction='ltr',
@@ -410,6 +496,123 @@ def TODPlayerQuestion(user_name, choose):
     )
     msg = FlexSendMessage(
         alt_text=user_name+' memilih '+choose.capitalize(),
+        contents=bubble
+    )
+    return msg
+
+def TODAddQuestion():
+    bubble = BubbleContainer(
+        direction='ltr',
+        body=BoxComponent(
+            layout='vertical',
+            contents=[
+                BoxComponent(
+                    layout='vertical',
+                    spacing='md',
+                    contents=[
+                        ImageComponent(
+                            url='https://img.icons8.com/flat_round/64/000000/question-mark.png',
+                            size='xxs'
+                        ),
+                        TextComponent(
+                            text='Truth or Dare',
+                            align='center',
+                            weight='bold',
+                            color='#9AA6B4'
+                        )
+                    ]
+                ),
+                TextComponent(
+                    text='Kamu punya pertanyaan/tantangan yang unik?',
+                    margin='md',
+                    size='sm',
+                    align='center',
+                    color='#9AA6B4',
+                    wrap=True
+                ),
+                TextComponent(
+                    text='Kamu bisa menambah sendiri perintah/pertanyaan kamu dengan cara ketik:',
+                    margin='md',
+                    size='xs',
+                    color='#9AA6B4',
+                    wrap=True
+                ),
+                BoxComponent(
+                    layout='baseline',
+                    flex=0,
+                    spacing='sm',
+                    margin='md',
+                    contents=[
+                        TextComponent(
+                            text='Truth: ',
+                            flex=0,
+                            margin='lg',
+                            size='xs',
+                            gravity='bottom',
+                            color='#38F536'
+                        ),
+                        TextComponent(
+                            text='Pertanyaan kamu',
+                            size='xs',
+                            color='#DFF536'
+                        )
+                    ]
+                ),
+                BoxComponent(
+                    layout='baseline',
+                    flex=0,
+                    spacing='sm',
+                    margin='md',
+                    contents=[
+                        TextComponent(
+                            text='Dare: ',
+                            flex=0,
+                            margin='lg',
+                            size='xs',
+                            gravity='bottom',
+                            color='#38F536'
+                        ),
+                        TextComponent(
+                            text='Perintah kamu',
+                            size='xs',
+                            color='#DFF536'
+                        )
+                    ]
+                )
+            ]
+        ),
+        footer=BoxComponent(
+            layout='horizontal',
+            contents=[
+                ButtonComponent(
+                    action=PostbackAction(
+                        label='Truth',
+                        text='Truth',
+                        data='tod: truth'
+                    ),
+                    color='#38F536'
+                ),
+                SeparatorComponent(
+                    color='#6E6E6E'
+                ),
+                ButtonComponent(
+                    action=PostbackAction(
+                        label='Dare',
+                        text='Dare',
+                        data='tod: dare'
+                    ),
+                    color='#FFC27D'
+                )
+            ]
+        ),
+        styles=BubbleStyle(
+            body=BlockStyle(
+                background_color='#1F2129'
+            )
+        )
+    )
+    msg = FlexSendMessage(
+        alt_text="Kamu punya pertanyaan/tantangan yang unik?",
         contents=bubble
     )
     return msg

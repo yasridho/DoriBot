@@ -226,6 +226,16 @@ def handle_postback(event):
                 gis(keyword,startIndex)
             )
 
+        elif (cmd == "truth") or (cmd == "dare"):
+            decision, index = args.split(" ")
+            if decision == "accept":
+                TODAdd(cmd, index)
+                msg = TextSendMessage(text="Accepted")
+            else:
+                msg = TextSendMessage(text="Declined")
+            TODRemovePending(cmd, index)
+            line_bot_api.reply_message(event.reply_token,msg)
+
         elif cmd == "tod":
             if args == "join":
                 if (sender in players[room]["ready"]) or (sender in players[room]["idle"]):
@@ -434,7 +444,9 @@ def handle_message(event):
                     else:
                         msg = TextSendMessage(text=name+' berhenti bermain')
                 else:
-                    msg = TextSendMessage(text=name+' berhenti bermain\nKarena kekurangan pemain, permainan diberhentikan')
+                    msg = []
+                    msg.append(TextSendMessage(text=name+' berhenti bermain\nKarena kekurangan pemain, permainan diberhentikan'))
+                    msg.append(TODAddQuestion())
                     players.pop(room)
             elif sender in players[room]["idle"]:
                 players[room]["idle"].remove(sender)
@@ -451,7 +463,9 @@ def handle_message(event):
                         msg.append(TextSendMessage(text=send))
                         msg.append(TODPlayerChoose(target_name))
                 else:
-                    msg = TextSendMessage(text="Karena kekurangan pemain, permainan diberhentikan")
+                    msg = []
+                    msg.append(TextSendMessage(text="Karena kekurangan pemain, permainan diberhentikan"))
+                    msg.append(TODAddQuestion())
                     players.pop(room)
             line_bot_api.reply_message(event.reply_token,msg)
 
