@@ -274,6 +274,10 @@ def handle_postback(event):
                 if sender == players[room]["chosen"]:
                     lucky_guy = players[room]["chosen"]
                     name = line_bot_api.get_profile(lucky_guy).display_name
+                    target = random.choice(players[room]["players"])
+                    while (target == lucky_guy):
+                        target = random.choice(players[room]["players"])
+                    target_name = line_bot_api.get_profile(target).display_name
                     send = name+' memutar botol... botol menunjuk ke '+target_name
                     players[room]["chosen"] = target
                     msg = []
