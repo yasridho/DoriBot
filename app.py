@@ -232,6 +232,20 @@ def handle_postback(event):
                 players[room]["lastActive"] = time.time()
                 if len(players[room]["players"]) > 1:
                     msg = TODPlayerNotif()
+                msg = TextSendMessage(
+                    text=line_bot_api.get_profile(sender).display_name+" telah bergabung.",
+                    quick_reply=QuickReply(
+                        items=[
+                            QuickReplyButton(
+                                action=PostbackAction(
+                                    label='Gabung',
+                                    text='Aing ikut',
+                                    data='tod: join'
+                                )
+                            )
+                        ]
+                    )
+                )
             elif args == "start":
                 if sender in players[room]["players"]:
                     try:
@@ -250,13 +264,15 @@ def handle_postback(event):
                                     QuickReplyButton(
                                         action=PostbackAction(
                                             label='Truth',
-                                            text='tod: truth'
+                                            text='Jujur',
+                                            data='tod: truth'
                                         )
                                     ),
                                     QuickReplyButton(
                                         action=PostbackAction(
                                             label='Dare',
-                                            text='tod: dare'
+                                            text='Berani',
+                                            data='tod: dare'
                                         )
                                     )
                                 ]
