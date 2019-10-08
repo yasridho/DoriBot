@@ -260,7 +260,7 @@ def handle_postback(event):
                         send = "Botol berputar... menunjuk ke "+target_name
                         players[room].update({"chosen":target})
                         msg = []
-                        msg.append(text=send)
+                        msg.append(TextSendMessage(text=send))
                         msg.append(TODPlayerChoose(target_name))
                     else:
                         msg = TextSendMessage(
@@ -277,7 +277,7 @@ def handle_postback(event):
                     send = name+' memutar botol... botol menunjuk ke '+target_name
                     players[room]["chosen"] = target
                     msg = []
-                    msg.append(text=send)
+                    msg.append(TextSendMessage(text=send))
                     msg.append(TODPlayerChoose(target_name))
                 else:
                     msg = TextSendMessage(
