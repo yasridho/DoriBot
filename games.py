@@ -280,7 +280,7 @@ def TODPlayerChoose(user_name):
                 ButtonComponent(
                     action=PostbackAction(
                         label='Truth',
-                        text='Jujur',
+                        text='Truth',
                         data='tod: truth'
                     ),
                     color='#38F536'
@@ -291,7 +291,7 @@ def TODPlayerChoose(user_name):
                 ButtonComponent(
                     action=PostbackAction(
                         label='Dare',
-                        text='Berani',
+                        text='Dare',
                         data='tod: dare'
                     ),
                     color='#FFC27D'
