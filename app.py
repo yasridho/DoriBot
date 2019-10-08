@@ -17,11 +17,13 @@ import tempfile
 import urllib
 
 from acc import *
+from games import *
 
 app = Flask(__name__)
 sleep = False
 
 notes = {}
+players = {}
 
 #Post Request
 @app.route("/callback", methods=['POST'])
@@ -170,6 +172,12 @@ def handle_location_message(event):
 
 @handler.add(PostbackEvent)
 def handle_postback(event):
+    sender = event.source.user_id
+    if isinstance(event.source, SourceRoom):
+        room = event.source.room_id
+    elif isinstance(event.source, SourceGroup):
+        room = event.source.group_id
+
     if ": " in event.postback.data:
         data = event.postback.data.split(": ",1)
         if len(data) > 1:
@@ -217,6 +225,74 @@ def handle_postback(event):
                 event.reply_token,
                 gis(keyword,startIndex)
             )
+
+        elif cmd == "tod":
+            if args == "join":
+                players[room]["players"].append(sender)
+                players[room]["lastActive"] = time.time()
+                if len(players[room]["players"]) > 1:
+                    msg = TODPlayerNotif()
+            elif args == "start":
+                if sender in players[room]["players"]:
+                    target = random.choice(players[room]["players"])
+                    target_name = line_bot_api.get_profile(target).display_name
+                    send = "Botol berputar... menunjuk ke "+target_name
+                    players[room].update({"chosen":target})
+                    msg = TextSendMessage(
+                        text=send,
+                        quick_reply=QuickReply(
+                            items=[
+                                QuickReplyButton(
+                                    action=PostbackAction(
+                                        label='Truth',
+                                        text='tod:truth'
+                                    )
+                                ),
+                                QuickReplyButton(
+                                    action=PostbackAction(
+                                        label='Dare',
+                                        text='tod:dare'
+                                    )
+                                )
+                            ]
+                        )
+                    )
+            elif args == "done":
+                if sender == players[room]["chosen"]:
+                    lucky_guy = players[room]["chosen"]
+                    name = line_bot_api.get_profile(lucky_guy).display_name
+                    send = name+' memutar botol... botol menunjuk ke '+target_name
+                    players[room]["chosen"] = target
+                    msg = TextSendMessage(
+                        text=send,
+                        quick_reply=QuickReply(
+                            items=[
+                                QuickReplyButton(
+                                    action=PostbackAction(
+                                        label='Truth',
+                                        text='Jujur',
+                                        data='tod:truth'
+                                    )
+                                ),
+                                QuickReplyButton(
+                                    action=PostbackAction(
+                                        label='Dare',
+                                        text='Berani',
+                                        data='tod:dare'
+                                    )
+                                )
+                            ]
+                        )
+                    )
+                else:
+                    msg = TextSendMessage(
+                        text='Bukan giliran lau'
+                    )
+            else:
+                chosen = players[room]["chosen"]
+                chosen_name = line_bot_api.get_profile(chosen).display_name
+                msg = TODPlayerQuestion(chosen_name, args)
+            line_bot_api.reply_message(event.reply_token, msg)
 
         elif cmd == "quit":
             answer, room = args.split(" ")
@@ -311,6 +387,43 @@ def handle_message(event):
                 )
             )
         )
+
+    elif text.lower() == "udahan":
+        if sender in players[room]["players"]:
+            players[room]["players"].remove(sender)
+            name = line_bot_api.get_profile(sender).display_name
+            if len(players[room]["players"]) > 1:
+                if players[room]["chosen"] == sender:
+                    lucky_guy = players[room]["chosen"]
+                    send = name+' berhenti bermain dan memutar botol untuk terakhir kalinya...\nbotol menunjuk ke '+target_name
+                    players[room]["chosen"] = target
+                    msg = TextSendMessage(
+                        text=send,
+                        quick_reply=QuickReply(
+                            items=[
+                                QuickReplyButton(
+                                    action=PostbackAction(
+                                        label='Truth',
+                                        text='Jujur',
+                                        data='tod:truth'
+                                    )
+                                ),
+                                QuickReplyButton(
+                                    action=PostbackAction(
+                                        label='Dare',
+                                        text='Berani',
+                                        data='tod:dare'
+                                    )
+                                )
+                            ]
+                        )
+                    )
+                else:
+                    msg = TextSendMessage(text=name+' berhenti bermain')
+            else:
+                msg = TextSendMessage(text=name+' berhenti bermain\nKarena kekurangan pemain, permainan diberhentikan')
+                players.pop(room)
+            line_bot_api.reply_message(reply_token,msg)
 
     elif ":" in text:
         data = text.split(":",1)
@@ -458,6 +571,11 @@ def handle_message(event):
                     event.reply_token,
                     TextSendMessage(text='Changed successfully!\nType "Dori: id" to check your current id ;D')
                 )
+
+        elif cmd == "game":
+            if args == "tod" or args == "truth or dare":
+                players.update({room:{"game":"tod","players":[],"lastActive":time.time()}})
+                msg = TODRules()
 
 import os
 if __name__ == "__main__":

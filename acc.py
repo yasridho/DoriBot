@@ -13,6 +13,16 @@ config = {
     "storageBucket": os.environ.get('FIREBASE_STORAGE_BUCKET')
 }
 
+tod_config = {
+    "apiKey": os.environ.get('TOD_API_KEY'),
+    "authDomain": os.environ.get('TOD_AUTH_DOMAIN'),
+    "databaseURL": os.environ.get('TOD_LINK_DATABASE'),
+    "storageBucket": os.environ.get('TOD_STORAGE_BUCKET')
+}
+
+tod_data = pyrebase.initialize_app(tod_config)
+tod_db = tod_data.database()
+
 firebase = pyrebase.initialize_app(config)
 db = firebase.database()
 
