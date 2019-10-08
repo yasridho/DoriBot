@@ -15,7 +15,8 @@ def TODQuestionUpdate(tod, question):
     try:
         total = tod_db.child("Pending").child(tod.capitalize()).child("total").get().val()
         num = total+1
-        tod_db.child("Pending").update(tod.capitalize()).update({"Question"+str(total):question})
+        name = "Question"+str(total)
+        tod_db.child("Pending").update(tod.capitalize()).update({name:question})
         tod_db.child("Pending").child(tod.capitalize()).update({"total":num})
     except:
         tod_db.child("Pending").child(tod.capitalize()).child("Question0").set(question)
