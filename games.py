@@ -24,12 +24,20 @@ def TODQuestionUpdate(tod, question):
     tod_question.update(tod_db.get().val())
 
 def TODRemovePending(tod, index):
-    question = tod_question["Pending"][tod.capitalize()][index]
+    try:
+        question = tod_question["Pending"][tod.capitalize()][index]
+    except:
+        tod_question.update(tod_db.get().val())
+        question = tod_question["Pending"][tod.capitalize()][index]
     tod_question["Pending"][tod.capitalize()].remove(question)
     tod_db.child("Pending").update(tod_question["Pending"])
 
 def TODAdd(tod, index):
-    question = tod_question["Pending"][tod.capitalize()][index]
+    try:
+        question = tod_question["Pending"][tod.capitalize()][index]
+    except:
+        tod_question.update(tod_db.get().val())
+        question = tod_question["Pending"][tod.capitalize()][index]
     tod_question[tod.capitalize()].append(question)
     tod_db.update(tod_question)
 
