@@ -3,9 +3,12 @@ import pyrebase
 import random
 from acc import tod_db
 
+tod_question = {}
+
 def getRandomTOD(choose):
-    data = tod_db.child(choose.capitalize()).get().val()
-    question = random.choice(data)
+    if len(tod_question) == 0:
+        tod_question.update(tod_db.get().val())
+    question = random.choice(tod_question[choose.capitalize()])
     return question
 
 def TODRules():
