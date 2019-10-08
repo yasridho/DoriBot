@@ -13,11 +13,15 @@ def getRandomTOD(choose):
 
 def TODAddPending(tod, question):
     try:
-        total = tod_db.child("Pending").child(tod.capitalize()).child("total").get().val()
-        num = total+1
+        pending = tod_db.child("Pending").child(tod.capitalize()).get().val()
+        total = pending["total"]
         name = "Question"+str(total)
+        num = 0
+        while name in pending:
+            name = "Question"+str(num)
+            num += 1
         tod_db.child("Pending").child(tod.capitalize()).update({name:question})
-        tod_db.child("Pending").child(tod.capitalize()).update({"total":num})
+        tod_db.child("Pending").child(tod.capitalize()).update({"total":total+1})
     except:
         tod_db.child("Pending").child(tod.capitalize()).child("Question0").set(question)
         tod_db.child("Pending").child(tod.capitalize()).child("total").set(1)
