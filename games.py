@@ -43,6 +43,7 @@ def TODReview(tod):
     bubble = []
     num = 0
     for r in database:
+        if r == "total":continue
         for question in database[r]:
             bubble.append(
                 BubbleContainer(
