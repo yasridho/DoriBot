@@ -12,16 +12,16 @@ def getRandomTOD(choose):
     return question
 
 def TODQuestionUpdate(tod, question):
-    #try:
-    pending = {tod.capitalize():[]}
-    database = tod_db.child("Pending").child(tod.capitalize()).get().val()
-    for i in database:
-        pending[tod.capitalize()].append(i)
-    pending[tod.capitalize()].append(question)
-    tod_db.child("Pending").update(pending)
-    #except:
-    #    tod_db.child("Pending").child(tod.capitalize()).set([question])
-    #tod_question.update(tod_db.get().val())
+        try:
+        pending = {tod.capitalize():[]}
+        database = tod_db.child("Pending").child(tod.capitalize()).get().val()
+        for i in database:
+            pending[tod.capitalize()].append(i)
+        pending[tod.capitalize()].append(question)
+        tod_db.child("Pending").update(pending)
+    except:
+        tod_db.child("Pending").child(tod.capitalize()).set([question])
+    tod_question.update(tod_db.get().val())
 
 def TODRules():
     bubble = BubbleContainer(
