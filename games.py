@@ -12,7 +12,7 @@ def getRandomTOD(choose):
     return question
 
 def TODQuestionUpdate(tod, question):
-        try:
+    try:
         pending = {tod.capitalize():[]}
         database = tod_db.child("Pending").child(tod.capitalize()).get().val()
         for i in database:
