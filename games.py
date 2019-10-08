@@ -27,6 +27,7 @@ def TODRemovePending(tod, question):
     tod_question.update(tod_db.get().val())
     tod_question["Pending"][tod.capitalize()].remove(question)
     tod_db.child("Pending").update(tod_question["Pending"])
+    tod_question.update(tod_db.get().val())
 
 def TODAdd(tod, question):
     try:
@@ -35,6 +36,7 @@ def TODAdd(tod, question):
         tod_question.update(tod_db.get().val())
     tod_question[tod.capitalize()].append(question)
     tod_db.update(tod_question)
+    tod_question.update(tod_db.get().val())
 
 def TODReview(tod):
     database = tod_db.child("Pending").child(tod.capitalize()).get().val()
