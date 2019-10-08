@@ -24,10 +24,7 @@ def TODQuestionUpdate(tod, question):
     tod_question.update(tod_db.get().val())
 
 def TODRemovePending(tod, question):
-    try:
-        tod_question["Pending"][tod.capitalize()].remove(question)
-    except:
-        tod_question.update(tod_db.get().val())
+    tod_question.update(tod_db.get().val())
     tod_question["Pending"][tod.capitalize()].remove(question)
     tod_db.child("Pending").update(tod_question["Pending"])
 
