@@ -18,10 +18,11 @@ def TODQuestionUpdate(tod, question):
     for i in database:
         pending.append(i)
     pending.append(question)
+    print(pending)
     tod_db.child("Pending").child(tod.capitalize()).update(pending)
     #except:
     #    tod_db.child("Pending").child(tod.capitalize()).set([question])
-    tod_question.update(tod_db.get().val())
+    #tod_question.update(tod_db.get().val())
 
 def TODRules():
     bubble = BubbleContainer(
