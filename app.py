@@ -227,7 +227,7 @@ def handle_postback(event):
             )
 
         elif (cmd == "truth") or (cmd == "dare"):
-            decision, index = args.split(" ")
+            decision, int(index) = args.split(" ")
             if decision == "accept":
                 TODAdd(cmd, index)
                 msg = TextSendMessage(text="Accepted")
