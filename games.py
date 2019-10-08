@@ -11,6 +11,10 @@ def getRandomTOD(choose):
     question = random.choice(tod_question[choose.capitalize()])
     return question
 
+def TODQuestionUpdate(tod, question):
+    tod_db.child("Pending").child(tod.capitalize()).update(question)
+    tod_question.update(tod_db.get().val())
+
 def TODRules():
     bubble = BubbleContainer(
         direction='ltr',

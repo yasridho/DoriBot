@@ -608,6 +608,20 @@ def handle_message(event):
                 msg = TODRules()
             line_bot_api.reply_message(event.reply_token,msg)
 
+        elif cmd == "truth":
+            if args:
+                TODQuestionUpdate("truth", args)
+                msg = TextSendMessage(text='Terima Kasih\nPertanyaan kamu akan kami review ;D')
+            else:
+                msg = TextSendMessage(text='Pertanyaannya apa? O.o')
+        
+        elif cmd == "truth":
+            if args:
+                TODQuestionUpdate("dare", args)
+                msg = TextSendMessage(text='Terima Kasih\nPerintah kamu akan kami review ;D')
+            else:
+                msg = TextSendMessage(text='Perintahnya apa? O.o')
+
 import os
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
