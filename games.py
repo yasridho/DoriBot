@@ -11,7 +11,7 @@ def getRandomTOD(choose):
     question = random.choice(tod_question[choose.capitalize()])
     return question
 
-def TODQuestionUpdate(tod, question):
+def TODAddPending(tod, question):
     try:
         total = tod_db.child("Pending").child(tod.capitalize()).child("total").get().val()
         num = total+1
@@ -26,6 +26,8 @@ def TODQuestionUpdate(tod, question):
 def TODRemovePending(tod, index):
     tod_question.update(tod_db.get().val())
     tod_question["Pending"][tod.capitalize()].pop(index)
+    total = tod_question["Pending"][tod.capitalize()]["total"]
+    tod_question["Pending"][tod.capitalize()]["total"] = total - 1
     tod_db.child("Pending").update(tod_question["Pending"])
 
 def TODAdd(tod, question):
