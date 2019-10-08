@@ -234,28 +234,41 @@ def handle_postback(event):
                     msg = TODPlayerNotif()
             elif args == "start":
                 if sender in players[room]["players"]:
-                    target = random.choice(players[room]["players"])
-                    target_name = line_bot_api.get_profile(target).display_name
-                    send = "Botol berputar... menunjuk ke "+target_name
-                    players[room].update({"chosen":target})
-                    msg = TextSendMessage(
-                        text=send,
-                        quick_reply=QuickReply(
-                            items=[
-                                QuickReplyButton(
-                                    action=PostbackAction(
-                                        label='Truth',
-                                        text='tod:truth'
+                    try:
+                        current_target = players[room]["chosen"]
+                    except:
+                        current_target = None
+                    if current_target == None:
+                        target = random.choice(players[room]["players"])
+                        target_name = line_bot_api.get_profile(target).display_name
+                        send = "Botol berputar... menunjuk ke "+target_name
+                        players[room].update({"chosen":target})
+                        msg = TextSendMessage(
+                            text=send,
+                            quick_reply=QuickReply(
+                                items=[
+                                    QuickReplyButton(
+                                        action=PostbackAction(
+                                            label='Truth',
+                                            text='tod: truth'
+                                        )
+                                    ),
+                                    QuickReplyButton(
+                                        action=PostbackAction(
+                                            label='Dare',
+                                            text='tod: dare'
+                                        )
                                     )
-                                ),
-                                QuickReplyButton(
-                                    action=PostbackAction(
-                                        label='Dare',
-                                        text='tod:dare'
-                                    )
-                                )
-                            ]
+                                ]
+                            )
                         )
+                    else:
+                        msg = TextSendMessage(
+                            text='Permainan sudah dimulai'
+                        )
+                else:
+                    msg = TextSendMessage(
+                        text="Kamu bukan pemain, silahkan gabung dulu sebelum permainan dimulai"
                     )
             elif args == "done":
                 if sender == players[room]["chosen"]:
@@ -271,14 +284,14 @@ def handle_postback(event):
                                     action=PostbackAction(
                                         label='Truth',
                                         text='Jujur',
-                                        data='tod:truth'
+                                        data='tod: truth'
                                     )
                                 ),
                                 QuickReplyButton(
                                     action=PostbackAction(
                                         label='Dare',
                                         text='Berani',
-                                        data='tod:dare'
+                                        data='tod: dare'
                                     )
                                 )
                             ]
