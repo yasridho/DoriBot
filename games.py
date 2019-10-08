@@ -15,11 +15,11 @@ def TODQuestionUpdate(tod, question):
     try:
         total = tod_db.child("Pending").child(tod.capitalize()).child("total").get().val()
         num = total+1
-        tod_db.child("Pending").update(tod.capitalize()).update({"Question"+str(num):question})
+        tod_db.child("Pending").update(tod.capitalize()).update({"Question"+str(total):question})
         tod_db.child("Pending").child(tod.capitalize()).update({"total":num})
     except:
         tod_db.child("Pending").child(tod.capitalize()).child("Question0").set(question)
-        tod_db.child("Pending").child(tod.capitalize()).child("total").set(0)
+        tod_db.child("Pending").child(tod.capitalize()).child("total").set(1)
     tod_question.update(tod_db.get().val())
 
 def TODRemovePending(tod, index):
