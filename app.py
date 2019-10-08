@@ -622,6 +622,13 @@ def handle_message(event):
                 msg = TODRules()
             line_bot_api.reply_message(event.reply_token,msg)
 
+        elif cmd == "review":
+            if (args == "truth") or (args == "dare"):
+                msg = TODReview(args)
+            else:
+                msg = TextSendMessage(text="Type review:truth to review truth submission\nType review:dare to review dare submission")
+            line_bot_api.reply_message(event.reply_token,msg)
+
         elif cmd == "truth":
             if args:
                 TODQuestionUpdate("truth", args)
