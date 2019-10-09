@@ -97,7 +97,7 @@ def addBotFriend():
                     ]
                 ),
                 TextComponent(
-                    text='I\'ll not respond to anyone who I don\'t know',
+                    text='I\'ll not respond to anyone that I don\'t know',
                     margin='md',
                     size='sm',
                     align='center',
