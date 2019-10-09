@@ -650,16 +650,57 @@ def handle_message(event):
 
         elif cmd == "truth":
             if args:
+                admin = "U3fed832cbef28b87b7827b306506c8d5"
                 TODAddPending("truth", args)
                 msg = TextSendMessage(text='Terima Kasih\nPertanyaan kamu akan kami review ;D')
+                push = TextSendMessage(
+                    text='Ada penambahan pertanyaan untuk Truth or Dare\nCek "Review: Truth" untuk mereview',
+                    quick_reply=
+                        items=[
+                            QuickReplyButton(
+                                action=MessageAction(
+                                    label='Review Truth',
+                                    text='Review: Truth'
+                                )
+                            ),
+                            QuickReplyButton(
+                                action=MessageAction(
+                                    label='Review Dare',
+                                    text='Review: Dare'
+                                )
+                            )
+                        ]
+                    )
+                line_bot_api.push_message(admin, push)
             else:
                 msg = TextSendMessage(text='Pertanyaannya apa? O.o')
             line_bot_api.reply_message(event.reply_token, msg)
         
         elif cmd == "dare":
             if args:
+                admin = "U3fed832cbef28b87b7827b306506c8d5"
                 TODAddPending("dare", args)
                 msg = TextSendMessage(text='Terima Kasih\nPerintah kamu akan kami review ;D')
+                push = TextSendMessage(
+                    text='Ada penambahan perintah untuk Truth or Dare\nCek "Review: Dare" untuk mereview',
+                    quick_reply=
+                        items=[
+                            QuickReplyButton(
+                                action=MessageAction(
+                                    label='Review Truth',
+                                    text='Review: Truth'
+                                )
+                            ),
+                            QuickReplyButton(
+                                action=MessageAction(
+                                    label='Review Dare',
+                                    text='Review: Dare'
+                                )
+                            )
+                        ]
+                    )
+                )
+                line_bot_api.push_message(admin, push)
             else:
                 msg = TextSendMessage(text='Perintahnya apa? O.o')
             line_bot_api.reply_message(event.reply_token, msg)

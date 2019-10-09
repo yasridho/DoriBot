@@ -44,81 +44,84 @@ def TODAdd(tod, question):
 
 def TODReview(tod):
     database = tod_db.child("Pending").child(tod.capitalize()).get().val()
-    bubble = []
-    num = 0
-    for r in database:
-        if r == "total":continue
-        question = database[r]
-        bubble.append(
-            BubbleContainer(
-                direction='ltr',
-                body=BoxComponent(
-                    layout='vertical',
-                    contents=[
-                        BoxComponent(
-                            layout='vertical',
-                            spacing='md',
-                            contents=[
-                                ImageComponent(
-                                    url='https://img.icons8.com/flat_round/64/000000/question-mark.png',
-                                    size='xxs'
-                                ),
-                                TextComponent(
-                                    text=tod.capitalize(),
-                                    align='center',
-                                    weight='bold',
-                                    color='#9AA6B4'
-                                )
-                            ]
-                        ),
-                        TextComponent(
-                            text=question,
-                            margin='md',
-                            size='sm',
-                            align='center',
-                            color='#9AA6B4',
-                            wrap=True
-                        )
-                    ]
-                ),
-                footer=BoxComponent(
-                    layout='horizontal',
-                    contents=[
-                        ButtonComponent(
-                            action=PostbackAction(
-                                label='Accept',
-                                data=tod+': accept '+r
+    if database:
+        bubble = []
+        num = 0
+        for r in database:
+            if r == "total":continue
+            question = database[r]
+            bubble.append(
+                BubbleContainer(
+                    direction='ltr',
+                    body=BoxComponent(
+                        layout='vertical',
+                        contents=[
+                            BoxComponent(
+                                layout='vertical',
+                                spacing='md',
+                                contents=[
+                                    ImageComponent(
+                                        url='https://img.icons8.com/flat_round/64/000000/question-mark.png',
+                                        size='xxs'
+                                    ),
+                                    TextComponent(
+                                        text=tod.capitalize(),
+                                        align='center',
+                                        weight='bold',
+                                        color='#9AA6B4'
+                                    )
+                                ]
                             ),
-                            color='#DFF536'
-                        ),
-                        SeparatorComponent(
-                            color='#6E6E6E'
-                        ),
-                        ButtonComponent(
-                            action=PostbackAction(
-                                label='Decline',
-                                data=tod+': decline '+r
-                            ),
-                            color='#F53636'
-                        )
-                    ]
-                ),
-                styles=BubbleStyle(
-                    body=BlockStyle(
-                        background_color='#1F2129'
+                            TextComponent(
+                                text=question,
+                                margin='md',
+                                size='sm',
+                                align='center',
+                                color='#9AA6B4',
+                                wrap=True
+                            )
+                        ]
                     ),
-                    footer=BlockStyle(
-                        background_color='#1F2129'
+                    footer=BoxComponent(
+                        layout='horizontal',
+                        contents=[
+                            ButtonComponent(
+                                action=PostbackAction(
+                                    label='Accept',
+                                    data=tod+': accept '+r
+                                ),
+                                color='#DFF536'
+                            ),
+                            SeparatorComponent(
+                                color='#6E6E6E'
+                            ),
+                            ButtonComponent(
+                                action=PostbackAction(
+                                    label='Decline',
+                                    data=tod+': decline '+r
+                                ),
+                                color='#F53636'
+                            )
+                        ]
+                    ),
+                    styles=BubbleStyle(
+                        body=BlockStyle(
+                            background_color='#1F2129'
+                        ),
+                        footer=BlockStyle(
+                            background_color='#1F2129'
+                        )
                     )
                 )
             )
+        msg = FlexSendMessage(
+            alt_text='You\'re reviewing',
+            contents=CarouselContainer(
+                contents=bubble
+            )
         )
-    msg = FlexSendMessage(
-        alt_text='You\'re reviewing',
-        contents=CarouselContainer(
-            contents=bubble
-        )
-    )
+    else:
+        msg = TextSendMessage(text="It's empty ;D")
     return msg
 
 def TODRules():
