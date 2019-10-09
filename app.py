@@ -95,6 +95,12 @@ def handle_member_joined(event):
 
 @handler.add(MemberLeftEvent)
 def handle_member_left(event):
+    line_bot_api.reply_message(
+        event.reply_token,
+        TextSendMessage(
+            text='Got memberLeft event. event={}'.format(event)
+        )
+    )
     app.logger.info("Got memberLeft event")
 
 @handler.add(FollowEvent)
