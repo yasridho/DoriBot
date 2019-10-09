@@ -632,6 +632,7 @@ def handle_message(event):
                 msg = TextSendMessage(text="This id belongs to : "+name)
             else:
                 msg = TextSendMessage(text="Nobody have that id :/")
+            line_bot_api.reply_message(event.reply_token, msg)
 
         elif cmd == "game":
             if args == "tod" or args == "truth or dare":
