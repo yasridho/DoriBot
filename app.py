@@ -609,16 +609,17 @@ def handle_message(event):
                     break
             if not accept:
                 msg = TextSendMessage(text='Alphabet or numeric only :/')
-            uid_owner = getUID(args)
-            if uid_owner:
-                msg = TextSendMessage(text="You're unlucky, that id is taken already :/")
             else:
-                try:
-                    user_id = db.child("users").child(event.source.user_id).get().val()["user_id"]
-                    db.child("users").child(event.source.user_id).child("user_id").update(args)
-                except:
-                    db.child("users").child(event.source.user_id).child("user_id").set(args)
-                msg = TextSendMessage(text='Changed successfully!\nType "Dori: id" to check your current id ;D')
+                uid_owner = getUID(args)
+                if uid_owner:
+                    msg = TextSendMessage(text="You're unlucky, that id is taken already :/")
+                else:
+                    try:
+                        user_id = db.child("users").child(event.source.user_id).get().val()["user_id"]
+                        db.child("users").child(event.source.user_id).child("user_id").update(args)
+                    except:
+                        db.child("users").child(event.source.user_id).child("user_id").set(args)
+                    msg = TextSendMessage(text='Changed successfully!\nType "Dori: id" to check your current id ;D')
             line_bot_api.reply_message(event.reply_token,msg)
 
         elif cmd == "uid":
