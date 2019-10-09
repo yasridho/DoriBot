@@ -58,9 +58,7 @@ def handle_join(event):
             TextSendMessage(
                 text="Hi! I'm DoriBot\nGlad to be here ;D"
             ),
-            TextSendMessage(
-                text="I'll not respond until you add me first."
-            ),
+            addBotFriend(),
             TextSendMessage(
                 text='Type "Doribot: help" without quote to see my commands ;)',
                 quick_reply=QuickReply(

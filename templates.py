@@ -74,6 +74,66 @@ def bitly_expander(args):
 
     return data["data"]["expand"][0]["long_url"]
 
+def addBotFriend():
+    bubble=BubbleContainer(
+        direction='ltr',
+        body=BoxComponent(
+            layout='vertical',
+            contents=[
+                BoxComponent(
+                    layout='vertical',
+                    spacing='md',
+                    contents=[
+                        ImageComponent(
+                            url='https://img.icons8.com/color/96/000000/add-user-male--v2.png',
+                            size='xxs'
+                        ),
+                        TextComponent(
+                            text='Add DoriBot as Friend',
+                            align='center',
+                            weight='bold',
+                            color='#9AA6B4'
+                        )
+                    ]
+                ),
+                TextComponent(
+                    text='I\'ll not respond to anyone who I don\'t know',
+                    margin='md',
+                    size='sm',
+                    align='center',
+                    color='#9AA6B4',
+                    wrap=True
+                )
+            ]
+        ),
+        footer=BoxComponent(
+            layout='horizontal',
+            contents=[
+                ButtonComponent(
+                    action=URIAction(
+                        label='Add Friend',
+                        uri='line://ti/p/@ylq8128k'
+                    ),
+                    color='#38F536',
+                    height='sm'
+                )
+            ]
+        ),
+        styles=BubbleStyle(
+            body=BlockStyle(
+                background_color='#1F2129'
+            ),
+            footer=BlockStyle(
+                background_color='#1F2129'
+            )
+        )
+    )
+    msg = FlexSendMessage(
+        alt_text="Add me as your friend ;D",
+        contents=bubble
+    )
+    return msg
+
 def listTP():
     matkul = {
                 "dap":"dasar-algoritma-dan-pemrograman",
