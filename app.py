@@ -655,7 +655,7 @@ def handle_message(event):
                 msg = TextSendMessage(text='Terima Kasih\nPertanyaan kamu akan kami review ;D')
                 push = TextSendMessage(
                     text='Ada penambahan pertanyaan untuk Truth or Dare\nCek "Review: Truth" untuk mereview',
-                    quick_reply=
+                    quick_reply=QuickReply(
                         items=[
                             QuickReplyButton(
                                 action=MessageAction(
@@ -671,6 +671,7 @@ def handle_message(event):
                             )
                         ]
                     )
+                )
                 line_bot_api.push_message(admin, push)
             else:
                 msg = TextSendMessage(text='Pertanyaannya apa? O.o')
@@ -683,7 +684,7 @@ def handle_message(event):
                 msg = TextSendMessage(text='Terima Kasih\nPerintah kamu akan kami review ;D')
                 push = TextSendMessage(
                     text='Ada penambahan perintah untuk Truth or Dare\nCek "Review: Dare" untuk mereview',
-                    quick_reply=
+                    quick_reply=QuickReply(
                         items=[
                             QuickReplyButton(
                                 action=MessageAction(
