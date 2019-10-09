@@ -612,7 +612,10 @@ def handle_message(event):
             else:
                 uid_owner = getUID(args)
                 if uid_owner:
-                    msg = TextSendMessage(text="You're unlucky, that id is taken already :/")
+                    if uid_owner == sender:
+                        msg = TextSendMessage(text="You're using this id already :/")
+                    else:
+                        msg = TextSendMessage(text="You're unlucky, that id is taken already :/")
                 else:
                     try:
                         user_id = db.child("users").child(event.source.user_id).get().val()["user_id"]
