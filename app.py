@@ -604,7 +604,7 @@ def handle_message(event):
         elif cmd == "id":
             accept = True
             for val in args:
-                if (not val.isalpha()) or (not val.isnumeric()):
+                if not((val.isalpha()) or (val.isnumeric())):
                     accept = False
                     break
             if not accept:
