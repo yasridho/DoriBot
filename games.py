@@ -597,31 +597,7 @@ def TODAddQuestion():
                     ]
                 )
             ]
-        ),
-        footer=BoxComponent(
-            layout='horizontal',
-            contents=[
-                ButtonComponent(
-                    action=PostbackAction(
-                        label='Truth',
-                        text='Truth',
-                        data='tod: truth'
-                    ),
-                    color='#38F536'
-                ),
-                SeparatorComponent(
-                    color='#6E6E6E'
-                ),
-                ButtonComponent(
-                    action=PostbackAction(
-                        label='Dare',
-                        text='Dare',
-                        data='tod: dare'
-                    ),
-                    color='#FFC27D'
-                )
-            ]
-        ),
+        )
         styles=BubbleStyle(
             body=BlockStyle(
                 background_color='#1F2129'
