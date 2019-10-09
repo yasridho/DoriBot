@@ -86,14 +86,14 @@ def handle_leave(event):
 
 @handler.add(MemberJoinedEvent)
 def handle_member_joined(event):
-    sender = event.source.user_id
+    sender = event.joined.members[0].user_id
     name = line_bot_api.get_profile(sender).display_name
     line_bot_api.reply_message(event.reply_token,
     TextSendMessage(text="Welcome "+name+" ;D"))
 
 @handler.add(MemberLeftEvent)
 def handle_member_left(event):
-    sender = event.source.user_id
+    sender = event.joined.members[0].user_id
     if isinstance(event.source, SourceRoom):
         room = event.source.room_id
     else:
