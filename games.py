@@ -597,7 +597,7 @@ def TODAddQuestion():
                     ]
                 )
             ]
-        )
+        ),
         styles=BubbleStyle(
             body=BlockStyle(
                 background_color='#1F2129'
