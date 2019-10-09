@@ -113,6 +113,8 @@ def handle_member_left(event):
             db.child(event.source.type).child(room).child("members").child(uid).remove()
         if "members" not in db.child(event.source.type).child(room).get().val():
             db.child(event.source.type).child(room).remove()
+            total = db.child(event.source.type).get().val()["total"]
+            db.child(event.source.type).update({"total":total - 1})
 
 @handler.add(FollowEvent)
 def handle_follow(event):
@@ -540,6 +542,7 @@ def handle_message(event):
                         text='Your id is: '+dori_id(event.source.user_id)+'\nType "id: <your_new_id>" to change.'
                     )
                 )
+
             elif args == "bye":
                 if isinstance(event.source, SourceUser):
                     line_bot_api.reply_message(
@@ -562,6 +565,14 @@ def handle_message(event):
                 event.reply_token,
                 anilist_search(args,1)
             )
+
+        elif cmd in ["broadcast","bc"]:
+            admin = "U3fed832cbef28b87b7827b306506c8d5"
+            if sender == admin:
+                line_bot_api.broadcast(TextSendMessage(text=args))
+            else:
+                line_bot_api.reply_message(event.reply_token,
+                TextSendMessage(text="You don't have access to use this command"))
 
         elif cmd == "tp":
             matkul = {
