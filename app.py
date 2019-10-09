@@ -623,6 +623,7 @@ def handle_message(event):
                     except:
                         db.child("users").child(event.source.user_id).child("user_id").set(args)
                     msg = TextSendMessage(text='Changed successfully!\nType "Dori: id" to check your current id ;D')
+                    uid.update({args:sender})
             line_bot_api.reply_message(event.reply_token,msg)
 
         elif cmd == "uid":
