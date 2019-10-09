@@ -86,10 +86,19 @@ def handle_leave(event):
 
 @handler.add(MemberJoinedEvent)
 def handle_member_joined(event):
-    sender = event.joined.members[0].user_id
-    name = line_bot_api.get_profile(sender).display_name
-    line_bot_api.reply_message(event.reply_token,
-    TextSendMessage(text="Welcome "+name+" ;D"))
+    sender = event.joined.members
+    if isinstance(event.source, SourceRoom):
+        room = event.source.room_id
+    else:
+        room = event.source.group_id
+    members = db.child(event.source.type).child(room).child("members").get().val()
+    for member in sender:
+        uid = member.user_id
+        name = line_bot_api.get_profile(uid).display_name
+        if uid not in members:
+            db.child(event.source.type).child(room).child("members").update({uid:name})
+        line_bot_api.reply_message(event.reply_token,
+        TextSendMessage(text="Welcome "+name+" ;D"))
 
 @handler.add(MemberLeftEvent)
 def handle_member_left(event):
@@ -100,7 +109,7 @@ def handle_member_left(event):
             room = event.source.room_id
         else:
             room = event.source.group_id
-        if sender in db.child(event.source.type).child(room).child("members").get().val():
+        if uid in db.child(event.source.type).child(room).child("members").get().val():
             db.child(event.source.type).child(room).child("members").child(uid).remove()
 
 @handler.add(FollowEvent)
