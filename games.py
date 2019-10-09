@@ -88,6 +88,7 @@ def TODReview(tod):
                             ButtonComponent(
                                 action=PostbackAction(
                                     label='Accept',
+                                    text='Accept',
                                     data=tod+': accept '+r
                                 ),
                                 color='#DFF536'
@@ -98,6 +99,7 @@ def TODReview(tod):
                             ButtonComponent(
                                 action=PostbackAction(
                                     label='Decline',
+                                    text='Decline',
                                     data=tod+': decline '+r
                                 ),
                                 color='#F53636'
