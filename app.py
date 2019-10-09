@@ -101,7 +101,7 @@ def handle_member_left(event):
         else:
             room = event.source.group_id
         if sender in db.child(event.source.type).child(room).child("members").get().val():
-            db.child(event.source.type).child(room).child("members").child(sender).remove()
+            db.child(event.source.type).child(room).child("members").child(uid).remove()
 
 @handler.add(FollowEvent)
 def handle_follow(event):
