@@ -111,6 +111,8 @@ def handle_member_left(event):
             room = event.source.group_id
         if uid in db.child(event.source.type).child(room).child("members").get().val():
             db.child(event.source.type).child(room).child("members").child(uid).remove()
+        if "members" not in db.child(event.source.type).child(room).get().val():
+            db.child(event.source.type).child(room).remove()
 
 @handler.add(FollowEvent)
 def handle_follow(event):
