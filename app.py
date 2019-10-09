@@ -602,28 +602,24 @@ def handle_message(event):
             line_bot_api.reply_message(event.reply_token,msg)
 
         elif cmd == "id":
-            if " " in args:
-                line_bot_api.reply_message(
-                    event.reply_token,
-                    TextSendMessage(text="It's prohibited to change id with space included.")
-                )
+            for val in args:
+                if (not val.isalpha()) or (not val.isnumeric()):
+                    line_bot_api.reply_message(event.reply_token,
+                    TextSendMessage(
+                        text='Alphabet or numeric only'
+                    ))
+                    return
+            uid_owner = getUID(args)
+            if uid_owner:
+                msg = TextSendMessage(text="You're unlucky, that id is taken already :/")
             else:
-                for user in db.child("users").get().val():
-                    if args == db.child("users").child(user).child("user_id").get().val():
-                        line_bot_api.reply_message(
-                            event.reply_token,
-                            TextSendMessage(text='Id is not available :(')
-                        )
-                        return
                 try:
                     user_id = db.child("users").child(event.source.user_id).get().val()["user_id"]
                     db.child("users").child(event.source.user_id).child("user_id").update(args)
                 except:
                     db.child("users").child(event.source.user_id).child("user_id").set(args)
-                line_bot_api.reply_message(
-                    event.reply_token,
-                    TextSendMessage(text='Changed successfully!\nType "Dori: id" to check your current id ;D')
-                )
+                msg = TextSendMessage(text='Changed successfully!\nType "Dori: id" to check your current id ;D')
+            line_bot_api.reply_message(event.reply_token,msg)
 
         elif cmd == "uid":
             uid_owner = getUID(args)
