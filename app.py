@@ -93,6 +93,10 @@ def handle_member_joined(event):
         )
     )
 
+@handler.add(MemberLeftEvent)
+def handle_member_left(event):
+    app.logger.info("Got memberLeft event")
+
 @handler.add(FollowEvent)
 def handle_follow(event):
     try:
