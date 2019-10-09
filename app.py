@@ -84,6 +84,15 @@ def handle_leave(event):
     total = db.child(event.source.type).get().val()["total"]
     db.child(event.source.type).update({"total":total - 1})
 
+@handler.add(MemberJoinedEvent)
+def handle_member_joined(event):
+    line_bot_api.reply_message(
+        event.reply_token,
+        TextSendMessage(
+            text='Got memberJoined event. event={}'.format(event)
+        )
+    )
+
 @handler.add(FollowEvent)
 def handle_follow(event):
     try:
