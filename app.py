@@ -642,7 +642,7 @@ def handle_message(event):
             line_bot_api.reply_message(event.reply_token,msg)
 
         elif cmd == "review":
-            if (args == "truth") or (args == "dare"):
+            if (args.lower() == "truth") or (args.lower() == "dare"):
                 msg = TODReview(args)
             else:
                 msg = TextSendMessage(text="Type review:truth to review truth submission\nType review:dare to review dare submission")
