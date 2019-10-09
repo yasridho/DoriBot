@@ -93,13 +93,15 @@ def handle_member_joined(event):
 
 @handler.add(MemberLeftEvent)
 def handle_member_left(event):
-    sender = event.joined.members[0].user_id
-    if isinstance(event.source, SourceRoom):
-        room = event.source.room_id
-    else:
-        room = event.source.group_id
-    if sender in db.child(event.source.type).child(room).child("members").get().val():
-        db.child(event.source.type).child(room).child("members").child(sender).remove()
+    sender = event.left.members
+    for member in sender:
+        uid = member.user_id
+        if isinstance(event.source, SourceRoom):
+            room = event.source.room_id
+        else:
+            room = event.source.group_id
+        if sender in db.child(event.source.type).child(room).child("members").get().val():
+            db.child(event.source.type).child(room).child("members").child(sender).remove()
 
 @handler.add(FollowEvent)
 def handle_follow(event):
