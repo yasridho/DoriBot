@@ -625,6 +625,14 @@ def handle_message(event):
                     TextSendMessage(text='Changed successfully!\nType "Dori: id" to check your current id ;D')
                 )
 
+        elif cmd == "uid":
+            uid_owner = getUID(args)
+            if uid_owner:
+                name = line_bot_api.get_profile(uid_owner).display_name
+                msg = TextSendMessage(text="This id belongs to : "+name)
+            else:
+                msg = TextSendMessage(text="Nobody have that id :/")
+
         elif cmd == "game":
             if args == "tod" or args == "truth or dare":
                 players.update({room:{"game":"tod","idle":[],"ready":[],"jumlahPemain":0,"lastActive":time.time()}})

@@ -14,6 +14,22 @@ from bs4 import BeautifulSoup
 from linebot.models import *
 from acc import *
 
+uid = {}
+
+def getUID(args):
+    if len(uid) == 0:
+        user_data = db.child("users").get().val()
+        for user in user_data:
+            if "user_id" in db.child("users").child(user).get().val():
+                user_id = db.child("users").child(user).child("user_id").get().val()
+                uid.update({user_id:user})
+            else:continue
+    if args in uid:
+        result = uid[args]
+    else:
+        result = None
+    return result
+
 def dori_id(args):
     try:
         user_id = db.child("users").child(args).get().val()["user_id"]
