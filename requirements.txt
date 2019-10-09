@@ -1,4 +1,4 @@
-line-bot-sdk
+line-bot-sdk==1.14.0
 flask
 requests
 colorthief
