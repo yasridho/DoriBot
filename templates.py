@@ -20,6 +20,7 @@ def getUID(args):
     if len(uid) == 0:
         user_data = db.child("users").get().val()
         for user in user_data:
+            if user == "total":continue
             if "user_id" in db.child("users").child(user).get().val():
                 user_id = db.child("users").child(user).child("user_id").get().val()
                 uid.update({user_id:user})
