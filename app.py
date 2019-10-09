@@ -602,13 +602,13 @@ def handle_message(event):
             line_bot_api.reply_message(event.reply_token,msg)
 
         elif cmd == "id":
+            accept = True
             for val in args:
                 if (not val.isalpha()) or (not val.isnumeric()):
-                    line_bot_api.reply_message(event.reply_token,
-                    TextSendMessage(
-                        text='Alphabet or numeric only'
-                    ))
-                    return
+                    accept = False
+                    break
+            if not accept:
+                msg = TextSendMessage(text='Alphabet or numeric only :/')
             uid_owner = getUID(args)
             if uid_owner:
                 msg = TextSendMessage(text="You're unlucky, that id is taken already :/")
