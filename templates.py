@@ -249,7 +249,7 @@ def listTP():
     return results
 
 def cekTP(args):
-    source_link = "https://informatics.labs.telkomuniversity.ac.id/wp-json/wp/v2/posts?categories={}".format(str(matkul["id"]))
+    source_link = "https://informatics.labs.telkomuniversity.ac.id/wp-json/wp/v2/posts?categories={}".format(str(matkul[args]["id"]))
     url_link = urllib.request.urlopen(source_link)
     url_dict = url_link.read().decode('utf-8')
     data = json.loads(url_dict)
