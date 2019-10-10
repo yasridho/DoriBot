@@ -257,12 +257,6 @@ def cekTP(args):
     for article in data[:2]:
         title = article["title"]["rendered"]
         link = article["link"]
-        task = BeautifulSoup(article["excerpt"]["rendered"], "lxml").text
-        post_time = datetime.strptime(article["date"], '%Y-%m-%dT%H:%M:%S')
-        day = post_time.strftime('%a')
-        date = post_time.strftime('%d')
-        month = post_time.strftime('%b')
-        year = post_time.strftime('%Y')
         tp_links = []
         content = article["content"]["rendered"]
         soup = BeautifulSoup(content,'html.parser')
