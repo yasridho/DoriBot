@@ -257,13 +257,34 @@ def cekTP(args):
     for article in data[:2]:
         title = article["title"]["rendered"]
         link = article["link"]
-        task = article["excerpt"]["rendered"]
-        task = task.replace('<p>','').replace('</p>','')
+        task = BeautifulSoup(article["excerpt"]["rendered"], "lxml").text
         post_time = datetime.strptime(article["date"], '%Y-%m-%dT%H:%M:%S')
         day = post_time.strftime('%a')
         date = post_time.strftime('%d')
         month = post_time.strftime('%b')
         year = post_time.strftime('%Y')
+        tp_links = []
+        content = article["content"]["rendered"]
+        soup = BeautifulSoup(content,'html.parser')
+        tp_links.append(
+            ButtonComponent(
+                URIAction(
+                    label='Source',
+                    uri=link
+                ),
+                color='#DFF536'
+            )
+        )
+        for a in soup.findall('a', href=True, text=True):
+            tp_links.append(
+                ButtonComponent(
+                    action=URIAction(
+                        label=a.text,
+                        uri=a['href']
+                    ),
+                    color='#38F536'
+                )
+            )
         bubble.append(
             BubbleContainer(
                 direction='ltr',
@@ -340,16 +361,8 @@ def cekTP(args):
                     ]
                 ),
                 footer=BoxComponent(
-                    layout='horizontal',
-                    contents=[
-                        ButtonComponent(
-                            URIAction(
-                                label='Link Tugas',
-                                uri=link
-                            ),
-                            color='#DFF536'
-                        )
-                    ]
+                    layout='vertical',
+                    contents=tp_links
                 ),
                 styles=BubbleStyle(
                     header=BlockStyle(
