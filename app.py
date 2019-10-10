@@ -381,33 +381,25 @@ def handle_postback(event):
 def handle_message(event):
     sender = event.source.user_id
     text = event.message.text
+    display_name = line_bot_api.get_profile(sender).display_name
     if isinstance(event.source, SourceRoom):
         room = event.source.room_id
     elif isinstance(event.source, SourceGroup):
         room = event.source.group_id
     
     if event.source.type in ["room","group"]:
-        try:
-            members = db.child(event.source.type).child(room).get().val()["members"]
-            if sender not in members:
-                db.child(event.source.type).child(room).child("members").child(sender).set(line_bot_api.get_profile(sender).display_name)
-        except:
-            db.child(event.source.type).child(room).child("members").child(sender).set(line_bot_api.get_profile(sender).display_name)
+        members = db.child(event.source.type).child(room).child("members").get().val()
+        if sender not in members:
+            db.child(event.source.type).child(room).child("members").update({sender:line_bot_api.get_profile(sender).display_name})
     
-    if line_bot_api.get_profile(sender).display_name != db.child("users").child(sender).child('display_name').get().val():
-        try:
-            for room in db.child("room").get().val():
-                for person in db.child("room").child(room).child("members").get().val():
-                    if person == sender:
-                        db.child("room").child(room).child("members").update({person:line_bot_api.get_profile(person).display_name})
-        except:pass
-        try:
-            for group in db.child("group").get().val():
-                for person in db.child("group").child(group).child("members").get().val():
-                    if person == sender:
-                        db.child("group").child(group).child("members").update({person:line_bot_api.get_profile(person).display_name})
-        except:pass
-        db.child("users").child(sender).update({'display_name':line_bot_api.get_profile(sender).display_name})
+    if display_name != db.child("users").child(sender).child('display_name').get().val():
+        room_type = ["group","room"]
+        for r_type in room_type:
+            for ruang in db.child(r_type).get().val():
+                members = db.child(r_type).child(ruang).child("members").get().val()
+                if sender in members:
+                    db.child(r_type).child(ruang).child("members").update({sender:display_name})
+        db.child("users").child(sender).update({'display_name':display_name})
     
     try:
         if line_bot_api.get_profile(sender).picture_url != db.child("users").child(sender).child('picture_url').get().val():
