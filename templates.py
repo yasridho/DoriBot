@@ -272,6 +272,7 @@ def cekTP(args):
                     label='Source',
                     uri=link
                 ),
+                height='sm',
                 color='#DFF536'
             )
         )
@@ -282,6 +283,7 @@ def cekTP(args):
                         label=a.text,
                         uri=a['href']
                     ),
+                    height='sm',
                     color='#38F536'
                 )
             )
@@ -308,55 +310,6 @@ def cekTP(args):
                             weight='bold',
                             color='#9AA6B4',
                             wrap=True
-                        ),
-                        TextComponent(
-                            text=html.unescape(task),
-                            margin='sm',
-                            color='#9AA6B4',
-                            wrap=True
-                        ),
-                        TextComponent(
-                            text='Posted in',
-                            margin='md',
-                            color='#68C8FF'
-                        ),
-                        BoxComponent(
-                            layout='horizontal',
-                            flex=0,
-                            margin='md',
-                            contents=[
-                                TextComponent(
-                                    text=day,
-                                    flex=0,
-                                    size='xl',
-                                    weight='bold',
-                                    color='#85D481'
-                                ),
-                                TextComponent(
-                                    text=date,
-                                    flex=0,
-                                    size='xl',
-                                    margin='lg',
-                                    weight='bold',
-                                    color='#9AA6B4'
-                                ),
-                                TextComponent(
-                                    text=month,
-                                    flex=0,
-                                    margin='sm',
-                                    size='md',
-                                    weight='bold',
-                                    color='#9AA6B4'
-                                ),
-                                TextComponent(
-                                    text=year,
-                                    flex=0,
-                                    margin='sm',
-                                    size='xl',
-                                    weight='bold',
-                                    color='#9AA6B4'
-                                )
-                            ]
                         )
                     ]
                 ),
@@ -366,9 +319,6 @@ def cekTP(args):
                 ),
                 styles=BubbleStyle(
                     header=BlockStyle(
-                        background_color='#25272B'
-                    ),
-                    hero=BlockStyle(
                         background_color='#25272B'
                     ),
                     body=BlockStyle(
