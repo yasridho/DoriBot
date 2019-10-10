@@ -11,10 +11,62 @@ import pyrebase
 import xmltodict
 from colorthief import ColorThief
 from bs4 import BeautifulSoup
+from datetime import datetime
 from linebot.models import *
 from acc import *
 
 uid = {}
+
+matkul = {
+    "dap":
+    {
+        "id":7,
+        "slug":"dasar-algoritma-dan-pemrograman",
+        "synonyms":[]
+    },
+    "std":
+    {
+        "id":8,
+        "slug":"struktur-data",
+        "synonyms":["strukdat"]
+    },
+    "pbo":
+    {
+        "id":10,
+        "slug":"pemrograman-berorientasi-objek-a",
+        "synonyms":[]
+    },
+    "pbd":
+    {
+        "id":9,
+        "slug":"pemodelan-basis-data",
+        "synonyms":[]
+    },
+    "jarkom":
+    {
+        "id":13,
+        "slug":"jaringan-komputer",
+        "synonyms":["jk"]
+    },
+    "sisop":
+    {
+        "id":12,
+        "slug":"sistem-operasi-dasar",
+        "synonyms":["sod"]
+    },
+    "basdat":
+    {
+        "id":27,
+        "slug":"basis-data",
+        "synonyms":["bd"]
+    },
+    "webpro":
+    {
+        "id":11,
+        "slug":"pemrograman-web",
+        "synonyms":["pw"]
+    }
+}
 
 def getUID(args):
     if len(uid) == 0:
@@ -135,19 +187,9 @@ def addBotFriend():
     return msg
 
 def listTP():
-    matkul = {
-                "dap":"dasar-algoritma-dan-pemrograman",
-                "std":"struktur-data",
-                "pbo":"pemrograman-berorientasi-objek-a",
-                "pbd":"pemodelan-basis-data",
-                "jarkom":"jaringan-komputer",
-                "sod":"sistem-operasi-dasar",
-                "bd":"basis-data",
-                "pw":"pemrograman-web"
-            }    
     bubble = []
     for data in matkul:
-        name = matkul[data].split("-")
+        name = matkul[data]["slug"].split("-")
         full_name = []
         for r in name:
             if r != "dan":
@@ -207,34 +249,21 @@ def listTP():
     return results
 
 def cekTP(args):
-    matkul = {
-                "strukdat":"struktur-data",
-                "dap":"dasar-algoritma-dan-pemrograman",
-                "std":"struktur-data",
-                "pbo":"pemrograman-berorientasi-objek-a",
-                "pbd":"pemodelan-basis-data",
-                "jarkom":"jaringan-komputer",
-                "sod":"sistem-operasi-dasar",
-                "bd":"basis-data",
-                "pw":"pemrograman-web"
-            }
-    url_link = urllib.request.urlopen(urllib.request.Request('https://informatics.labs.telkomuniversity.ac.id/category/praktikum/'+matkul[args]+'/feed/', headers={'User-Agent': "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)"}))
+    source_link = "https://informatics.labs.telkomuniversity.ac.id/wp-json/wp/v2/posts?categories={}".format(str(matkul["id"]))
+    url_link = urllib.request.urlopen(source_link)
     url_dict = url_link.read().decode('utf-8')
-    data = xmltodict.parse(url_dict)["rss"]["channel"]["item"]
+    data = json.loads(url_dict)
     bubble = []
     for article in data[:2]:
-        title = article["title"]
+        title = article["title"]["rendered"]
         link = article["link"]
-        task = article["description"]
+        task = article["excerpt"]["rendered"]
         task = task.replace('<p>','').replace('</p>','')
-        if len(task) > 120:
-            task = task[:120]+"..."
-        post_time = article["pubDate"]
-        day = post_time[:3]
-        post_time = post_time[5:].split(" ")
-        date = post_time[0]
-        month = post_time[1]
-        year = post_time[2]
+        post_time = datetime.strptime(article["date"], '%Y-%m-%dT%H:%M:%S')
+        day = post_time.strftime('%a')
+        date = post_time.strftime('%d')
+        month = post_time.strftime('%b')
+        year = post_time.strftime('%Y')
         bubble.append(
             BubbleContainer(
                 direction='ltr',

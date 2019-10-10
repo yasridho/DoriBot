@@ -567,31 +567,23 @@ def handle_message(event):
                 TextSendMessage(text="You don't have access to use this command"))
 
         elif cmd == "tp":
-            matkul = {
-                "strukdat":"struktur-data",
-                "dap":"dasar-algoritma-dan-pemrograman",
-                "std":"struktur-data",
-                "pbo":"pemrograman-berorientasi-objek-a",
-                "pbd":"pemodelan-basis-data",
-                "jarkom":"jaringan-komputer",
-                "sod":"sistem-operasi-dasar",
-                "bd":"basis-data",
-                "pw":"pemrograman-web"
-            }
+            found = False
             args = args.lower()
-            try:
-                short = list(matkul.keys())[list(matkul.values()).index(args.replace(" ","-"))]
-                args = short
-            except:
-                short = None
-            
+            if args.lower() not in matkul:
+                for i in matkul:
+                    slug = args.replace(" ","-")
+                    data = matkul[i]
+                    if (slug == data["slug"]) or (args in data["synonyms"]):
+                        args = i
+                        found = True
+            else:
+                found = True
             if args == "list":
                 msg = listTP()
-            elif args in matkul:
+            elif found:
                 msg = cekTP(args)
             else:
                 msg = TextSendMessage(text=args.capitalize()+' tidak ada TP :/')
-
             line_bot_api.reply_message(event.reply_token, msg)
 
         elif cmd == "bitly":
