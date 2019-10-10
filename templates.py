@@ -275,7 +275,7 @@ def cekTP(args):
                 color='#DFF536'
             )
         )
-        for a in soup.findall('a', href=True, text=True):
+        for a in soup.find_all('a', href=True, text=True):
             tp_links.append(
                 ButtonComponent(
                     action=URIAction(
