@@ -660,8 +660,11 @@ def handle_message(event):
 
         elif cmd == "game":
             if args == "tod" or args == "truth or dare":
-                players.update({room:{"game":"tod","idle":[],"ready":[],"jumlahPemain":0,"lastActive":time.time()}})
-                msg = TODRules()
+                try:
+                    players.update({room:{"game":"tod","idle":[],"ready":[],"jumlahPemain":0,"lastActive":time.time()}})
+                    msg = TODRules()
+                except:
+                    msg = TextSendMessage(text="Permainan ini cuma bisa dimainkan dalam grup/room")
             line_bot_api.reply_message(event.reply_token,msg)
 
         elif cmd == "review":
